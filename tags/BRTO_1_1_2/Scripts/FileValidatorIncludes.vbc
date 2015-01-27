@@ -1,0 +1,5 @@
+#If DVT_INTERPRETS_SCRIPT Then
+#include "Includes.vbc"
+#include "IHEROfilevalidatorDialog.vbc"
+#include "FileValidator.vbc"
+#End If
