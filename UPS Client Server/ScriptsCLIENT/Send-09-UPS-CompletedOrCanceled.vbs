@@ -18,7 +18,7 @@ Class TestTool
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSCompletedOrCanceled()
+        Return New SendUPSCompletedOrCanceled("")
     End Function
 
 End Class

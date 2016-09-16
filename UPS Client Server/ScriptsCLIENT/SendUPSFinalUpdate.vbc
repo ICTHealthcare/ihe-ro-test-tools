@@ -2,14 +2,14 @@ Class SendUPSFinalUpdate
     Inherits Scenario
 
     'Constructor
-    Public Sub New()
+    Public Sub New(ByVal NSetTemplate As String)
         Dim pdsActor As PDSActor = New PDSActor
         Dim tmsActor As TMSActor = New TMSActor
 
         'scenario dataset
         m_scenarioDatasetXmlFileName = DataSetHandler.UPSDataXMLFileName
 
-        Dim ups06transaction As UPS06Transaction = New UPS06Transaction(False)
+        Dim ups06transaction As UPS06Transaction = New UPS06Transaction(False, NSetTemplate)
 
         ' RO-21
         Dim send As SendScenarioStep = New SendScenarioStep(pdsActor, tmsActor, True)

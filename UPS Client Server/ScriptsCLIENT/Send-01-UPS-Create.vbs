@@ -10,7 +10,7 @@
 #End If
 
 'Test tool class, this class runs IHE-RO scenario's and generates results files
-Class TestTool
+Class UPSCreate
     Inherits TestToolUPS_CLIENT_SERVER
 
     Public Sub New()
@@ -18,10 +18,11 @@ Class TestTool
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSCreate()
+        Return New SendUPSCreate("")
     End Function
 
 End Class
+
 
 'Implementation of the main function of DVTk scripts
 Module DvtkScript
@@ -29,7 +30,7 @@ Module DvtkScript
     ' Entry point of this Visual Basic Script.
     Sub Main(ByVal CmdArgs() As String)
 
-        TesttoolRunner.RunTool(New TestTool(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
+        TesttoolRunner.RunTool(New UPSCreate(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
 
     End Sub
 

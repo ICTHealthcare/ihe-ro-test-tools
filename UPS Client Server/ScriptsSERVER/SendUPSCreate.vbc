@@ -1,16 +1,19 @@
 Class SendUPSCreate
     Inherits Scenario
 
-    Public Sub New()
+    Public Sub New(ByVal NCreateTemplate As String)
 
         Dim TMSActor As TMSActor = New TMSActor()
         Dim PDSActor As PDSActor = New PDSActor()
-        Dim ups01Transaction As UPS01Transaction = New UPS01Transaction()
+        Dim ups01Transaction As UPS01Transaction = New UPS01Transaction(NCreateTemplate)
 
         'Send N-Set REQ (UPS final update)
         Dim sendNCreateReq As SendScenarioStep = New SendScenarioStep(PDSActor, TMSActor, True)
         sendNCreateReq.AddTransaction(ups01Transaction)
         m_scenarioSteps.Add(sendNCreateReq)
+
+        Dim saveStep As SaveScenarioStep = New SaveScenarioStep(sendNCreateReq, "N-CREATE-RSP")
+        m_scenarioSteps.Add(saveStep)
 
         Dim validate1 As ValidateScenarioStep = New ValidateScenarioStep(sendNCreateReq)
 

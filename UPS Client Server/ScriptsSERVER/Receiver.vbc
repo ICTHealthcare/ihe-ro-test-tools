@@ -142,7 +142,7 @@ Class Receiver
     ' - Listens for incoming associations
     ' - Handles incoming associations correctly
     ' - Stops when one or more stopcriteria are met.
-    Public Function ReceiveTransactions(ByVal transactions As ArrayList) As Boolean
+    Public Function ReceiveTransactions() As Boolean
 
         Dim config As TestToolConfiguration = TestToolConfiguration.GetInstance()
         Dim scenarioName As String = "_(" + config.GetCurrentScenario().GetType().Name + ")"
@@ -162,9 +162,6 @@ Class Receiver
             End If
             m_secondReceiverThread.Options.AutoValidate = True
         End If
-
-
-        m_transactions = transactions
 
         ' Add the different MessageHandlers.
         m_receiverThread.AddToBack(New MessageHandlerCStore)

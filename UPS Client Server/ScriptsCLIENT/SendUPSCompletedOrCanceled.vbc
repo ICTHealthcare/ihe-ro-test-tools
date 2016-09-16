@@ -2,24 +2,41 @@ Class SendUPSCompletedOrCanceled
     Inherits Scenario
 
     'Constructor
-    Public Sub New()
+    Public Sub New(ByVal strIsCompleted As String)
         Dim TMSActor As TMSActor = New TMSActor()
         Dim PDSActor As PDSActor = New PDSActor()
         Dim isCompleted As Boolean
+        Dim sendNActionReq As SendScenarioStep
+        Dim ups07Transaction As UPS07Transaction
 
-        Dim completedOrCancelledForm As CompletedOrCancelledDialog = New CompletedOrCancelledDialog()
-        completedOrCancelledForm.ShowDialog()
+        If (strIsCompleted = "") Then
 
-        If completedOrCancelledForm.DialogResult = Windows.Forms.DialogResult.OK Then
-            isCompleted = completedOrCancelledForm.Completed
+            Dim completedOrCancelledForm As CompletedOrCancelledDialog = New CompletedOrCancelledDialog()
+            completedOrCancelledForm.ShowDialog()
+
+            If completedOrCancelledForm.DialogResult = Windows.Forms.DialogResult.OK Then
+                isCompleted = completedOrCancelledForm.Completed
+            End If
+
+            ups07Transaction = New UPS07Transaction(isCompleted, False, "")
+
+        Else
+            Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
+            Try
+                currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+            Catch ex As Exception
+                currentAutomaticTestXMLfile = Nothing
+                Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
+            End Try
+
+            Dim SOPInstanceUID As String = currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText
+
+            ups07Transaction = New UPS07Transaction(Convert.ToBoolean(strIsCompleted), False, SOPInstanceUID)
+
         End If
 
-        Dim ups07Transaction As UPS07Transaction = New UPS07Transaction(isCompleted, False)
-
-        ' Send N-Action REQ (UPS Completed/Cancelled)
-        Dim sendNActionReq As SendScenarioStep = New SendScenarioStep(PDSActor, TMSActor, True)
+        sendNActionReq = New SendScenarioStep(PDSActor, TMSActor, True)
         sendNActionReq.AddTransaction(ups07Transaction)
-
         m_scenarioSteps.Add(sendNActionReq)
 
         ' Response validation step

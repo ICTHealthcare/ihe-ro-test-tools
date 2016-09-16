@@ -86,9 +86,10 @@ Class UpdateClientUPSRule
                 If Not (m_sendedDicomMessages Is Nothing) Then
 
                     For Each sendedMessage As DicomMessage In m_sendedDicomMessages
-
-                        If sendedMessage(Tags.ActionTypeID).Values(0) = "2" Then
-                            sendedMessage.DataSet.Set(Tags.ProcedureStepState, CS, "CANCELED")
+                        If (sendedMessage.Exists(Tags.ActionTypeID)) Then
+                            If sendedMessage(Tags.ActionTypeID).Values(0) = "2" Then
+                                sendedMessage.DataSet.Set(Tags.ProcedureStepState, CS, "CANCELED")
+                            End If
                         End If
 
                         ReferenceDataSet.GetInstance.UpdateCacheCFind_Response(sendedMessage(Tags.RequestedSOPInstanceUID).Values(0), sendedMessage)

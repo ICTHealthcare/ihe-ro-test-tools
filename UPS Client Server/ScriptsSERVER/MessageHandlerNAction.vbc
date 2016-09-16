@@ -74,7 +74,7 @@ Class MessageHandlerNAction
                             Next
                             System.IO.File.WriteAllLines(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt", newFile.ToArray())
                         Else
-                            Logger.GetInstance().LogErrorMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
+                            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
                         End If
 
                         If Not subscriberFound Then
@@ -117,7 +117,7 @@ Class MessageHandlerNAction
                             Next
                             System.IO.File.WriteAllLines(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt", newFile.ToArray())
                         Else
-                            Logger.GetInstance().LogErrorMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
+                            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
                         End If
 
                         If Not subscriberFound Then
@@ -196,8 +196,9 @@ Class MessageHandlerNAction
                             Else
                                 dicomMessageToSend.Set(Tags.ActionTypeID, US, "1")
                                 dicomMessageToSend.Set(Tags.StatusCommandElement, US, 0) ' Status 
-                                'DataSetHandler.SetCacheUPS_NewStatus(dicomMessage, "CANCELED")
-                                sendNEventReportStatusUpdate(dicomMessage, value, "Cancel Requested", UPSdicomFile)
+                        'DataSetHandler.SetCacheUPS_NewStatus(dicomMessage, "CANCELED")
+                        DataSetHandler.SetCacheUPS_UpsCancellAttributes(dicomMessage)
+                        sendNEventReportStatusUpdate(dicomMessage, value, "Cancel Requested", UPSdicomFile)
                             End If
 
 
@@ -389,7 +390,7 @@ Class MessageHandlerNAction
                 End If
             Next
         Else
-            Logger.GetInstance().LogErrorMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
+            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
         End If
 
         For Each subscriber As String In AEtitlesSubscribers

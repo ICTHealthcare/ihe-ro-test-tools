@@ -18,7 +18,7 @@ Class TestTool
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSWorklistQuery()
+        Return New SendUPSWorklistQuery("")
     End Function
 
 End Class

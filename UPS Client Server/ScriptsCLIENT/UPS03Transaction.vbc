@@ -7,69 +7,125 @@ Class UPS03Transaction
 
     Private ups03IODType As IODType = Nothing
     Private countSelectedUPSes As Integer = 0
+    Private m_useAutomaticTesting As Boolean
     'Constructor
     Public Sub New()
-        MyClass.New(True)
+        MyClass.New(True, False)
     End Sub
 
     'Constructor
-    Public Sub New(ByVal clearMessageDataAfterSend As Boolean)
+    Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal useAutomaticTesting As Boolean)
         MyBase.New("UPS-03", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
         ups03IODType = IODType.UnifiedProcedureStepPull
+        m_useAutomaticTesting = useAutomaticTesting
     End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
         Dim datasetMessages As ArrayList = New ArrayList()
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
+        Try
+            currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+        Catch ex As Exception
+            currentAutomaticTestXMLfile = Nothing
+            Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
+        End Try
 
-        selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
+        If Not (m_useAutomaticTesting) Then
+
+            Dim selectUPSForm As SelectUPS = New SelectUPS()
+
+            selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
+
+            selectUPSForm.ShowDialog()
+
+            If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
+
+                For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
+
+                    If (DataRow.Selected) Then
+
+                        Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
+
+                        If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
+                            ' Make the N-ACTION-RQ message
+                            Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
+
+                            ' Set the Requested SOPClassUID 
+                            message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+
+                            ' Set the Requested SOP Instance UID
+                            message.Set(Tags.RequestedSOPInstanceUID, UI, SOPInstanceUID)
+
+                            ' ActionType ID
+                            message.Set(Tags.ActionTypeID, US, "1")
+
+                            'Set Unified Procedure Step State to "IN PROGRESS"
+                            message.Set(Tags.ProcedureStepState, CS, "IN PROGRESS")
+
+                            ' Transaction UID
+                            Dim transactionUID As String = DvtkHighLevelInterface.Dicom.Other.UID.Create()
+                            message.Set(Tags.TransactionUID, UI, transactionUID)
 
 
-        selectUPSForm.ShowDialog()
+                            'ReferenceDataSet.GetInstance.UpdateCacheCFind_Response(SOPInstanceUID, message)
 
-        If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
+                            If Not currentAutomaticTestXMLfile Is Nothing Then
+                                Dim ScenarioNode As System.Xml.XmlNode = currentAutomaticTestXMLfile.CreateNode("element", "Scenario", "")
+                                Dim nameAttr As System.Xml.XmlAttribute = currentAutomaticTestXMLfile.CreateAttribute("Name")
+                                nameAttr.Value = "SendUPSInProgress"
+                                ScenarioNode.Attributes.Append(nameAttr)
 
-            For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
+                                currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios").AppendChild(ScenarioNode)
 
-                If (DataRow.Selected) Then
+                                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                            End If
 
-                    Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
+                            datasetMessages.Add(message)
 
-                    If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
-                        ' Make the N-ACTION-RQ message
-                        Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
+                        Else
+                            Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
+                        End If
 
-                        ' Set the Requested SOPClassUID 
-                        message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-
-                        ' Set the Requested SOP Instance UID
-                        message.Set(Tags.RequestedSOPInstanceUID, UI, SOPInstanceUID)
-
-                        ' ActionType ID
-                        message.Set(Tags.ActionTypeID, US, "1")
-
-                        'Set Unified Procedure Step State to "IN PROGRESS"
-                        message.Set(Tags.ProcedureStepState, CS, "IN PROGRESS")
-
-                        ' Transactuion ID
-                        message.Set(Tags.TransactionUID, UI, DvtkHighLevelInterface.Dicom.Other.UID.Create())
-
-                        'ReferenceDataSet.GetInstance.UpdateCacheCFind_Response(SOPInstanceUID, message)
-
-                        datasetMessages.Add(message)
-
-                    Else
-                        Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
                     End If
 
-                End If
+                Next
+            Else
+                ' cancel scenario
+            End If
 
-            Next
         Else
-            ' cancel scenario
-        End If
 
+            If Not currentAutomaticTestXMLfile Is Nothing Then
+                ' Make the N-ACTION-RQ message
+                Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
+
+                ' Set the Requested SOPClassUID 
+                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+
+                ' Set the Requested SOP Instance UID
+                message.Set(Tags.RequestedSOPInstanceUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText)
+
+                ' ActionType ID
+                message.Set(Tags.ActionTypeID, US, "1")
+
+                'Set Unified Procedure Step State to "IN PROGRESS"
+                message.Set(Tags.ProcedureStepState, CS, "IN PROGRESS")
+
+                ' Transaction UID
+                Dim transactionUID As String = DvtkHighLevelInterface.Dicom.Other.UID.Create()
+                message.Set(Tags.TransactionUID, UI, transactionUID)
+                currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText = transactionUID
+
+
+                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+
+                datasetMessages.Add(message)
+
+            Else
+                Logger.GetInstance().LogErrorMessage(String.Format("First run the Create UPS or the WorklistQuery scenario, now not a UPS available on the server"))
+            End If
+        End If
 
         Return datasetMessages
 

@@ -19,17 +19,17 @@ Class MessageHandlerCFind
             If requestMessage.DataSet.GetitemCount(Tags.ScheduledStationNameCodeSequence) > 0 Then
                 If requestMessage.DataSet.Exists(Tags.ScheduledStationCodeValue) Then
                     value = requestMessage(Tags.ScheduledStationCodeValue).Values.Item(0)
-                    responseMessage.Set(Tags.ScheduledStationCodeValue, SH, value)
+                    responseMessage.DataSet.Set(Tags.ScheduledStationCodeValue, SH, value)
                 End If
                 ' Copy >> (0x00080102)  Coding Scheme Designator
                 If requestMessage.DataSet.Exists(Tags.ScheduledStationCodingSchemeDesignator) Then
                     value = requestMessage(Tags.ScheduledStationCodingSchemeDesignator).Values.Item(0)
-                    responseMessage.Set(Tags.ScheduledStationCodingSchemeDesignator, SH, value)
+                    responseMessage.DataSet.Set(Tags.ScheduledStationCodingSchemeDesignator, SH, value)
                 End If
                 ' Copy >> (0x00080104)  Code Meaning
                 If requestMessage.DataSet.Exists(Tags.ScheduledStationCodeMeaning) Then
                     value = requestMessage(Tags.ScheduledStationCodeMeaning).Values.Item(0)
-                    responseMessage.Set(Tags.ScheduledStationCodeMeaning, LO, value)
+                    responseMessage.DataSet.Set(Tags.ScheduledStationCodeMeaning, LO, value)
                 End If
             End If
         End If
@@ -37,7 +37,7 @@ Class MessageHandlerCFind
         If requestMessage.DataSet.Exists(Tags.ScheduledProcedureStepStartDateandTime) Then
             value = requestMessage(Tags.ScheduledProcedureStepStartDateandTime).Values.Item(0)
             Dim ValueSubStrings As String() = value.Split("-"c)
-            responseMessage.Set(Tags.ScheduledProcedureStepStartDateandTime, DT, ValueSubStrings(0))
+            responseMessage.DataSet.Set(Tags.ScheduledProcedureStepStartDateandTime, DT, ValueSubStrings(0))
         End If
 
     End Sub

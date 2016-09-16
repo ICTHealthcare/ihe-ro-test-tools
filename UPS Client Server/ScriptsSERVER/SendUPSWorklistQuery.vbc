@@ -1,9 +1,9 @@
 Class SendUPSWorklistQuery
     Inherits Scenario
     'Constructor
-    Public Sub New()
+    Public Sub New(ByVal CFindTemplate As String)
         Dim pdsActor As PDSActor = New PDSActor
-        Dim ups02transaction As UPS02Transaction = New UPS02Transaction()
+        Dim ups02transaction As UPS02Transaction = New UPS02Transaction(CFindTemplate)
 
         'scenario dataset
         m_scenarioDatasetXmlFileName = DataSetHandler.UPSMessagesXMLFileName
@@ -14,29 +14,34 @@ Class SendUPSWorklistQuery
         'Configure the send step
         Dim send As SendScenarioStep = New SendScenarioStep(pdsActor, New TMSActor(), True)
 
-        Dim queryForm As EditQueryForm = New EditQueryForm()
+        If (CFindTemplate = "") Then
 
-        If (String.IsNullOrEmpty(queryForm.selectedFile)) Then
-            queryForm.selectedFile = referenceData.m_datasetPath + "\C-FIND-RQ.dcm"
+            Dim queryForm As EditQueryForm = New EditQueryForm()
+
+            If (String.IsNullOrEmpty(queryForm.selectedFile)) Then
+                queryForm.selectedFile = referenceData.m_datasetPath + "\C-FIND-RQ.dcm"
+            End If
+
+            Dim C_FIND_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DicomMessage(CFINDRQ)
+            'Read the Response
+            C_FIND_REQ.DataSet.Read(queryForm.selectedFile)
+
+            'Dim dataset As DvtkHighLevelInterface.Dicom.Other.DataSet = DataSetHandler.LoadDatasetFromFile(m_scenarioDatasetXmlFileName, "C-FIND-RQ")
+            queryForm.addMessage(C_FIND_REQ.DataSet)
+
+            queryForm.ShowDialog()
+
+            If queryForm.DialogResult = Windows.Forms.DialogResult.OK Then
+                'query is known, now add values to dicom message
+
+                'datetime range to usable DICOM string
+                DataSetHandler.SaveDatasetToFile(queryForm.m_requestDataset, m_scenarioDatasetXmlFileName, "Temp C-FIND-RQ")
+            Else
+                ' cancel scenario
+            End If
+
         End If
 
-        Dim C_FIND_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DicomMessage(CFINDRQ)
-        'Read the Response
-        C_FIND_REQ.DataSet.Read(queryForm.selectedFile)
-
-        'Dim dataset As DvtkHighLevelInterface.Dicom.Other.DataSet = DataSetHandler.LoadDatasetFromFile(m_scenarioDatasetXmlFileName, "C-FIND-RQ")
-        queryForm.addMessage(C_FIND_REQ.DataSet)
-
-        queryForm.ShowDialog()
-
-        If queryForm.DialogResult = Windows.Forms.DialogResult.OK Then
-            'query is known, now add values to dicom message
-
-            'datetime range to usable DICOM string
-            DataSetHandler.SaveDatasetToFile(queryForm.m_requestDataset, m_scenarioDatasetXmlFileName, "Temp C-FIND-RQ")
-        Else
-            ' cancel scenario
-        End If
         send.AddTransaction(ups02transaction)
 
         'Add the steps to the list
