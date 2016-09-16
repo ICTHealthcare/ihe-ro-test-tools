@@ -40,13 +40,13 @@ Class TDDDeliverCancelScenario
             ' a value between 0 and 100 will initiate the validation of the progress correctly
             Dim ro62transaction_50 As RO62Transaction = New RO62Transaction(1)
             Dim ro63transaction As RO63Transaction = New RO63Transaction(True)
-            Dim ro64transaction As RO64Transaction = New RO64Transaction(True)
+            Dim ro64transaction As RO64Transaction = New RO64Transaction(False, True)
             Dim ro65transaction As RO65Transaction = New RO65Transaction(True)
 
 
             If radiationDialog.Delivered Then
 
-                ro64transaction = New RO64Transaction(False)
+                ro64transaction = New RO64Transaction(True, True)
 
                 'Add transactions to the receiver
                 receive.AddTransaction(ro62transaction)  ' RO-62: Treatment Delivery Progress Update

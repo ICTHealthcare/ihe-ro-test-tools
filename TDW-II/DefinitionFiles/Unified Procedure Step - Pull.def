@@ -124,7 +124,7 @@ MODULE "Unified Procedure Step Relationship Module" M
    >(0x00400033,1C,CS,1) "Universal Entity ID Type"
    >(0x00400031,1C,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,LO,1) "Requested Procedure ID"
+ >(0x00401001,2,SH,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -630,7 +630,7 @@ MODULE "Unified Procedure Step Relationship Module" M
    >(0x00400033,1C,CS,1) "Universal Entity ID Type"
    >(0x00400031,1C,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,LO,1) "Requested Procedure ID"
+ >(0x00401001,2,SH,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -1136,7 +1136,7 @@ MODULE "Unified Procedure Step Relationship Module" U
    >(0x00400033,1C,CS,1) "Universal Entity ID Type"
    >(0x00400031,1C,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,LO,1) "Requested Procedure ID"
+ >(0x00401001,2,SH,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -2649,5 +2649,6 @@ DEFINE N-ACTION-RSP
 (0x00000800,1,US,1)                                 "Data Set Type"
 (0x00000900,1,US,1)                                 "Status"
 (0x00001000,1,UI,1)                                 "Affected SOP Instance UID"
+(0x00001008,3,US,1)                                 "Action Type ID"
 ENDDEFINE   
     

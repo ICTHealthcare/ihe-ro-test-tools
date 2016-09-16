@@ -19,7 +19,7 @@ Class TMSDeliverSuccessScenario
             Dim ro62transaction_50 As RO62Transaction = New RO62Transaction(50)   '(progress = 50%)
             Dim ro62transaction_100 As RO62Transaction = New RO62Transaction(100) '(progress = 100%)
             Dim ro63transaction As RO63Transaction = New RO63Transaction()
-            Dim ro64transaction As RO64Transaction = New RO64Transaction(False)
+            Dim ro64transaction As RO64Transaction = New RO64Transaction(True, False)
             Dim ro65transaction As RO65Transaction = New RO65Transaction(False)
 
             ' RO-62: Treatment Delivery Progress Update (progress = 0%)

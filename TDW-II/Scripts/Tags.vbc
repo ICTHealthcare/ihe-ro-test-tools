@@ -296,6 +296,7 @@ Public Class Tags
     Public Shared ReadOnly RTReferencedSeriesSequence As String = String.Format("{0}[1]/{1}", RTReferencedStudySequence, "0x30060014")
 
     Public Shared ReadOnly RTReferencedContourImageSequence As String = String.Format("{0}[1]/{1}", RTReferencedSeriesSequence, "0x30060016")
+    Public Shared ReadOnly RTReferencedSeriesSequenceSeriesInstanceUID As String = String.Format("{0}[1]/{1}", RTReferencedSeriesSequence, "0x0020000E")
     Public Shared ReadOnly RTReferencedSOPClassUID As String = String.Format("{0}[1]/{1}", RTReferencedContourImageSequence, "0x00081150")
 
     Public Shared ReadOnly ReferencedFrameofReferenceUID As String = String.Format("{0}[1]/{1}", ReferencedFrameofReferenceSequence, "0x00200052")
@@ -531,6 +532,9 @@ Public Class Tags
     'added by RVDH for move request
 
     Public Shared ReadOnly ReferencedSeriesSequenceMOVE As String = "0x00081115"
+    Public Shared ReadOnly ReferencedSeriesSequence1RefInstanceSeq As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
+    Public Shared ReadOnly ReferencedSeriesSequence2RefInstanceSeq As String = String.Format("{0}[2]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
+
     Public Shared ReadOnly retrieveAETitleMOVE As String = "0x00080054"
     Public Shared ReadOnly ReferencedSOPSequenceMOVE As String = "0x00081199"
     Public Shared ReadOnly ReferencedSOPInstanceUIDMOVE As String = "0x00081155"
@@ -644,7 +648,28 @@ Public Class Tags
     Public Shared ReadOnly PixelSpacing As String = "0x00280030"
     Public Shared ReadOnly Modality As String = "0x00080060"
 
+    'Scheduled Procedure Step Sequence
+    Public Shared ReadOnly ScheduledProcedureStepSequence As String = "0x00400100"
+    Public Shared ReadOnly ScheduledProcedureStepSequenceModality As String = String.Format("{0}[1]/{1}", ScheduledProcedureStepSequence, "0x00080060")
+    Public Shared ReadOnly ScheduledProcedureStepSeqStartDate As String = String.Format("{0}[1]/{1}", ScheduledProcedureStepSequence, "0x00400002")
+    Public Shared ReadOnly ScheduledProcedureStepSeqStartTime As String = String.Format("{0}[1]/{1}", ScheduledProcedureStepSequence, "0x00400003")
+    Public Shared ReadOnly ScheduledProcedureStepSeqProcedureStepID As String = String.Format("{0}[1]/{1}", ScheduledProcedureStepSequence, "0x00400009")
 
+    Public Shared ReadOnly RequestedProcedureID As String = "0x00401001"
+    Public Shared ReadOnly PerformedProcedureStepStartDate As String = "0x00400244"
+    Public Shared ReadOnly PerformedProcedureStepStartTime As String = "0x00400245"
+    Public Shared ReadOnly PerformedProcedureStepEndDate As String = "0x00400250"
+    Public Shared ReadOnly PerformedProcedureStepEndTime As String = "0x00400251"
+    Public Shared ReadOnly PerformedProcedureStepStatus As String = "0x00400252"
+    Public Shared ReadOnly RequestedProcedureDescription As String = "0x00321060"
+
+    Public Shared ReadOnly ScheduledStepAttributesSeq As String = "0x00400270"
+    Public Shared ReadOnly ScheduledStepAttributesSeqAccessionNumber As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x00080050")
+    Public Shared ReadOnly ScheduledStepAttributesSeqStudyInstanceUID As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x0020000D")
+    Public Shared ReadOnly ScheduledStepAttributesSeqRequestedProcedureDescription As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x00321060")
+    Public Shared ReadOnly ScheduledStepAttributesSeqScheduledProcedureStepDescription As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x00400007")
+    Public Shared ReadOnly ScheduledStepAttributesSeqScheduledProcedureStepID As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x00400009")
+    Public Shared ReadOnly ScheduledStepAttributesSeqRequestedProcedureID As String = String.Format("{0}[1]/{1}", ScheduledStepAttributesSeq, "0x00401001")
 
 #End Region
 

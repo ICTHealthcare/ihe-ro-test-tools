@@ -57,7 +57,7 @@ Class TMSDeliverCancelScenario
 
             If radiationDialog.Delivered Then
 
-                ro64transaction = New RO64Transaction(False)
+                ro64transaction = New RO64Transaction(True, True)
                 sendRO64.AddTransaction(ro64transaction)  ' RO-64: Treatment Delivery Final Update
 
                 Dim ro62transaction_0 As RO62Transaction = New RO62Transaction(0)    '(progress = 0%)
@@ -103,7 +103,7 @@ Class TMSDeliverCancelScenario
 
             Else
 
-                ro64transaction = New RO64Transaction(True)
+                ro64transaction = New RO64Transaction(False, True)
                 sendRO64.AddTransaction(ro64transaction)  ' RO-64: Treatment Delivery Final Update
 
                 'Add the send steps to the list

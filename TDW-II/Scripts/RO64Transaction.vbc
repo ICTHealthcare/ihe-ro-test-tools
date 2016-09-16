@@ -6,14 +6,16 @@ Class RO64Transaction
     Inherits Transaction
 
     Private ro64IODType As IODType = Nothing
+    Private m_isRadiationDelivered As Boolean
     Private m_isCancelled As Boolean
     Private m_progress As Integer
 
     'Constructor
-    Public Sub New(ByVal isCancelled As Boolean)
+    Public Sub New(ByVal isRadiationDelivered As Boolean, ByVal isCancelled As Boolean)
 
         MyBase.New("RO-64", "Treatment Delivery Final Update", IODType.UnifiedProcedureStepPush, True)
         ro64IODType = IODType.UnifiedProcedureStepPush
+        m_isRadiationDelivered = isRadiationDelivered
         m_isCancelled = isCancelled
         m_progress = -1
     End Sub
@@ -83,9 +85,18 @@ Class RO64Transaction
         Dim message As DicomMessage = ReferenceDataSet.GetInstance().GetUnifiedProcedureStepPush_NSET_REQ_RO64()
         CopyInterOperabilityAttributes(message)
 
-        If m_isCancelled = True Then
+        If m_isRadiationDelivered = False Then
             message.Set(Tags.UPSProgressInformationUnifiedProcedureStepProgress, DS, "0")
             message.DataSet(Tags.UPSPerformedProcedureSequence).Delete()
+        End If
+
+        If m_isCancelled Then
+            message.DataSet.Set(Tags.UPSProgressInformationUnifiedProcedureStepCancellationDateTime, DT, DateTime.Now().ToString("yyyyMMddHHmmss") + ".0000")
+
+            message.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeValue, SH, "110526")
+            message.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator, SH, "DCM")
+            message.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning, LO, "Resource pre-empted")
+
         End If
 
         ' Set the Requested SOPClassUID 
@@ -120,7 +131,7 @@ Class RO64Transaction
         ' (0x00404010) Scheduled Procedure Step Modification Date and Time
         m_rules.Add(New OptionalRule(Tags.ScheduledProcedureStepModificationDateandTime, ro64IODType, ErrorSeverity.RuleError))
 
-        If m_isCancelled = False Then
+        If m_isRadiationDelivered = True Then
             ' > (0x00741216)  UPS Performed Procedure Sequence
             If m_progress > 0 Then
                 m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureSequence, ro64IODType, ErrorSeverity.RuleError))
@@ -184,6 +195,22 @@ Class RO64Transaction
 
             m_rules.Add(New ValueRule(Tags.UPSProgressInformationUnifiedProcedureStepProgress, "0", ro64IODType, ErrorSeverity.RuleError))
             m_rules.Add(New NotPresentRule(Tags.UPSPerformedProcedureSequence, ro64IODType, ErrorSeverity.RuleError))
+
+        End If
+
+        If m_isCancelled Then
+
+            m_rules.Add(New IsRequiredRule(Tags.UPSProgressInformationUnifiedProcedureStepCancellationDateTime, ro64IODType, ErrorSeverity.RuleError))
+            m_rules.Add(New HasValueRule(Tags.UPSProgressInformationUnifiedProcedureStepCancellationDateTime, ro64IODType, ErrorSeverity.RuleError))
+
+            m_rules.Add(New IsRequiredRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeValue, ro64IODType, ErrorSeverity.RuleError))
+            m_rules.Add(New HasValueRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeValue, ro64IODType, ErrorSeverity.RuleError))
+
+            m_rules.Add(New IsRequiredRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator, ro64IODType, ErrorSeverity.RuleError))
+            m_rules.Add(New HasValueRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator, ro64IODType, ErrorSeverity.RuleError))
+
+            m_rules.Add(New IsRequiredRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning, ro64IODType, ErrorSeverity.RuleError))
+            m_rules.Add(New HasValueRule(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning, ro64IODType, ErrorSeverity.RuleError))
 
         End If
 

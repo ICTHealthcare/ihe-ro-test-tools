@@ -1,6 +1,6 @@
 
 ' Transaction class.  A transaction represents a IHE-RO transaction ((set of) message(s))
-MustInherit Class Transaction
+Public MustInherit Class Transaction
 
 #Region "Constructors"
 

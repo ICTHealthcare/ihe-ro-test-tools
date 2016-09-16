@@ -101,14 +101,13 @@ Public Class EditQueryForm
 
         'CodeMeanig not used
         'If Not m_CodeValueText.Text = "" And Not m_CodeSchemeText.Text = "" And Not m_CodeMeaningText.Text = "" Then
-        'If m_CodeValueText.Text = "" And m_CodeSchemeText.Text = "" Then
-        '    If m_requestDataset.GetitemCount(Tags.ScheduledStationNameCodeSequence) > 0 Then
-        '        m_requestDataset(Tags.ScheduledStationNameCodeSequence).ClearItems()
-        '    End If
-        'Else
-        'm_requestDataset.Set(Tags.ScheduledStationCodeMeaning, LO, m_CodeMeaningText.Text)
-        m_requestDataset.Set(Tags.ScheduledStationCodeValue, SH, m_CodeValueText.Text)
-        m_requestDataset.Set(Tags.ScheduledStationCodingSchemeDesignator, SH, m_CodeSchemeText.Text)
+        If m_CodeValueText.Text = "" Or m_CodeSchemeText.Text = "" Then
+            m_requestDataset(Tags.ScheduledStationNameCodeSequence).ClearItems()
+        Else
+            m_requestDataset.Set(Tags.ScheduledStationCodeValue, SH, m_CodeValueText.Text)
+            m_requestDataset.Set(Tags.ScheduledStationCodingSchemeDesignator, SH, m_CodeSchemeText.Text)
+        End If
+
         'End If
         m_requestDataset.Set(Tags.PatientName, PN, m_PatientsNameText.Text)
         m_requestDataset.Set(Tags.PatientID, LO, m_PatientIDText.Text)
