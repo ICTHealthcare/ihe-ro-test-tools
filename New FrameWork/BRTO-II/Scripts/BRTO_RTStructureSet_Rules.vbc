@@ -1,0 +1,271 @@
+Class BRTO_RTStructureSet_Rules
+
+Public Sub New()
+End Sub
+
+
+    Public Shared Function CreateRules() As ArrayList
+
+        Dim iodType As IODType = IODType.RTStructureSet
+
+        ' Create empty list of rules.
+        Dim rules As ArrayList = New ArrayList
+
+        ' "Patient" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIhePatientModuleRules(iodType))
+
+        ' "General Study" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheGeneralStudyModuleRules(iodType))
+
+        ' "Frame of Reference" module (DICOM usage: U, IHE-RO usage: M)
+        rules.AddRange(CreateIheFrameofReferenceModuleRules(iodType))
+
+        ' "General Equipment" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheGeneralEquipmentModuleRules(iodType))
+
+        ' "Structure Set" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheStructureSetModuleRules(iodType))
+
+        ' "ROI Contour" module (DICOM usage: M, IHE-RO usage: R)
+        ' Error: unable to determine type 1 or 2 attribute for this module!
+        rules.AddRange(CreateIheROIContourModuleRules(iodType))
+
+        ' "RT ROI Observations" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheRTROIObservationsModuleRules(iodType))
+
+        ' "SOP Common" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheSOPCommonModuleRules(iodType))
+
+        Return rules
+
+    End Function
+
+
+    ' Create rules for the Patient Module.
+    Private Shared Function CreateIhePatientModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Patient's Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00100010", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Patient ID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00100020", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Patient's Birth Date".
+
+        ' Rule for attribute "Patient's Sex".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the General Study Module.
+    Private Shared Function CreateIheGeneralStudyModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Study Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x0020000D", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Date".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080020", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Time".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080030", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study ID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00200010", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Description".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the Frame Of Reference Module.
+    Private Shared Function CreateIheFrameOfReferenceModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Frame of Reference UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00200052", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Position Reference Indicator".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the General Equipment Module.
+    Private Shared Function CreateIheGeneralEquipmentModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Manufacturer".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080070", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Manufacturer's Model Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00081090", iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the Structure Set Module.
+    Private Shared Function CreateIheStructureSetModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Structure Set Label ".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060002", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Structure Set Date".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060008", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Structure Set Time".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060009", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Referenced Frame of Reference Sequence".
+
+        ' Rule for attribute ">Frame of Reference UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x00200052", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">RT Referenced Study Sequence".
+
+        ' Rule for attribute ">>Referenced SOP Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060012/0x00081155", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>RT Referenced Series Sequence".
+
+        ' Rule for attribute ">>>Series Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060012/0x30060014/0x0020000E", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>>Contour Image Sequence".
+
+        ' Rule for attribute ">>>>Referenced SOP Class UID".
+        m_rules.Add(New AttributeValueRule("0x30060010/0x30060012/0x30060014/0x30060016/0x00081155", "1.2.840.10008.5.1.4.1.1.2", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>>>Referenced Frame Number".
+
+        ' Rule for attribute "Structure Set ROI Sequence".
+
+        ' Rule for attribute ">ROI Number".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060012/0x30060014/0x30060016/0x30060020/0x30060022", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Referenced Frame of Reference UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060024", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">ROI Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060026", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">ROI Description".
+
+        ' Rule for attribute ">ROI Volume".
+
+        ' Rule for attribute ">ROI Generation Algorithm ".
+        m_rules.Add(New AttributeValueListRule("0x30060010/0x30060036", New String() {"automatic", "semiautomatic", "manual"}, iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the ROI Contour Module.
+    Private Shared Function CreateIheROIContourModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "ROI Contour Sequence".
+
+        ' Rule for attribute ">ROI Display Color".
+
+        ' Rule for attribute ">Contour Sequence".
+        m_rules.Add(New AttributeIsRequiredRule("0x30060010/0x30060040", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Contour Image Sequence".
+
+        ' Rule for attribute ">>>Referenced SOP Class UID".
+        m_rules.Add(New AttributeValueRule("0x30060010/0x30060040/0x30060016/0x00081150", "1.2.840.10008.5.1.4.1.1.2", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>>Referenced SOP Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060040/0x30060016/0x00081155", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>>Referenced Frame Number".
+
+        ' Rule for attribute ">>Contour Geometric Type".
+        m_rules.Add(New AttributeValueListRule("0x30060010/0x30060040/0x30060016/0x30060042", New String() {"point", "closed_planar"}, iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Contour Slab Thickness".
+
+        ' Rule for attribute ">>Contour Offset Vector".
+
+        ' Rule for attribute ">>Number of Contour Points".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060040/0x30060046", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Contour Data ".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060040/0x30060050", iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the RT ROI Observations Module.
+    Private Shared Function CreateIheRTROIObservationsModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "RT ROI Observations Sequence".
+
+        ' Rule for attribute ">Referenced ROI Number".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x30060040/0x30060080/0x30060084", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">RT ROI Interpreted Type".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x300600A4", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">ROI Physical Properties Sequence".
+
+        ' Rule for attribute ">>ROI Physical Property".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the SOP Common Module.
+    Private Shared Function CreateIheSOPCommonModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "SOP Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x30060010/0x300600B0/0x00080018", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Specific Character Set".
+
+        ' Rule for attribute "Instance Creation Date".
+
+        ' Rule for attribute "Instance Creation Time".
+
+        ' Rule for attribute "Instance Creator UID".
+
+        ' Rule for attribute "Instance Number".
+
+        Return m_rules
+
+    End Function
+
+
+End Class

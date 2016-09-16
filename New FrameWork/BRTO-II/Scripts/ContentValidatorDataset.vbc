@@ -1,0 +1,41 @@
+﻿Public Class ContentValidatorDataset
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        If buttonsChecked() Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
+    End Sub
+
+    Private Function buttonsChecked() As Boolean
+        If Not tbSelectedFile.Text = "" Then
+            Return True
+        Else
+            MessageBox.Show("Please select DICOM file", "Invalid selection", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
+            Return False
+        End If
+
+    End Function
+
+
+    Private Sub btnSelectImageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelectImageSet.Click
+        Dim newThread As New System.Threading.Thread(AddressOf ThreadMethod2)
+        newThread.SetApartmentState(Threading.ApartmentState.STA)
+        newThread.Start()
+    End Sub
+
+    Sub ThreadMethod2()
+
+        If ofdSelectDicomFile.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            Me.SetText2(ofdSelectDicomFile.FileName)
+        End If
+
+    End Sub
+
+    Private Sub SetText2(ByVal [text] As String)
+
+        Me.tbSelectedFile.Text = [text]
+
+    End Sub
+
+End Class

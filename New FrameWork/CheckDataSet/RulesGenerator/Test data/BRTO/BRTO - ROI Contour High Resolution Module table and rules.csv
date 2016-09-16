@@ -1,0 +1,16 @@
+[Module name];ROI Contour Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];ROI Contour Sequence;DICOM tag (3006,0039);R*;-;
+[Attribute];>ROI Display Color;DICOM tag (3006,002A);O+*;not required - no compliant implementation shall rely on this element being present for proper operation. however applications are allowed to be aware of this element and use it to map display colors.;
+[Attribute];>Contour Sequence;DICOM tag (3006,0040);R+*;shall be present. shall contain an item for each contour in the roi. compliant implementations shall be able to handle as many as 100 contours on a single slice. that is, the number of contours in items in all contour sequences with the same z-coordinate (and referenced ct image) should be less than or equal to 100.;AttributeIsRequiredRule()
+[Attribute];>> Contour Number;DICOM tag (3006,0048);R+*;Shall be present if Contour Geometry Type (3006,0042) is CLOSED_PLANAR.;AttributeConditionalIsRequiredRule(“0x30060042”, 0, “CLOSED_PLANAR”)
+[Attribute];>> Attached Contours;DICOM tag (3006,0049);R+*;Shall be present if Contour Geometry Type (3006,0042) is CLOSED_PLANAR and there are other contours referenced. Multiplicity equals the number of contours referenced from this contour (s. 3.XX.4.1.2). ;AttributeConditionalIsRequiredRule(“0x30060042”, 0, “CLOSED_PLANAR”)
+[Attribute];>>Contour Image Sequence;DICOM tag (3006,0016);R+*;shall be present with a single item. this item is the image upon which this contour should be placed. if the contour type is closed_planar, then the z-coordinates of the contour shall match the z-coordinate of image position (patient) in the image.;
+[Attribute];>>>Referenced SOP Class UID;DICOM tag (0008,1150);R+*;shall be present with a value of '1.2.840.10008.5.1.4.1.1.2';"AttributeValueRule(""1.2.840.10008.5.1.4.1.1.2"")"
+[Attribute];>>>Referenced SOP Instance UID;DICOM tag (0008,1155);R*;sop instance uid of the image being referenced.;AttributeIsRequiredHasValueRule()
+[Attribute];>>>Referenced Frame Number;DICOM tag (0008,1160);O+*;shall not be present;
+[Attribute];>>Contour Geometric Type;DICOM tag (3006,0042);R+*;shall be present, with a value of point or closed_planar. conforming implementations must properly interpret this value.;"AttributeValueListRule(New String() {""point"", ""closed_planar""})"
+[Attribute];>>Contour Slab Thickness;DICOM tag (3006,0044);O+*;not required - no compliant implementation shall rely on this element being present for proper operation.;
+[Attribute];>>Contour Offset Vector;DICOM tag (3006,0045);O+*;the profile requires that this attribute be zero if present.;
+[Attribute];>>Number of Contour Points;DICOM tag (3006,0046);R+*;required, and must match the actual number of points in contour data. shall not exceed the number for which the ontour data can not be encoded when using explicit transfer syntax.;AttributeIsRequiredHasValueRule()
+[Attribute];>>Contour Data ;DICOM tag (3006,0050);R+*;shall be present. if contour type is closed_planar, then all points must have the same z-coordinate. this z-coordinate shall match the z-coordinate in the related ct image within 0.01 mm (contained in the contour image sequence in the same item of the roi contour sequence as this data).  an implication of this is that the closed_planar contours are axial.;AttributeIsRequiredHasValueRule()

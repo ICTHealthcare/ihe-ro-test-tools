@@ -1,0 +1,99 @@
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class ChooseStructureSetDialog
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.radioHighResolutionStruct = New System.Windows.Forms.RadioButton()
+        Me.radioNormalStruct = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Enabled = False
+        Me.OK_Button.Location = New System.Drawing.Point(215, 85)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(110, 23)
+        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.Text = "OK"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.radioHighResolutionStruct)
+        Me.GroupBox1.Controls.Add(Me.radioNormalStruct)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(313, 48)
+        Me.GroupBox1.TabIndex = 1
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Choose kind of Structure Set"
+        '
+        'radioHighResolutionStruct
+        '
+        Me.radioHighResolutionStruct.AutoSize = True
+        Me.radioHighResolutionStruct.Location = New System.Drawing.Point(135, 19)
+        Me.radioHighResolutionStruct.Name = "radioHighResolutionStruct"
+        Me.radioHighResolutionStruct.Size = New System.Drawing.Size(165, 17)
+        Me.radioHighResolutionStruct.TabIndex = 1
+        Me.radioHighResolutionStruct.Text = "High-Resolution Structure Set"
+        Me.radioHighResolutionStruct.UseVisualStyleBackColor = True
+        '
+        'radioNormalStruct
+        '
+        Me.radioNormalStruct.AutoSize = True
+        Me.radioNormalStruct.Location = New System.Drawing.Point(9, 19)
+        Me.radioNormalStruct.Name = "radioNormalStruct"
+        Me.radioNormalStruct.Size = New System.Drawing.Size(87, 17)
+        Me.radioNormalStruct.TabIndex = 0
+        Me.radioNormalStruct.Text = "Structure Set"
+        Me.radioNormalStruct.UseVisualStyleBackColor = True
+        '
+        'ChooseStructureSetDialog
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(337, 118)
+        Me.ControlBox = False
+        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "ChooseStructureSetDialog"
+        Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Dialog"
+        Me.TopMost = True
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents radioHighResolutionStruct As System.Windows.Forms.RadioButton
+    Friend WithEvents radioNormalStruct As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+End Class

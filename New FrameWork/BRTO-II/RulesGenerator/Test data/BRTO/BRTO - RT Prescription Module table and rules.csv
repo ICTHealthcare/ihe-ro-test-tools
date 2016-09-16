@@ -1,0 +1,5 @@
+[Module name];RT Prescription Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Dose Reference Sequence;DICOM tag (300A,0010);R+*;;
+[Attribute];> Dose Reference UID;DICOM tag (300A,0013);R+*;;AttributeIsRequiredHasValueRule()
+[Attribute];> Dose Reference Description;DICOM tag (300A,0016);R+;;AttributeIsRequiredHasValueRule()

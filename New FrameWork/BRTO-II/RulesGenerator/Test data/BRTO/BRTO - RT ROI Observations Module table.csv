@@ -1,0 +1,13 @@
+;RT ROI Observations Module;;
+Attribute Name;Tag;Presence;Attribute Note
+RT ROI Observations Sequence;(3006,0080);R+*;This sequence contains information about an ROI. It references the ROI in Referenced ROI Number which contains a number which must match one of the ROI numbers in one of the elements of the Structure Set ROI Sequence. In particular, a Structure Set shall contain an element in this sequence for ISOCENTER.
+>Referenced ROI Number;(3006,0084);R+*;Specifies the ROI to which this observation applies.  For every item in Structure Set ROI sequence, at least one observation is required, with values in ROI Interpreted Type.
+>RT ROI Interpreted Type;(3006,00A4);R+*;If referenced ROI has associated contours of type CLOSED_PLANAR, the content consumer must accept at minimum the following values: EXTERNAL, PTV, CTV, GTV, TREATED_VOLUME, IRRAD_VOLUME, BOLUS, AVOIDANCE, ORGAN, MARKER, CONTRAST_AGENT, CAVITY. If referenced ROI has associated contours of type POINT, the content consumer must accept at minimum the following values: MARKER, REGISTRATION, ISOCENTER.
+>ROI Physical Properties Sequence;(3006,00B0);O+*;Not required, but shall not be ignored if supplied.
+>>ROI Physical Property;(3006,00B2);R+*;Only relative electron density  shall be supported: REL_ELEC_DENSITY
+;;;
+;;;
+;;;
+;;;
+;;;
+;;;

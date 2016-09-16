@@ -1,0 +1,7 @@
+[Module name];General Study Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Study Instance UID;DICOM tag (0020,000D);R+*;ihe requires that this value be preserved in the following cases: if a set of images are resampled and re-exported. this new set of images will be a new series. this series will belong to the same study and will have the same study date. this is to facilitate grouping the images in a pacs. when a plan is constructed from a structure set.  the plan will be in the same study, and will have the same study date. ihe requires that this element be present. equipment which creates new series based on other series (i.e. resampled series, new structure sets, plans, etc) must preserve the value of this element to adhere to this  profile.;AttributeIsRequiredHasValueRule()
+[Attribute];Study Date;DICOM tag (0008,0020);R+;[see study instance uid (0020,000d)];AttributeIsRequiredHasValueRule()
+[Attribute];Study Time;DICOM tag (0008,0030);R+;[see study instance uid (0020,000d)];AttributeIsRequiredHasValueRule()
+[Attribute];Study ID;DICOM tag (0020,0010);R+;[see study instance uid (0020,000d)];AttributeIsRequiredHasValueRule()
+[Attribute];Study Description;DICOM tag (0008,1030);O+;[see study instance uid (0020,000d)];

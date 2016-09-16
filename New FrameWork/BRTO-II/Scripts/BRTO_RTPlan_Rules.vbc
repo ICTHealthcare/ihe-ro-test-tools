@@ -1,0 +1,264 @@
+Class BRTO_RTPlan_Rules
+
+Public Sub New()
+End Sub
+
+
+    Public Shared Function CreateRules() As ArrayList
+
+        Dim iodType As IODType = IODType.RTPlanDosimetric
+
+        ' Create empty list of rules.
+        Dim rules As ArrayList = New ArrayList
+
+        ' "Patient" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIhePatientModuleRules(iodType))
+
+        ' "General Study" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheGeneralStudyModuleRules(iodType))
+
+        ' "Frame of Reference" module (DICOM usage: U, IHE-RO usage: M)
+        rules.AddRange(CreateIheFrameofReferenceModuleRules(iodType))
+
+        ' "General Equipment" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheGeneralEquipmentModuleRules(iodType))
+
+        ' "RT General Plan" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheRTGeneralPlanModuleRules(iodType))
+
+        ' "RT Fraction Scheme" module (DICOM usage: U, IHE-RO usage: R)
+        ' Error: unable to determine type 1 or 2 attribute for this module!
+        rules.AddRange(CreateIheRTFractionSchemeModuleRules(iodType))
+
+        ' "RT Beams" module (DICOM usage: C, IHE-RO usage: R)
+        ' Error: unable to determine type 1 or 2 attribute for this module!
+        rules.AddRange(CreateIheRTBeamsModuleRules(iodType))
+
+        ' "SOP Common" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheSOPCommonModuleRules(iodType))
+
+        Return rules
+
+    End Function
+
+
+    ' Create rules for the Patient Module.
+    Private Shared Function CreateIhePatientModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Patient's Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00100010", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Patient ID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00100020", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Patient's Birth Date".
+
+        ' Rule for attribute "Patient's Sex".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the General Study Module.
+    Private Shared Function CreateIheGeneralStudyModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Study Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x0020000D", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Date".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080020", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Time".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080030", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study ID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00200010", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Study Description".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the Frame Of Reference Module.
+    Private Shared Function CreateIheFrameOfReferenceModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Frame of Reference UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00200052", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Position Reference Indicator".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the General Equipment Module.
+    Private Shared Function CreateIheGeneralEquipmentModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Manufacturer".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00080070", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Manufacturer's Model Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00081090", iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the RT General Plan Module.
+    Private Shared Function CreateIheRTGeneralPlanModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "RT Plan Label".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0002", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "RT Plan Date".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0006", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "RT Plan Time".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0007", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "RT Plan Geometry".
+        m_rules.Add(New AttributeValueRule("0x300A000C", "patient", iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the RT Fraction Scheme Module.
+    Private Shared Function CreateIheRTFractionSchemeModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Fraction Group Sequence".
+        m_rules.Add(New AttributeNumberOfSequenceItemsRule("0x300A0070", 1, iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Number of Brachy Application Setups".
+        m_rules.Add(New AttributeValueRule("0x300A0070/0x300A00A0", "0", iodType, ErrorSeverity.RuleError))
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the RT Beams Module.
+    Private Shared Function CreateIheRTBeamsModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Beam Sequence".
+
+        ' Rule for attribute ">Beam Name".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A00B0/0x300A00C2", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Beam Type".
+
+        ' Rule for attribute ">Radiation Type".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A00C6", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">High-Dose Technique Type".
+        m_rules.Add(New AttributeNotPresentRule("0x300A0070/0x300A00C7", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Treatment Machine Name".
+
+        ' Rule for attribute ">Source-Axis Distance".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A00B4", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Referenced Patient Setup Number".
+
+        ' Rule for attribute ">Number of Wedges".
+        m_rules.Add(New AttributeValueRule("0x300A0070/0x300A00D0", "0", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Number of Compensators".
+        m_rules.Add(New AttributeValueRule("0x300A0070/0x300A00E0", "0", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Number of Boli".
+        m_rules.Add(New AttributeValueRule("0x300A0070/0x300A00ED", "0", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Number of Blocks".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A00F0", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Block Divergence".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A00FA", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Block Number of Points".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A0104", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Block Data".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A0106", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Final Cumulative Meterset Weight".
+        m_rules.Add(New AttributeNotPresentRule("0x300A0070/0x300A010E", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Number of Control Points".
+        m_rules.Add(New AttributeValueRule("0x300A0070/0x300A0110", "2", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Control Point Sequence".
+        m_rules.Add(New AttributeIsRequiredRule("0x300A0070/0x300A0111", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Cumulative Meterset Weight".
+
+        ' Rule for attribute ">>Referenced Dose Reference Sequence".
+
+        ' Rule for attribute ">>Nominal Beam Energy".
+
+        ' Rule for attribute ">>Dose Rate Set".
+
+        ' Rule for attribute ">>Wedge Position Sequence".
+        m_rules.Add(New AttributeNotPresentRule("0x300A0070/0x300A0111/0x300A0116", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Beam Limiting Device Position Sequence".
+
+        ' Rule for attribute ">>Gantry Rotation Direction".
+
+        Return m_rules
+
+    End Function
+
+
+    ' Create rules for the SOP Common Module.
+    Private Shared Function CreateIheSOPCommonModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "SOP Instance UID".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x300A0070/0x300A0111/0x00080018", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Specific Character Set".
+
+        ' Rule for attribute "Instance Creation Date".
+
+        ' Rule for attribute "Instance Creation Time".
+
+        ' Rule for attribute "Instance Creator UID".
+
+        ' Rule for attribute "Instance Number".
+
+        Return m_rules
+
+    End Function
+
+
+End Class

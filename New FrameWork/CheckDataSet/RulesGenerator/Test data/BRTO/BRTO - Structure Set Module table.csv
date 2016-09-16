@@ -1,0 +1,21 @@
+;Multi-Frame Module;;
+Attribute Name;Tag;Presence;Attribute Note
+Structure Set Label ;(3006,0002);R+;-
+Structure Set Date;(3006,0008);R+;-
+Structure Set Time;(3006,0009);R+;-
+Referenced Frame of Reference Sequence;(3006,0010);R+*;This element is required for all 3D RT Structure Sets which are image based. It is to contain a set of references to the entire set of images which comprise the volume from which the Structure Set was constructed, and which is to be used for planning. There should only be one item in this sequence, as a BRTO Profile-based structure is based on a single set of images, which are all in the same frame of reference.
+>Frame of Reference UID;(0020,0052);R+*;This frame of reference UID shall be the same as the frame of reference of the CT series from which the Structure Set was constructed. It will also be the same as the frame of reference of any related RTPLAN's or RTDOSE's.
+>RT Referenced Study Sequence;(3006,0012);R+*;Shall be present and contain the series sequence. Only one item allowed in this sequence.
+>>Referenced SOP Instance UID;(0008,1155);R+*;This Study Instance UID shall be the same as the Study Instance UID of the related CT instances.
+>>RT Referenced Series Sequence;(3006,0014);R+*;Shall be present to contain the Contour Image Sequence. Only one item allowed in this sequence.
+>>>Series Instance UID;(0020,000E);R+*;Shall be present and contain the series to which the set of CT images upon which the structure set is based belong.
+>>>Contour Image Sequence;(3006,0016);R+*;Shall be present. Contains an item for each CT image in the volume upon which the Structure Set is based.
+>>>>Referenced SOP Class UID;(0008,1155);R+*;Shall be present with a value of '1.2.840.10008.5.1.4.1.1.2' This profile is for volumes based on CT Images only
+>>>>Referenced Frame Number;(0008,1160);O+*;Shall not be present
+Structure Set ROI Sequence;(3006,0020);R+*;This sequence shall be present. It defines the ROI's in this Structure Set.
+>ROI Number;(3006,0022);R*;This defines an index to be used for referencing a particular ROI item from other sequences. It is required to be unique within the Structure Set in which it is created. No limitation on values other than uniqueness within sequence.
+>Referenced Frame of Reference UID;(3006,0024);R*;This frame of reference UID shall be the same as the frame of reference UID of the CT series from which the Structure Set was constructed. It will also be the same as the frame of reference of any related RTPLAN or RTDOSE instances.
+>ROI Name;(3006,0026);R+;This is the primary identifier for an ROI (from user perspective). Shall be present and should match UI display. Shall be unique within the Structure Set ROI sequence.
+>ROI Description;(3006,0028);O+*;Not required - no compliant implementation shall rely on this element being present for proper operation.
+>ROI Volume;(3006,002C);O+*;Not required - no compliant implementation shall rely on this element being present for proper operation.
+>ROI Generation Algorithm ;(3006,0036);R+;Shall be present, with a value of AUTOMATIC, SEMIAUTOMATIC, or MANUAL. This information may be presented to a user, but no semantics for handling a Structure Set is required for this profile. Implementations which create Structure Set instances must provide an appropriate value.

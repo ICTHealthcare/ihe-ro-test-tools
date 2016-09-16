@@ -1,0 +1,8 @@
+;SOP Common Module;;
+Attribute Name;Tag;Presence;Attribute Note
+SOP Instance UID;(0008,0018);R+*;If an application alters an Information Object instance, then the new Information Object instance shall be assigned a new UID.
+Specific Character Set;(0008,0005);O+*;"Shall be blank or present with value ""ISO_IR 100”  Only ASCII and ISO_IR 100 are supported in this profile. Character codes in message will reflect value of this element.  IHE-RO has a goal of providing broader multi-language support, potentially using Unicode UTF-8 but not in this profile."
+Instance Creation Date;(0008,0012);O+*;Actors must not rely on the presence of this attribute to operate correctly.
+Instance Creation Time;(0008,0013);O+*;Actors must not rely on the presence of this attribute to operate correctly.
+Instance Creator UID;(0008,0014);O+*;Actors must not rely on the presence of this attribute to operate correctly.
+Instance Number;(0020,0013);O+*;Actors must not rely on the presence of this attribute to operate correctly.

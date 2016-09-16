@@ -1,0 +1,27 @@
+
+Class DoseDisplayerScenario
+    Inherits Scenario
+    'Constructor
+    Public Sub New(ByVal normalStructureSet As Boolean)
+        'actor(s) under test
+        m_scenarioActors.Add(New DoseDisplayerActor)
+        'scenario dataset
+        m_scenarioDatasetXmlFileName = "CustomReferenceDataSet.xml"
+        'transactions to send
+        m_transactionsToSend.Add(New RO_1_Transaction)
+
+        If (normalStructureSet) Then
+            m_transactionsToSend.Add(New RO_7_Transaction)
+        Else
+            m_transactionsToSend.Add(New RO_BRTO_II_2_Transaction)
+        End If
+
+        m_transactionsToSend.Add(New RO_9_Transaction)
+        m_transactionsToSend.Add(New RO_10_Transaction)
+        'transactions to receive
+
+        'No rules are applied in this scenario. No messages received to validate
+
+    End Sub
+
+End Class

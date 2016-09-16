@@ -1,0 +1,4 @@
+[Module name];Frame Of Reference Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Frame of Reference UID;DICOM tag (0020,0052);R+*;to adhere to the brto profile, all related dicom objects (ct images, structure sets, plans, and doses) are required to be in the same frame of reference and have the same frame of reference uid.  see note 1.;AttributeIsRequiredHasValueRule()
+[Attribute];Position Reference Indicator;DICOM tag (0020,1040);O+*;equipment which creates new series based on other series (i.e. resampled series, new structure sets, plans, etc) must preserve the value of this element to adhere to this profile.;

@@ -1,0 +1,8 @@
+[Module name];SOP Common Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];SOP Instance UID;DICOM tag (0008,0018);R+*;if an application alters an information object instance, then the new information object instance shall be assigned a new uid.;AttributeIsRequiredHasValueRule()
+[Attribute];Specific Character Set;DICOM tag (0008,0005);O+*;"shall be blank or present with value ""iso_ir 100�  only ascii and iso_ir 100 are supported in this profile. character codes in message will reflect value of this element.  ihe-ro has a goal of providing broader multi-language support, potentially using unicode utf-8 but not in this profile.";
+[Attribute];Instance Creation Date;DICOM tag (0008,0012);O+*;actors must not rely on the presence of this attribute to operate correctly.;
+[Attribute];Instance Creation Time;DICOM tag (0008,0013);O+*;actors must not rely on the presence of this attribute to operate correctly.;
+[Attribute];Instance Creator UID;DICOM tag (0008,0014);O+*;actors must not rely on the presence of this attribute to operate correctly.;
+[Attribute];Instance Number;DICOM tag (0020,0013);O+*;actors must not rely on the presence of this attribute to operate correctly.;
