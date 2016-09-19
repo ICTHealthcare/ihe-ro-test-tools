@@ -111,16 +111,23 @@ Class ReferenceDataSet
 
     'Returns the DataSet of the RTPlan Dosimetric Object in the ReferenceDataSet
     Public Function GetRTPlanDosimetric(ByVal scenario As ARTO_Scenario) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
-        Dim fileName As String = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/" + scenario.ToString).InnerText
         Dim requestedData As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CSTORERQ)
+        Dim fileName As String
         Try
-            'Read the RTPlan Dosimetric
-            requestedData.DataSet.Read(fileName)
-            Logger.GetInstance().LogMessage(String.Format("Read reference dataset file (RTPlanDosimetric): '{0}'.", fileName))
+            Dim scenarioNode As System.Xml.XmlNode = m_DataSetXML.SelectSingleNode("/DataSet/" + scenario.ToString)
+            If Not (scenarioNode Is Nothing) Then
+                fileName = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/" + scenario.ToString).InnerText
+                'Read the RTPlan Dosimetric
+                requestedData.DataSet.Read(fileName)
+                Logger.GetInstance().LogMessage(String.Format("Read reference dataset file (RTPlanDosimetric): '{0}'.", fileName))
+                requestedData.Set(Tags.AffectedSOPClassUID, UI, requestedData.Item(Tags.SOPClassUID).Values(0))
+            End If
+
         Catch ex As DvtkHighLevelInterface.Common.Other.HliException
-            Throw New System.Exception("Error Reading the file from the Dataset: " + fileName, ex)
+            Logger.GetInstance().LogMessage(String.Format("Reference dataset file (RTPlanDosimetric) doesn't exist for scenario: '{0}'.", scenario.ToString()))
+            'Throw New System.Exception("Error Reading the file from the Dataset: " + fileName, ex)
         End Try
-        requestedData.Set(Tags.AffectedSOPClassUID, UI, requestedData.Item(Tags.SOPClassUID).Values(0))
+
         Return requestedData
     End Function
 

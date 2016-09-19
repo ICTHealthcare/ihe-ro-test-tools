@@ -8265,7 +8265,7 @@ MODULE "CT Image Module" M
 (0x00189353,1C,FL,1) "Energy Weighting Factor"  : WEAK ((VALUE ./0x00089215/0x00080100="113097" AND VALUE ./0x00089215/0x00080104="Multi-energy proportional weighting"), TRUE)
 (0x00281054,1C,LO,1,D,"HU"
                       |"OD"
-                      |"US") "Rescale Type"  : WEAK (NOT(VALUE 0x00080008 1="ORIGINAL" AND NOT(VALUE 0x00080008 3="LOCALIZER")),TRUE)
+                      |"US") "Rescale Type"  : "INFO(Required if the Rescale Type is not HU (Hounsfield Units). May be present otherwise.)"
 (0x00180060,2,DS,1) "KVP" 
 (0x00200012,2,IS,1) "Acquisition Number" 
 (0x00180022,3,CS,1:n) "Scan Options" 

@@ -68,16 +68,18 @@ Class CompareRule
         For beamScenario As ARTO_Scenario = ARTO_Scenario.BasicStaticBeam To ARTO_Scenario.IMATVMATBeam
 
             Dim refMessage As DicomMessage = ReferenceDataSet.GetInstance.GetRTPlanDosimetric(beamScenario)
-            Dim refSOPInstanceUID As String = refMessage.DataSet(Tags.SOPInstanceUID).Values.Item(0)
 
-            If (refSOPInstanceUID = messageSOPInstanceUID) Then
+            If Not (refMessage.DataSet.Count = 0) Then
+                Dim refSOPInstanceUID As String = refMessage.DataSet(Tags.SOPInstanceUID).Values.Item(0)
 
-                Logger.GetInstance().LogMessage(String.Format("Found RTPlan in reference test data. Plan type: '{0}'", beamScenario))
-                Me.removeGroupLengths(messageDataSet, "")
-                scen = beamScenario
-                Return refMessage
+                If (refSOPInstanceUID = messageSOPInstanceUID) Then
+
+                    Logger.GetInstance().LogMessage(String.Format("Found RTPlan in reference test data. Plan type: '{0}'", beamScenario))
+                    Me.removeGroupLengths(messageDataSet, "")
+                    scen = beamScenario
+                    Return refMessage
+                End If
             End If
-
         Next
 
         Logger.GetInstance.LogMessage("Received object has an unexpected Sop Class UID. (" + messageSOPClassUID + ") or (see next line)")
