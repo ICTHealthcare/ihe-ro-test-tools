@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DataSet>
+    <DataSetPath>..\Datasets\Custom</DataSetPath>
+    <CTImageSet description="SingleSeries">
+    </CTImageSet>
+    <CTImageSet description="MultiSeries">
+	</CTImageSet>
+    <RTStructureSet></RTStructureSet>
+    <RTPlanDosimetric></RTPlanDosimetric>
+    <RTPlanGeometric></RTPlanGeometric>
+    <RTDose></RTDose>
+</DataSet>

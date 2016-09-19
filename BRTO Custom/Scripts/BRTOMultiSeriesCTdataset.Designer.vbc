@@ -1,0 +1,164 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class BRTOMultiSeriesCTdataset
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btnSelectStorageDirectory = New System.Windows.Forms.Button()
+        Me.lblReturnDataSet = New System.Windows.Forms.Label()
+        Me.tbSelectedStoragePath = New System.Windows.Forms.TextBox()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.btnSelectImageSet = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.tbSelectedImageSet = New System.Windows.Forms.TextBox()
+        Me.ofdReceivedDataSet = New System.Windows.Forms.OpenFileDialog()
+        Me.ImageSetFolderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.btnSelectStorageDirectory)
+        Me.GroupBox2.Controls.Add(Me.lblReturnDataSet)
+        Me.GroupBox2.Controls.Add(Me.tbSelectedStoragePath)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 174)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(410, 99)
+        Me.GroupBox2.TabIndex = 11
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Select storage directory"
+        '
+        'btnSelectStorageDirectory
+        '
+        Me.btnSelectStorageDirectory.Location = New System.Drawing.Point(9, 20)
+        Me.btnSelectStorageDirectory.Name = "btnSelectStorageDirectory"
+        Me.btnSelectStorageDirectory.Size = New System.Drawing.Size(194, 23)
+        Me.btnSelectStorageDirectory.TabIndex = 7
+        Me.btnSelectStorageDirectory.Text = "Select storage directory"
+        Me.btnSelectStorageDirectory.UseVisualStyleBackColor = True
+        '
+        'lblReturnDataSet
+        '
+        Me.lblReturnDataSet.AutoSize = True
+        Me.lblReturnDataSet.Location = New System.Drawing.Point(6, 56)
+        Me.lblReturnDataSet.Name = "lblReturnDataSet"
+        Me.lblReturnDataSet.Size = New System.Drawing.Size(71, 13)
+        Me.lblReturnDataSet.TabIndex = 5
+        Me.lblReturnDataSet.Text = "Storage path:"
+        '
+        'tbSelectedStoragePath
+        '
+        Me.tbSelectedStoragePath.Location = New System.Drawing.Point(100, 53)
+        Me.tbSelectedStoragePath.Name = "tbSelectedStoragePath"
+        Me.tbSelectedStoragePath.ReadOnly = True
+        Me.tbSelectedStoragePath.Size = New System.Drawing.Size(304, 20)
+        Me.tbSelectedStoragePath.TabIndex = 6
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Location = New System.Drawing.Point(306, 300)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(110, 23)
+        Me.OK_Button.TabIndex = 9
+        Me.OK_Button.Text = "OK"
+        '
+        'btnSelectImageSet
+        '
+        Me.btnSelectImageSet.Location = New System.Drawing.Point(9, 37)
+        Me.btnSelectImageSet.Name = "btnSelectImageSet"
+        Me.btnSelectImageSet.Size = New System.Drawing.Size(152, 23)
+        Me.btnSelectImageSet.TabIndex = 10
+        Me.btnSelectImageSet.Text = "Select dataset"
+        Me.btnSelectImageSet.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnSelectImageSet)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.tbSelectedImageSet)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 8)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(410, 116)
+        Me.GroupBox1.TabIndex = 10
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Select referenced dataset directory"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 73)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(71, 13)
+        Me.Label1.TabIndex = 8
+        Me.Label1.Text = "Dataset path:"
+        '
+        'tbSelectedImageSet
+        '
+        Me.tbSelectedImageSet.Location = New System.Drawing.Point(100, 70)
+        Me.tbSelectedImageSet.Name = "tbSelectedImageSet"
+        Me.tbSelectedImageSet.ReadOnly = True
+        Me.tbSelectedImageSet.Size = New System.Drawing.Size(304, 20)
+        Me.tbSelectedImageSet.TabIndex = 9
+        '
+        'ofdReceivedDataSet
+        '
+        Me.ofdReceivedDataSet.DefaultExt = "dcm"
+        Me.ofdReceivedDataSet.FileName = "*.dcm"
+        Me.ofdReceivedDataSet.InitialDirectory = "c:\"
+        '
+        'ImageSetFolderBrowserDialog
+        '
+        Me.ImageSetFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer
+        Me.ImageSetFolderBrowserDialog.ShowNewFolderButton = False
+        '
+        'BRTOMultiSeriesCTdataset
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(428, 335)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Name = "BRTOMultiSeriesCTdataset"
+        Me.Text = "Custom dataset selection"
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.ResumeLayout(False)
+
+    End Sub
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnSelectStorageDirectory As System.Windows.Forms.Button
+    Friend WithEvents lblReturnDataSet As System.Windows.Forms.Label
+    Friend WithEvents tbSelectedStoragePath As System.Windows.Forms.TextBox
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents btnSelectImageSet As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tbSelectedImageSet As System.Windows.Forms.TextBox
+    Friend WithEvents ofdReceivedDataSet As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ImageSetFolderBrowserDialog As System.Windows.Forms.FolderBrowserDialog
+End Class
