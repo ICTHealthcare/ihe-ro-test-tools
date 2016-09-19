@@ -160,6 +160,43 @@ Public Class DataSetHandler
 
     End Sub
 
+    Public Shared Sub SetCacheUPS_UpsCancellAttributes(ByVal dicomMessage As DicomMessage)
+        ' set path to script dir in front of the filename
+        Dim XMLPathAndFile As String = TestToolConfiguration.GetInstance.GetScriptPath + UPSCacheXMLFileName
+        ' Create and load new XML document
+        Dim m_DataSetXML As System.Xml.XmlDocument = New System.Xml.XmlDocument
+        m_DataSetXML.Load(XMLPathAndFile)
+        ' create the relative datapath
+        Dim relativeTestDataPath As String = m_DataSetXML.SelectSingleNode("/DataSet/DataSetPath").InnerText
+        Dim datasetPath As String = TestToolConfiguration.GetInstance.SessionPath + relativeTestDataPath
+
+
+        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(datasetPath + "\SERVER")
+        For Each File As FileInfo In directoryInfo.GetFiles
+
+            If (File.Name.EndsWith(".dcm")) Then
+
+                Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
+                'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
+                dicomFile.Read(File.FullName)
+
+                If (dicomMessage.CommandSet(Tags.RequestedSOPInstanceUID).Values(0).ToString() = dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString()) Then
+                    dicomFile.DataSet.Set(Tags.UPSProgressInformationUnifiedReasonForCancellation, LT, dicomMessage.DataSet(Tags.ReasonForCancellation).Values(0).ToString())
+                    If (dicomMessage.DataSet.Exists(Tags.ProcedureStepDiscontinuationReasonCodeSequence)) Then
+                        dicomFile.DataSet.Set(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodeValue, SH, dicomMessage.DataSet(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodeValue).Values(0).ToString())
+                        dicomFile.DataSet.Set(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator, SH, dicomMessage.DataSet(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator).Values(0).ToString())
+                        dicomFile.DataSet.Set(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning, LO, dicomMessage.DataSet(Tags.ProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning).Values(0).ToString())
+                    End If
+
+
+                    dicomFile.Write(File.FullName)
+                End If
+
+            End If
+        Next
+
+    End Sub
+
     Public Shared Function LoadDatasetFromFolderByClassUid(ByVal datasetFolder As String, ByVal sopClassUid As String) As DvtkHighLevelInterface.Dicom.Other.DataSet
         Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = Nothing
         Dim fileName As String = ""

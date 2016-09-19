@@ -1,4 +1,4 @@
-Class ValidateScenarioStep
+Public Class ValidateScenarioStep
     Inherits ScenarioStep
 
     Private m_rules As ArrayList = New ArrayList
@@ -86,6 +86,13 @@ Class ValidateScenarioStep
         For Each rule As Rule In rules
             m_rules.Add(rule)
         Next
+
+    End Sub
+
+    'Add a set of rules
+    Public Sub SetRulesArray(ByVal rules As ArrayList)
+
+        m_rules = rules
 
     End Sub
 
