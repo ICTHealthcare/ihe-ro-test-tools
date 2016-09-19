@@ -1,0 +1,3 @@
+;Multi-Frame Module;;
+Attribute Name;Tag;Presence;Attribute Note
+Frame Increment Pointer;(0028,0009);R+*;Required For RT Dose, Shall have the same value as the  Grid Frame Offset Vector (3004,000C).

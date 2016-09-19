@@ -1,0 +1,7 @@
+[Module name];RT ROI Observations Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];RT ROI Observations Sequence;DICOM tag (3006,0080);R+*;this sequence contains information about an roi. it references the roi in referenced roi number which contains a number which must match one of the roi numbers in one of the elements of the structure set roi sequence. in particular, a structure set shall contain an element in this sequence for isocenter.;
+[Attribute];>Referenced ROI Number;DICOM tag (3006,0084);R+*;specifies the roi to which this observation applies.  for every item in structure set roi sequence, at least one observation is required, with values in roi interpreted type.;AttributeIsRequiredHasValueRule()
+[Attribute];>RT ROI Interpreted Type;DICOM tag (3006,00A4);R+*;if referenced roi has associated contours of type closed_planar, the content consumer must accept at minimum the following values: external, ptv, ctv, gtv, treated_volume, irrad_volume, bolus, avoidance, organ, marker, contrast_agent, cavity. if referenced roi has associated contours of type point, the content consumer must accept at minimum the following values: marker, registration, isocenter.;AttributeIsRequiredHasValueRule()
+[Attribute];>ROI Physical Properties Sequence;DICOM tag (3006,00B0);O+*;not required, but shall not be ignored if supplied.;
+[Attribute];>>ROI Physical Property;DICOM tag (3006,00B2);R+*;only relative electron density  shall be supported: rel_elec_density;

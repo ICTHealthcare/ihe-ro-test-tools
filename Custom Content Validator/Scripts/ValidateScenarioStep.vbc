@@ -1,0 +1,30 @@
+Class ValidateScenarioStep
+    Inherits ScenarioStep
+
+    Private m_rules As ArrayList = New ArrayList
+    Private m_validator As ValidatorDataSet
+    Private m_sendFilesArray() As DvtkHighLevelInterface.Dicom.Files.DicomFile
+    Private m_receivedFilesArray() As DvtkHighLevelInterface.Dicom.Files.DicomFile
+
+    Public Sub New(ByVal receivedFilesArray() As DvtkHighLevelInterface.Dicom.Files.DicomFile)
+
+        'Create a validator
+        m_validator = New ValidatorDataSet()
+        m_receivedFilesArray = receivedFilesArray
+    End Sub
+
+    ' - validating the received transactions (Validator)
+    Public Overrides Sub Execute()
+        m_validator.ValidateMessages(m_receivedFilesArray, m_rules)
+    End Sub
+
+    'Add a rule
+    Public Sub AddRule(ByVal rule As Rule)
+        m_rules.Add(rule)
+    End Sub
+
+    'Add all generated rules
+    Public Sub AddRules(ByVal rules As ArrayList)
+        m_rules = rules
+    End Sub
+End Class

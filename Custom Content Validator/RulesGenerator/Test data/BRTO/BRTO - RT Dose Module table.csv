@@ -1,0 +1,16 @@
+;RT Dose Module;;
+Attribute Name;Tag;Presence;Attribute Note
+Samples per Pixel;(0028,0002);R+*;Shall be present and equal to 1.
+Photometric Interpretation;(0028,0004);R+*;Shall be present and equal to MONOCHROME2.
+Bits Allocated;(0028,0100);R+*;Shall be  present and equal to 16 or 32.
+Bits Stored;(0028,0101);R+*;Shall be equal to Bits Allocated.
+High Bit;(0028,0102);R+*;Shall be one less than Bits Stored.
+Pixel Representation;(0028,0103);R+*;Shall have the value 0 = unsigned integer.  Negative dose values shall not be present.
+Dose Units;(3004,0002);R+*;Shall be equal to the enumerated value GY.
+Dose Type;(3004,0004);R+*;Shall be equal to the defined term PHYSICAL.
+Dose Comment;(3004,0006);R+;Shall be present and not empty if Referenced RT Plan Sequence (300C,0002) is missing, in which case it should have the same value as RT Plan Description.
+Normalization Point;(3004,0008);O+*;Shall not be relied on.
+Dose Summation Type;(3004,000A);R+*;Shall have the value PLAN.
+Referenced RT Plan Sequence;(300C,0002);R+*;Shall be present if  Dose Summation Type (3004,000A) has the value PLAN.
+Grid Frame Offset Vector;(3004,000C);R+*;First z coordinate shall be equal to zero.  The remaining z coordinates shall be relative to the starting z position in Image Position (Patient) (0020,0032).
+Tissue Heterogeneity Correction;(3004,0014);O+;Shall be present but may be null.  The value shall be given if known.

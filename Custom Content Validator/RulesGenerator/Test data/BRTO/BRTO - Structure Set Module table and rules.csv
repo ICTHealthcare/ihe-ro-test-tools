@@ -1,0 +1,21 @@
+[Module name];Structure Set Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Structure Set Label ;DICOM tag (3006,0002);R+;-;AttributeIsRequiredHasValueRule()
+[Attribute];Structure Set Date;DICOM tag (3006,0008);R+;-;AttributeIsRequiredHasValueRule()
+[Attribute];Structure Set Time;DICOM tag (3006,0009);R+;-;AttributeIsRequiredHasValueRule()
+[Attribute];Referenced Frame of Reference Sequence;DICOM tag (3006,0010);R+*;this element is required for all 3d rt structure sets which are image based. it is to contain a set of references to the entire set of images which comprise the volume from which the structure set was constructed, and which is to be used for planning. there should only be one item in this sequence, as a brto profile-based structure is based on a single set of images, which are all in the same frame of reference.;
+[Attribute];>Frame of Reference UID;DICOM tag (0020,0052);R+*;this frame of reference uid shall be the same as the frame of reference of the ct series from which the structure set was constructed. it will also be the same as the frame of reference of any related rtplan's or rtdose's.;AttributeIsRequiredHasValueRule()
+[Attribute];>RT Referenced Study Sequence;DICOM tag (3006,0012);R+*;shall be present and contain the series sequence. only one item allowed in this sequence.;
+[Attribute];>>Referenced SOP Instance UID;DICOM tag (0008,1155);R+*;this study instance uid shall be the same as the study instance uid of the related ct instances.;AttributeIsRequiredHasValueRule()
+[Attribute];>>RT Referenced Series Sequence;DICOM tag (3006,0014);R+*;shall be present to contain the contour image sequence. only one item allowed in this sequence.;
+[Attribute];>>>Series Instance UID;DICOM tag (0020,000E);R+*;shall be present and contain the series to which the set of ct images upon which the structure set is based belong.;AttributeIsRequiredHasValueRule()
+[Attribute];>>>Contour Image Sequence;DICOM tag (3006,0016);R+*;shall be present. contains an item for each ct image in the volume upon which the structure set is based.;
+[Attribute];>>>>Referenced SOP Class UID;DICOM tag (0008,1155);R+*;shall be present with a value of '1.2.840.10008.5.1.4.1.1.2' this profile is for volumes based on ct images only;"AttributeValueRule(""1.2.840.10008.5.1.4.1.1.2"")"
+[Attribute];>>>>Referenced Frame Number;DICOM tag (0008,1160);O+*;shall not be present;
+[Attribute];Structure Set ROI Sequence;DICOM tag (3006,0020);R+*;this sequence shall be present. it defines the roi's in this structure set.;
+[Attribute];>ROI Number;DICOM tag (3006,0022);R*;this defines an index to be used for referencing a particular roi item from other sequences. it is required to be unique within the structure set in which it is created. no limitation on values other than uniqueness within sequence.;AttributeIsRequiredHasValueRule()
+[Attribute];>Referenced Frame of Reference UID;DICOM tag (3006,0024);R*;this frame of reference uid shall be the same as the frame of reference uid of the ct series from which the structure set was constructed. it will also be the same as the frame of reference of any related rtplan or rtdose instances.;AttributeIsRequiredHasValueRule()
+[Attribute];>ROI Name;DICOM tag (3006,0026);R+;this is the primary identifier for an roi (from user perspective). shall be present and should match ui display. shall be unique within the structure set roi sequence.;AttributeIsRequiredHasValueRule()
+[Attribute];>ROI Description;DICOM tag (3006,0028);O+*;not required - no compliant implementation shall rely on this element being present for proper operation.;
+[Attribute];>ROI Volume;DICOM tag (3006,002C);O+*;not required - no compliant implementation shall rely on this element being present for proper operation.;
+[Attribute];>ROI Generation Algorithm ;DICOM tag (3006,0036);R+;shall be present, with a value of automatic, semiautomatic, or manual. this information may be presented to a user, but no semantics for handling a structure set is required for this profile. implementations which create structure set instances must provide an appropriate value.;"AttributeValueListRule(New String() {""automatic"", ""semiautomatic"", ""manual""})"

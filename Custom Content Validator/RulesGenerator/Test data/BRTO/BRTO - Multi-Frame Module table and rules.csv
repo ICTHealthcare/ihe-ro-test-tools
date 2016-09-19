@@ -1,0 +1,3 @@
+[Module name];Multi-Frame Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Frame Increment Pointer;DICOM tag (0028,0009);R+*;required for rt dose, shall have the same value as the  grid frame offset vector (3004,000c).;AttributeIsRequiredHasValueRule()

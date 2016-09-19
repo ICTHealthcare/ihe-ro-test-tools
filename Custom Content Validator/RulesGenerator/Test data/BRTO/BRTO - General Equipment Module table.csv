@@ -1,0 +1,4 @@
+;General Equipment Module;;
+Attribute Name;Tag;Presence;Attribute Note
+Manufacturer;(0008,0070);R+*;IHE requires that this element be present, and should contain the manufacturer of the equipment creating the image, structure set, plan, or dose. If the equipment is storing and forwarding information, the value of this element shall be preserved.  If a new plan is created from a previous plan, the manufacturer of the equipment producing the new plan shall insert their identifier in this element.  If a new structure set is created from a previous structure set, the manufacturer of the equipment producing the new structure set shall insert their identifier in this element.
+Manufacturer's Model Name;(0008,1090);R+*;If an application resamples and re-exports a series of CT images, or modifies an instance then this element must be present, and must contain the model name of the equipment doing the resampling.

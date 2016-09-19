@@ -1,0 +1,4 @@
+[Module name];RT Fraction Group Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Fraction Group Sequence;DICOM tag (300A,0070);R+*;shall have only a single item in the sequence;AttributeNumberOfSequenceItemsRule(1)
+[Attribute];>Number of Brachy Application Setups;DICOM tag (300A,00A0);R+*;shall be 0. brachytherapy is not supported in the brto profile.;"AttributeValueRule(""0"")"

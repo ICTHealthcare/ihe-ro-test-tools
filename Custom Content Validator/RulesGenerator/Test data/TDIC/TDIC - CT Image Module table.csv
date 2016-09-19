@@ -1,0 +1,9 @@
+;CT Image Module;;
+Attribute Name;Tag;Presence;Attribute Note
+Table Height;(0018,1130);R+;shall have a value.
+Isocenter Position;(300A,012C);R+;shall have a value.
+Patient Support Angle;(300A,0122);R+;shall have a value.
+Table Top Pitch Angle;(300A,0140);R+;shall have a value.
+Table Top Roll Angle;(300A,0144);R+;shall have a value.
+Table Top Longitudinal Position;(300A,0129);R+;shall have a value.
+Table Top Lateral Position;(300A,012A);R+;shall have a value.

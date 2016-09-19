@@ -1,0 +1,5 @@
+[Module name];General Image Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Referenced Instance Sequence;DICOM tag (0008,114A);R+*;shall contain the reference to the rt plan or rt ion plan, for which the positioning images have been acquired.;AttributeIsRequiredRule()
+;>Include Table 10-3 �Image SOP Instance Reference Macro Attributes�;;;;
+[Attribute];>Purpose of Reference Code Sequence;DICOM tag (0040,A170);R+*;shall contain at least one item with the code (tbd code value, tbd code scheme, �tbd code meaning�).;AttributeIsRequiredRule()

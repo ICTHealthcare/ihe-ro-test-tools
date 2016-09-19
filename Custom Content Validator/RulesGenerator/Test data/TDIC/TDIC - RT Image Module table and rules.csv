@@ -1,0 +1,60 @@
+[Module name];RT Image Module;;;;
+[Module table header];Attribute Name;Tag;Presence;Attribute Note;
+[Attribute];Bits Allocated;DICOM tag (0028,0100);R;see note 1.;
+[Attribute];Bits Stored;DICOM tag (0028,0101);R;see note 1.;
+[Attribute];Pixel Representation;DICOM tag (0028,0103);R;see note 1.;
+[Attribute];Pixel Intensity Relationship;DICOM tag (0028,1040);O;see note 1.;
+[Attribute];RT Image Label;DICOM tag (3002,0002);R;see note 1.;
+[Attribute];Image Type;DICOM tag (0008,0008);R+;the producer may produce any of the following types. ;
+[Attribute];Reported Values Origin;DICOM tag (3002,000A);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];X-Ray Image Receptor Translation;DICOM tag (3002,000D);O;see note 1.;
+[Attribute];X-Ray Image Receptor Angle;DICOM tag (3002,000E);O;see note 1.;
+[Attribute];RT Image Orientation;DICOM tag (3002,0010);R+;see note 1.;
+[Attribute];Image Plane Pixel Spacing;DICOM tag (3002,0011);R+;see note 1.;
+[Attribute];RT Image Position;DICOM tag (3002,0012);R+;see note 1.;
+[Attribute];Radiation Machine Name;DICOM tag (3002,0020);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Primary Dosimeter Unit;DICOM tag (300A,00B3);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Radiation Machine SAD;DICOM tag (3002,0022);R+;see note 1.;
+[Attribute];RT Image SID;DICOM tag (3002,0026);R+;see note 1.;
+[Attribute];Source to Reference Object Distance;DICOM tag (3002,0028);R+;see note 1.;
+[Attribute];Referenced RT Plan Sequence;DICOM tag (300C,0002);R+;see note 1.;
+;>Include �SOP Instance Reference Macro' Table 10-11;;;;
+[Attribute];Referenced Beam Number;DICOM tag (300C,0006);RC+*;see note 1.;
+[Attribute];Referenced Fraction Group Number;DICOM tag (300C,0022);R+;see note 1.;
+[Attribute];Fraction Number;DICOM tag (3002,0029);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Start Cumulative Meterset Weight;DICOM tag (300C,0008);RC+;shall have a value.;AttributeHasValueRule()
+[Attribute];End Cumulative Meterset Weight;DICOM tag (300C,0009);RC+;shall have a value.;AttributeHasValueRule()
+[Attribute];Exposure Sequence;DICOM tag (3002,0030);R+*;introduces sequence of exposure parameter sets, corresponding to exposures used in generating the image.;
+[Attribute];>KVP;DICOM tag (0018,0060);RC+;shall have a value if value 3 of image type (0008,0008) is portal or radiograph.;"AttributeConditionalHasValueRule(""0x00080008"", 2, New String() {""PORTAL"", ""RADIOGRAPH""})"
+[Attribute];>Primary Fluence Mode Sequence;DICOM tag (3002,0050);RC+*;see note 1.;
+[Attribute];>X-Ray Tube Current;DICOM tag (0018,1151);R+;shall have a value if value 3 of image type (0008,0008) is  radiograph..;"AttributeConditionalHasValueRule(""0x00080008"", 2, New String() {""RADIOGRAPH""})"
+[Attribute];>Exposure Time;DICOM tag (0018,1150);RC+;shall have a value if value 3 of image type (0008,0008) is portal or radiograph.;"AttributeConditionalHasValueRule(""0x00080008"", 2, New String() {""PORTAL"", ""RADIOGRAPH""})"
+[Attribute];>Meterset Exposure;DICOM tag (3002,0032);RC+;shall have a value. if value 3 of image type (0008,0008) is portal.;"AttributeConditionalHasValueRule(""0x00080008"", 2, New String() {""PORTAL""})"
+[Attribute];>Diaphragm Position;DICOM tag (3002,0034);R+;shall not be present.;AttributeNotPresentRule()
+[Attribute];>Beam Limiting Device Sequence;DICOM tag (300A,00B6);R+*;shall have a value.;AttributeHasValueRule()
+[Attribute];>Gantry Angle;DICOM tag (300A,011E);R+;shall contain the angle of the imaging source, along the coordinate system as specified in dicom for that attribute.;
+[Attribute];>Gantry Pitch Angle;DICOM tag (300A,014A);R+;shall contain the angle of the imaging source, along the coordinate system as specified in dicom for that attribute.;
+[Attribute];>Beam Limiting Device Angle;DICOM tag (300A,0120);R+;shall have a value if beam limiting device sequence (300a,00b6) if present.;
+[Attribute];>Patient Support Angle;DICOM tag (300A,0122);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];>Table Top Pitch Angle;DICOM tag (300A,0140);RC+;shall be preserved, if received from the original source. if absent, shall be interpreted as 0.0.;
+[Attribute];>Table Top Roll Angle;DICOM tag (300A,0144);RC+;shall be preserved, if received from the original source.;
+[Attribute];>Table Top Vertical Position;DICOM tag (300A,0128);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];>Table Top Longitudinal Position;DICOM tag (300A,0129);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];>Table Top Lateral Position;DICOM tag (300A,012A);R+;shall have a value.;AttributeHasValueRule()
+;>Number of Blocks;(300A,00F0);-;;
+;>Block Sequence;(300A,00F4);-;;
+[Attribute];>>Block Number of Points;DICOM tag (300A,0104);R+;see note 1.;
+[Attribute];>>Block Data;DICOM tag (300A,0106);R+;see note 1.;
+[Attribute];Gantry Angle;DICOM tag (300A,011E);R+;shall contain the angle of the imaging source, along the coordinate system as specified in dicom for that attribute.;
+[Attribute];Gantry Pitch Angle;DICOM tag (300A,014A);R+;shall contain the angle of the imaging source, along the coordinate system as specified in dicom for that attribute.;
+[Attribute];Beam Limiting Device Angle;DICOM tag (300A,0120);RC+;shall have a value if beam limiting device sequence (300a,00b6) if present.;"AttributeConditionalHasValueRule(""0x300A00B6"", Nothing, Nothing)"
+[Attribute];Patient Support Angle;DICOM tag (300A,0122);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Table Top Eccentric Axis Distance;DICOM tag (300A,0124);R+;note 1.;
+[Attribute];Table Top Eccentric Angle;DICOM tag (300A,0125);R+;note 1.;
+[Attribute];Table Top Pitch Angle;DICOM tag (300A,0140);O+;shall be preserved, if received from the original source.;
+[Attribute];Table Top Roll Angle;DICOM tag (300A,0144);O+;shall be preserved, if received from the original source.;
+[Attribute];Table Top Vertical Position;DICOM tag (300A,0128);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Table Top Longitudinal Position;DICOM tag (300A,0129);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Table Top Lateral Position;DICOM tag (300A,012A);R+;shall have a value.;AttributeHasValueRule()
+[Attribute];Isocenter Position;DICOM tag (300A,012C);R+;see note 1.;
+[Attribute];Patient Position;DICOM tag (0018,5100);R+;see note 1.;
