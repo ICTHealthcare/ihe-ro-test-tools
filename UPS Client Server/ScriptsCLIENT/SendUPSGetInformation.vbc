@@ -1,4 +1,4 @@
-Class SendUPSGetInformation
+Public Class SendUPSGetInformation
     Inherits Scenario
 
     Public Sub New()

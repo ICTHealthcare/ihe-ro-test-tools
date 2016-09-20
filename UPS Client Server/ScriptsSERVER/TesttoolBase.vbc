@@ -1,9 +1,9 @@
 
 'Test tool base class, this class runs IHE-RO scenario's and generates results files
-MustInherit Class TestToolBase
+Public MustInherit Class TestToolBase
     Inherits DvtkHighLevelInterface.Dicom.Threads.DicomThread
 
-    Protected m_scenarioRunner As ScenarioRunner = New ScenarioRunner()
+    Public m_scenarioRunner As ScenarioRunner = New ScenarioRunner()
 
     'Constructor
     Public Sub New()
@@ -13,6 +13,7 @@ MustInherit Class TestToolBase
     End Sub
 
     Public Sub WriteErrorNow(ByVal errorText As String)
+        Reporter.GetInstance().AddErrorMessageToCollection(errorText)
         WriteError(errorText)
     End Sub
 

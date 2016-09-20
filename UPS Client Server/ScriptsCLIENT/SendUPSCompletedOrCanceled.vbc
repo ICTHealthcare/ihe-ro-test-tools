@@ -1,4 +1,4 @@
-Class SendUPSCompletedOrCanceled
+Public Class SendUPSCompletedOrCanceled
     Inherits Scenario
 
     'Constructor
@@ -23,7 +23,7 @@ Class SendUPSCompletedOrCanceled
         Else
             Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
             Try
-                currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
             Catch ex As Exception
                 currentAutomaticTestXMLfile = Nothing
                 Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")

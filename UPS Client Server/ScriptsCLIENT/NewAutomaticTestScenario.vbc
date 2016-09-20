@@ -1,0 +1,24 @@
+Public Class NewAutomaticTestScenario
+    Inherits Scenario
+
+    Public Sub New()
+
+        Dim automaticTestDialog As New NewAutomaticTestingScenario()
+
+        automaticTestDialog.ShowDialog()
+
+        Dim newAutomaticTestXMLfile As System.Xml.XmlDocument = New System.Xml.XmlDocument
+        newAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance.GetScriptPath() + "BasicAutomaticTestingConfiguration.xml")
+
+
+        Dim currentAutomaticTestingConfiguration As System.Xml.XmlDocument = New System.Xml.XmlDocument
+        currentAutomaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + "CurrentAutomaticTestingConfiguration.xml")
+        currentAutomaticTestingConfiguration.SelectSingleNode("//Scenarios/CurrentAutomaticTestName").InnerText = "\" + automaticTestDialog.tbAutomaticTestName.Text + ".xml"
+        currentAutomaticTestingConfiguration.Save(TestToolConfiguration.GetInstance.GetScriptPath() + "CurrentAutomaticTestingConfiguration.xml")
+
+        newAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText = "..\..\Datasets\CLIENTSERVER\UPSMessages\" + automaticTestDialog.tbAutomaticTestName.Text + "\"
+        newAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance.GetScriptPath() + automaticTestDialog.tbAutomaticTestName.Text + ".xml")
+
+    End Sub
+
+End Class

@@ -1,4 +1,4 @@
-Class SendUPSCreate
+Public Class SendUPSCreate
     Inherits Scenario
 
     Public Sub New(ByVal NCreateTemplate As String)

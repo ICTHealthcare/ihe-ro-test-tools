@@ -1,7 +1,7 @@
-Class ScenarioRunner
+Public Class ScenarioRunner
 
     'has a Reporter
-    Protected m_reporter As Reporter = Reporter.GetInstance()
+    Public m_reporter As Reporter = Reporter.GetInstance()
 
     'Run a test scenario
     Public Function RunScenario(ByRef scenario As Scenario) As Boolean

@@ -1,4 +1,4 @@
-Class SendRetrieveInputObjects
+Public Class SendRetrieveInputObjects
     Inherits Scenario
 
     'Constructor

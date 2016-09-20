@@ -1,4 +1,4 @@
-Class SendUPSProgressUpdate
+Public Class SendUPSProgressUpdate
     Inherits Scenario
 
     Public Sub New(ByVal NSetTemplate As String)

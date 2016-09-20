@@ -1,6 +1,6 @@
 
 'Test tool base class, specially for IPDW scenarios
-MustInherit Class TestToolUPS_CLIENT_SERVER
+Public MustInherit Class TestToolUPS_CLIENT_SERVER
     Inherits TestToolBase
 
     Private m_WorkflowScenarioType As UPS_Scenario

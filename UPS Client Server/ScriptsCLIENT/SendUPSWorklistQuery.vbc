@@ -1,4 +1,4 @@
-Class SendUPSWorklistQuery
+Public Class SendUPSWorklistQuery
     Inherits Scenario
     'Constructor
     Public Sub New(ByVal CFindTemplate As String)

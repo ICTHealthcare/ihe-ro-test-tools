@@ -117,8 +117,8 @@ Class Sender
         config.LoadDefinitionFiles(senderThread)
 
 #If Not DVT_INTERPRETS_SCRIPT Then
-        HliForm.GetSingleton().Attach(senderThread)
-        HliForm.GetSingleton().AutoExit = False
+        'HliForm.GetSingleton().Attach(senderThread)
+        'HliForm.GetSingleton().AutoExit = True
 #End If
 
         Return senderThread

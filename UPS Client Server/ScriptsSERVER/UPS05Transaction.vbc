@@ -30,7 +30,7 @@ Class UPS05Transaction
 
         Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
         Try
-            currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+            currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
         Catch ex As Exception
             currentAutomaticTestXMLfile = Nothing
             Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
@@ -122,7 +122,7 @@ Class UPS05Transaction
                                     End If
 
                                     If Not currentAutomaticTestXMLfile Is Nothing Then
-                                        NSetRQ.DataSet.Write(currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "N-SET-REQ-ProgressUpdate.dcm")
+                                        NSetRQ.DataSet.Write(TestToolConfiguration.GetInstance().GetScriptPath() + currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "N-SET-REQ-ProgressUpdate.dcm")
                                         Dim ScenarioNode As System.Xml.XmlNode = currentAutomaticTestXMLfile.CreateNode("element", "Scenario", "")
                                         Dim nameAttr As System.Xml.XmlAttribute = currentAutomaticTestXMLfile.CreateAttribute("Name")
                                         nameAttr.Value = "SendUPSProgressUpdate"
@@ -133,7 +133,7 @@ Class UPS05Transaction
                                         ScenarioNode.AppendChild(TemplateNode)
                                         currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios").AppendChild(ScenarioNode)
 
-                                        currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                                        currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
                                     End If
 
                                     datasetMessages.Add(NSetRQ)
@@ -159,9 +159,12 @@ Class UPS05Transaction
                 ' Set the Requested SOPClassUID 
                 NSetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
+                ' Transaction UID
+                NSetRQ.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
+
                 datasetMessages.Add(NSetRQ)
             Else
-                Reporter.GetInstance().ReportErrorMessage("Please run 'Make automatic test scenario first', now this is empty")
+                Reporter.GetInstance().ReportErrorMessage("Used UPS has not an Transaction UID")
             End If
 
         End If

@@ -1,4 +1,4 @@
-Class ShowCLIENTUPSStatus
+Public Class ShowCLIENTUPSStatus
     Inherits Scenario
 
     'Constructor

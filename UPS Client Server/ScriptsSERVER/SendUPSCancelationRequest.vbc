@@ -1,4 +1,4 @@
-Class SendUPSCancelationRequest
+Public Class SendUPSCancelationRequest
     Inherits Scenario
 
     'Constructor

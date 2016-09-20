@@ -21,7 +21,7 @@ Class UPS01Transaction
         Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance()
         Dim currentAutomaticTestXMLfile As System.Xml.XmlDocument = New System.Xml.XmlDocument()
         Try
-            currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+            currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
         Catch ex As Exception
             currentAutomaticTestXMLfile = Nothing
             Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
@@ -53,7 +53,7 @@ Class UPS01Transaction
             'DataSetHandler.SaveDatasetToFileUPS(upsCreate.DataSet, DataSetHandler.UPSCacheXMLFileName, "N-Create-Req")
 
             If Not currentAutomaticTestXMLfile Is Nothing Then
-                upsCreate.DataSet.Write(currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "N-CREATE-REQ.dcm")
+                upsCreate.DataSet.Write(TestToolConfiguration.GetInstance().GetScriptPath() + currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "N-CREATE-REQ.dcm")
                 Dim ScenarioNode As System.Xml.XmlNode = currentAutomaticTestXMLfile.CreateNode("element", "Scenario", "")
                 Dim nameAttr As System.Xml.XmlAttribute = currentAutomaticTestXMLfile.CreateAttribute("Name")
                 nameAttr.Value = "SendUPSCreate"
@@ -66,7 +66,7 @@ Class UPS01Transaction
 
                 currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText = upsCreate.CommandSet(Tags.AffectedSOPInstanceUID).Values(0).ToString()
 
-                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
             End If
 
         Else
@@ -80,7 +80,7 @@ Class UPS01Transaction
 
                 currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText = upsCreate.CommandSet(Tags.AffectedSOPInstanceUID).Values(0).ToString()
 
-                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
             Else
                 Reporter.GetInstance().ReportErrorMessage("Please run 'Make automatic test scenario first', now this is empty")
             End If

@@ -1,4 +1,4 @@
-Class SendUPSFinalUpdate
+Public Class SendUPSFinalUpdate
     Inherits Scenario
 
     'Constructor

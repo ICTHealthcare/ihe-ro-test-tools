@@ -4,7 +4,7 @@ Imports System.Xml.Serialization
 Imports System.Collections.Generic
 #End If
 
-Class TestToolConfiguration
+Public Class TestToolConfiguration
 
 #Region "Private Constants and Readonly Fields"
 
@@ -49,6 +49,25 @@ Class TestToolConfiguration
         m_sessionPath = sessionPath
         m_scriptPath = sessionPath + "\Scripts\"
         Dim configFilePath As String = Path.Combine(m_scriptPath, ConfigFileName)
+
+        Try
+
+            Logger.GetInstance.LogDebugMessages = True
+
+            m_Configuration = LoadConfigurationFile(configFilePath)
+
+            Logger.GetInstance.LogDebugMessages = m_Configuration.Debugging.ReportDebugMessages()
+
+        Catch ex As System.Exception
+            Throw New System.Exception("An error occured while initialising the test tool configuration.", ex)
+        End Try
+    End Sub
+
+    Public Sub Initialise(ByVal sessionPath As String, ByVal configurationFileName As String)
+
+        m_sessionPath = sessionPath
+        m_scriptPath = sessionPath + "\Scripts\"
+        Dim configFilePath As String = Path.Combine(m_scriptPath, configurationFileName)
 
         Try
 
