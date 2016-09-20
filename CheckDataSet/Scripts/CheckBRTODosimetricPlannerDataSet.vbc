@@ -188,6 +188,8 @@ Class CheckBRTODosimetricPlannerDataSet
 
                     If (referencedObjects.Count > 2) Then
 
+                        validate.Rules = BRTO_RTPlan_Rules.CreateRules()
+
                         'C.7.1.1 Patient Module
 
                         'Patient() 's Name	(0010,0010), same as in reference data
@@ -227,12 +229,6 @@ Class CheckBRTODosimetricPlannerDataSet
                         '============== RT-Plan (dosimetric)rules =======================================
 
                         'C.8.8.13 RT Fraction Scheme		
-                        'Fraction Group Sequence	(300A,0070)	Only 1 item shall be present
-                        validate.AddRule(New NrIntOfSequenceItemRule(Tags.FractionGroupSequence, 1, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
-                        '>Number of Brachy Application Setups 300A,00A0	value shall be 0
-                        validate.AddRule(New IsRequiredRule(Tags.NumberofBrachyApplicationSetups, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        validate.AddRule(New ValueRule(Tags.NumberofBrachyApplicationSetups, "0", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
 
                         'C.8.8.14 RT Beams Module		
                         'Beam Sequence	(300A,00B0)	"Up to 100 beams should be supported, this rule is not tested
@@ -242,20 +238,6 @@ Class CheckBRTODosimetricPlannerDataSet
                         validate.AddRule(New BeamNameIsUniqueRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
                         '2. Once a Beam Name is created, it will never change.
                         'validate.AddRule(New BeamNameNotChangedCustomDataSetRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError, CustomFolder))
-
-                        '>Beam Type 300A,00C4 Value shall be STATIC or Dynamic
-                        validate.AddRule(New IsRequiredRule(Tags.BeamType, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        Dim values(1) As String
-                        values(0) = "STATIC"
-                        values(1) = "DYNAMIC"
-                        validate.AddRule(New ValueListRule(Tags.BeamType, values, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
-                        '>Radiation Type 300A,00C6 value: PHOTON
-                        validate.AddRule(New IsRequiredRule(Tags.RadiationType, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        validate.AddRule(New ValueRule(Tags.RadiationType, "PHOTON", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
-                        '>Source-Axis Distance 300A,00B4 Shall be present
-                        validate.AddRule(New IsRequiredRule(Tags.SourceAxisDistance, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
 
                         'Beam Limiting Device Sequence	(300A,00B6)	
                         'If >>RT Beam Limiting Device Type(300A,00B8) = X, Y, ASYMX or ASYMY then the sequence should contain 
@@ -267,42 +249,18 @@ Class CheckBRTODosimetricPlannerDataSet
                         'Block Sequence(300A,00FA) 2. Only one block with >>Block Type(300A,00F8) = APERTURE may be present in the 
                         'all blocks"
 
-                        '>Referenced Patient Setup Number (300C,006A) Shall be present
-                        validate.AddRule(New IsRequiredRule(Tags.ReferencedPatientSetupNumber, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        '>Number of Wedges (300A,00D0) Shall be present
-                        validate.AddRule(New IsRequiredRule(Tags.NumberOfWedges, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        '>Number of Compensators (300A,00E0) Shall be present
-                        validate.AddRule(New IsRequiredRule(Tags.NumberOfCompensators, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-                        '>Number of Boli (300A,00ED) Shall be present
-                        validate.AddRule(New IsRequiredRule(Tags.NumberOfBoli, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
                         validate.AddRule(New BlockRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
                         'Block Number of Points	(300A,0104)	Value >= 3
                         validate.AddRule(New BlockNumberofPointsRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
-                        '>>Block Divergence 300A,00FA Value should be PRESENT
-                        validate.AddRule(New IsRequiredRule(Tags.BlockDivergence, IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
 
                         'Block Data	(300A,0106)	"1. Shall not be 0 points. One or more points should be present.
                         '2.No boundary check done. See decision D.6"
                         validate.AddRule(New BlockDataRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
 
-
                         '============== End RT-Plan (dosimetric)rules =======================================
 
 
                         'C.12.1 SOP Common Module
-
-                        'SOP Instance UID	(0008,0018)	If an application alters an Information Object instance, then the new Information Object instance shall be assigned a new UID.
-                        'validate.AddRule(New SOPInstanceUIDRule(IODType.RTDose, ErrorSeverity.RuleError))
-                        'validate.AddRule(New SOPInstanceUIDRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
-
-                        'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
-                        validate.AddRule(New ValueInterRelationRule(Tags.SpecificCharacterSet, "ISO_IR 100", FOR1iodType, ErrorSeverity.RuleError))
-                        validate.AddRule(New ValueInterRelationRule(Tags.SpecificCharacterSet, "ISO_IR 100", IODType.RTStructureSet, ErrorSeverity.RuleError))
-
-                        'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
-                        validate.AddRule(New ValueRule(Tags.SpecificCharacterSet, "ISO_IR 100", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
 
 
                         m_scenarioSteps.Add(validate)

@@ -296,12 +296,10 @@ Class TestToolConfiguration
                 Return "PET Image Storage.def"
             Case iodType.SpatialRegistration
                 Return "Spatial Registration Storage.def"
-
-                'Not Needed for IHE RO 2008
-                'Case iodType.RTPlanDosimetric
-                '    Return "RTPlanStorage(dosimetric).def"
-                'Case iodType.RTPlanGeometric
-                '    Return "RTPlanStorage(geometric).def"
+            Case iodType.RTPlanDosimetric
+                Return "RT Plan Storage.def"
+            Case iodType.RTPlanGeometric
+                Return "RT Plan Storage.def"
         End Select
 
         Return Nothing
@@ -321,8 +319,8 @@ Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.PETImage))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTStructureSet))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.SpatialRegistration))
-        'thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanDosimetric))
-        'thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanGeometric))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanDosimetric))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanGeometric))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTDose))
 
     End Sub

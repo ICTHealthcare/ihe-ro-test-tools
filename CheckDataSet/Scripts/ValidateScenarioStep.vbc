@@ -14,6 +14,16 @@ Class ValidateScenarioStep
         m_receivedFilesArray = receivedFilesArray
     End Sub
 
+    'The rules specific for this scenario
+    Public Property Rules() As ArrayList
+        Get
+            Return m_rules
+        End Get
+        Set(ByVal value As ArrayList)
+            m_rules = value
+        End Set
+    End Property
+
     ' - validating the received transactions (Validator)
     Public Overrides Sub Execute()
         m_validator.ValidateMessages(m_sendFilesArray, m_receivedFilesArray, m_rules)
