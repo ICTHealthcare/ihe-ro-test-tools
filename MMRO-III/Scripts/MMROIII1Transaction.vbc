@@ -1,0 +1,35 @@
+' Transaction MMRO-III-1 (Spatial Registration(III) Storage) class
+Class MMRO_III_1_Transaction
+    Inherits Transaction
+
+    Private m_ScenarioVariant As String
+
+    'Constructor
+    Public Sub New()
+        MyBase.New("MMRO-III-1", "Spatial Registration(III) Storage", IODType.SpatialRegistration, False)
+    End Sub
+
+    Public Sub New(ByVal ScenarioVariant As String)
+        MyBase.New("MMRO-III-1", "Spatial Registration(III) Storage", IODType.SpatialRegistration, False)
+        m_ScenarioVariant = ScenarioVariant
+    End Sub
+
+    Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
+        Dim datasetMessages As ArrayList = New ArrayList
+        Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance()
+
+        'add the spatial registrations to the arraylist
+        Dim spatialRegistrationMessages() As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+
+        spatialRegistrationMessages = referenceData.GetSpatialRegistration()
+        Dim dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+        For Each dicomMessage In spatialRegistrationMessages
+            datasetMessages.Add(dicomMessage)
+        Next
+
+        'return the array with dataset(s)
+        Return datasetMessages
+    End Function
+
+
+End Class

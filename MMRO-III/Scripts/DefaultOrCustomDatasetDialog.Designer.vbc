@@ -1,0 +1,113 @@
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class DefaultOrCustomDatasetDialog
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.radioCustom = New System.Windows.Forms.RadioButton()
+        Me.radioDefault = New System.Windows.Forms.RadioButton()
+        Me.lbCustomDatasets = New System.Windows.Forms.ListBox()
+        Me.GroupBox1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Enabled = False
+        Me.OK_Button.Location = New System.Drawing.Point(135, 228)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(110, 23)
+        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.Text = "OK"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.radioCustom)
+        Me.GroupBox1.Controls.Add(Me.radioDefault)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(219, 48)
+        Me.GroupBox1.TabIndex = 1
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Dataset"
+        '
+        'radioCustom
+        '
+        Me.radioCustom.AutoSize = True
+        Me.radioCustom.Location = New System.Drawing.Point(122, 19)
+        Me.radioCustom.Name = "radioCustom"
+        Me.radioCustom.Size = New System.Drawing.Size(60, 17)
+        Me.radioCustom.TabIndex = 1
+        Me.radioCustom.Text = "Custom"
+        Me.radioCustom.UseVisualStyleBackColor = True
+        '
+        'radioDefault
+        '
+        Me.radioDefault.AutoSize = True
+        Me.radioDefault.Checked = True
+        Me.radioDefault.Location = New System.Drawing.Point(9, 19)
+        Me.radioDefault.Name = "radioDefault"
+        Me.radioDefault.Size = New System.Drawing.Size(59, 17)
+        Me.radioDefault.TabIndex = 0
+        Me.radioDefault.TabStop = True
+        Me.radioDefault.Text = "Default"
+        Me.radioDefault.UseVisualStyleBackColor = True
+        '
+        'lbCustomDatasets
+        '
+        Me.lbCustomDatasets.Enabled = False
+        Me.lbCustomDatasets.FormattingEnabled = True
+        Me.lbCustomDatasets.Location = New System.Drawing.Point(134, 117)
+        Me.lbCustomDatasets.Name = "lbCustomDatasets"
+        Me.lbCustomDatasets.Size = New System.Drawing.Size(120, 95)
+        Me.lbCustomDatasets.TabIndex = 2
+        '
+        'DefaultOrCustomDatasetDialog
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(271, 275)
+        Me.ControlBox = False
+        Me.Controls.Add(Me.lbCustomDatasets)
+        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "DefaultOrCustomDatasetDialog"
+        Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Choose dataset"
+        Me.TopMost = True
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents radioCustom As System.Windows.Forms.RadioButton
+    Friend WithEvents radioDefault As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lbCustomDatasets As System.Windows.Forms.ListBox
+End Class

@@ -1,0 +1,24 @@
+
+' Transaction RO-5 (Dose Storage) class
+Class RO_5_Transaction
+Inherits Transaction
+
+    'Constructor
+    Public Sub New()
+        MyBase.New("RO-5", "Dose Storage", IODType.RTDose, False)
+    End Sub
+
+   	'method which returns the related reference data messages belonging to this transaction
+	Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
+		Dim datasetMessages as ArrayList = new ArrayList()
+		Dim referenceData as ReferenceDataSet = ReferenceDataSet.GetInstance()
+		
+        'add the RT dose message to the arraylist
+        datasetMessages.Add(referenceData.GetRTDose())
+		
+		'return the array with dataset(s)
+		return datasetMessages
+	End Function
+
+
+End Class
