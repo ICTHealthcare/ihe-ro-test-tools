@@ -209,7 +209,7 @@ Class RegisteredContourerScenario1
             validate.AddRule(New ROINumberRule(IODType.RTStructureSet, ErrorSeverity.RuleError))
             'Referenced Frame of Reference UID (0x30060024), This frame of reference UID shall be the same as the frame of reference of 
             'the CT series from which the RTSTRUCT was constructed
-            validate.AddRule(New ReferencedFrameOfReferenceUIDMappingRule(ErrorSeverity.RuleError, IODType.Generic, dialog.lbFOR1.SelectedItem.ToString(), False))
+            validate.AddRule(New ReferencedFrameOfReferenceUIDMappingRule(ErrorSeverity.RuleError, IODType.Generic, FOR1IODType.ToString(), False))
 
             'ROI Name (0x30060026),	Must be unique within ROI sequence
             validate.AddRule(New ROINameRule(IODType.RTStructureSet, ErrorSeverity.RuleError))
