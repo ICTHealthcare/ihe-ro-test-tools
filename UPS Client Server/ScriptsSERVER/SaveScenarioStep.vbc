@@ -25,11 +25,11 @@ Class SaveScenarioStep
                                     "of received messages '{1}'", m_MessageIndex, m_ReceivedMessagesContainer.ReceivedMessages.Count))
             End If
 
-            ReferenceDataSet.GetInstance.deleteAllClientCacheFiles()
+            'ReferenceDataSet.GetInstance.deleteAllClientCacheFiles()
 
             Dim count As Integer = 1
             For Each message As DicomMessage In m_ReceivedMessagesContainer.ReceivedMessages
-                If (message.DataSet.Exists(Tags.PatientID)) Then
+                If (message.DataSet.Exists(Tags.InputReadinessState)) Then
                     DataSetHandler.SaveDatasetToFileUPS(message.DataSet, DataSetHandler.UPSCacheXMLFileName, m_DataSetName + count.ToString())
                     count = count + 1
                 End If

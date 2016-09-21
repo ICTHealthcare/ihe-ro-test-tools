@@ -51,7 +51,7 @@ Class UPS05Transaction
 
         If (m_NSetTemplate = "") Then
 
-            Dim selectUPSForm As SelectUPS = New SelectUPS()
+            Dim selectUPSForm As SelectUPS = New SelectUPS(True)
             Dim progressUpdateContent As ProgressUpdateContent = New ProgressUpdateContent()
             selectUPSForm.DataGridUPS.MultiSelect = False
             selectUPSForm.SetUPSInProgress.Text = "Send N-Set-RQ with progress update to selected UPS"

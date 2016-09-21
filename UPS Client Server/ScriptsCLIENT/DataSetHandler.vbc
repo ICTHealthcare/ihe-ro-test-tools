@@ -107,6 +107,20 @@ Public Class DataSetHandler
         Dim relativeTestDataPath As String = m_DataSetXML.SelectSingleNode("/DataSet/DataSetPath").InnerText
         Dim datasetPath As String = TestToolConfiguration.GetInstance.SessionPath + relativeTestDataPath
 
+
+        For Each foundFile As String In My.Computer.FileSystem.GetFiles(datasetPath + "\CLIENT", _
+           Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
+
+            Dim dicomFileCacheClient As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
+            'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
+            dicomFileCacheClient.Read(foundFile)
+
+            If (dicomFileCacheClient.DataSet(Tags.SOPInstanceUID).Values(0).ToString() = dataSet(Tags.SOPInstanceUID).Values(0).ToString()) Then
+
+                File.Delete(foundFile)
+            End If
+        Next
+
         'get the name of the dicom file from the xml document
         Dim fileName As String = datasetPath + "\CLIENT\" + DataSetName + ".dcm"
         Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile

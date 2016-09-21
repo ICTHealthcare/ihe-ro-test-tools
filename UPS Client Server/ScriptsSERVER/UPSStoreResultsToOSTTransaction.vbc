@@ -22,7 +22,7 @@ Class UPSStoreResultsToOST_Transaction
         Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance()
 
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim selectUPSForm As SelectUPS = New SelectUPS(True)
         selectUPSForm.DataGridUPS.MultiSelect = False
         selectUPSForm.SetUPSInProgress.Text = "Create C-Store-Req from selected UPS"
         selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()

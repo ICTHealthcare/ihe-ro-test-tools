@@ -18,7 +18,7 @@ Class UPS11Transaction
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
         Dim datasetMessages As ArrayList = New ArrayList()
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim selectUPSForm As SelectUPS = New SelectUPS(True)
         Dim UPSCancelNAction As UPSCancelNAction = New UPSCancelNAction()
         selectUPSForm.DataGridUPS.MultiSelect = False
         selectUPSForm.SetUPSInProgress.Text = "Send N-Action-RQ with CANCEL status to selected UPS"

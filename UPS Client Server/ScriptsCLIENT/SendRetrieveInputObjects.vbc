@@ -11,7 +11,7 @@ Public Class SendRetrieveInputObjects
         Dim sutSettingTMS As SUTAESettingWrapper = TestToolConfiguration.GetInstance().GetSUTAEConfiguration(tmsActor.Id, CMOVERQ)
 
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim selectUPSForm As SelectUPS = New SelectUPS(True)
         selectUPSForm.DataGridUPS.MultiSelect = False
         selectUPSForm.SetUPSInProgress.Text = "Create C-Move-Req from selected UPS"
         selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()

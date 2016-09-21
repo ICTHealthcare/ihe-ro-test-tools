@@ -4,7 +4,7 @@ Public Class ShowSERVERUPSStatus
     'Constructor
     Public Sub New()
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim selectUPSForm As SelectUPS = New SelectUPS(False)
         selectUPSForm.SetUPSInProgress.Visible = False
 
         selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetAllUPSes()

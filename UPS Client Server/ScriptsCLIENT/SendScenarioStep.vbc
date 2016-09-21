@@ -1,4 +1,4 @@
-Class SendScenarioStep
+Public Class SendScenarioStep
     Inherits ScenarioStep
     Implements IReceivedMessagesContainer
 
