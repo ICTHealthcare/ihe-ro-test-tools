@@ -9,6 +9,7 @@ Class UPS07Transaction
     Private ups07IODType As IODType = Nothing
     Private _isCompleted As Boolean
     Private m_SOPInstanceUID As String
+    Private m_customSOPClassUID, m_customSOPInstanceUID, m_customActionTypeID, m_customProcedureStepState, m_customTransactionUID As String
 
     'Constructor
     Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean, ByVal SOPInstanceUID As String)
@@ -17,6 +18,24 @@ Class UPS07Transaction
         ups07IODType = IODType.UnifiedProcedureStepPull
         _isCompleted = isCompleted
         m_SOPInstanceUID = SOPInstanceUID
+        m_customSOPClassUID = Nothing
+        m_customSOPInstanceUID = Nothing
+        m_customActionTypeID = Nothing
+        m_customProcedureStepState = Nothing
+        m_customTransactionUID = Nothing
+    End Sub
+
+    Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean, ByVal SOPInstanceUID As String, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customActionTypeID As String, ByVal customProcedureStepState As String, ByVal customTransactionUID As String)
+
+        MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
+        ups07IODType = IODType.UnifiedProcedureStepPull
+        _isCompleted = isCompleted
+        m_SOPInstanceUID = SOPInstanceUID
+        m_customSOPClassUID = customSOPClassUID
+        m_customSOPInstanceUID = customSOPInstanceUID
+        m_customActionTypeID = customActionTypeID
+        m_customProcedureStepState = customProcedureStepState
+        m_customTransactionUID = customTransactionUID
     End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
@@ -111,27 +130,47 @@ Class UPS07Transaction
             Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
             ' Set the Requested SOPClassUID 
-            message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+            If m_customSOPClassUID Is Nothing Then
+                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+            Else
+                message.Set(Tags.RequestedSOPClassUID, UI, m_customSOPClassUID)
+            End If
 
             ' Set the Requested SOP Instance UID
-            message.Set(Tags.RequestedSOPInstanceUID, UI, m_SOPInstanceUID)
+            If m_customSOPInstanceUID Is Nothing Then
+                message.Set(Tags.RequestedSOPInstanceUID, UI, m_SOPInstanceUID)
+            Else
+                message.Set(Tags.RequestedSOPInstanceUID, UI, m_customSOPInstanceUID)
+            End If
 
             ' ActionType ID
-            message.Set(Tags.ActionTypeID, US, "1")
+            If m_customActionTypeID Is Nothing Then
+                message.Set(Tags.ActionTypeID, US, "1")
+            Else
+                message.Set(Tags.ActionTypeID, US, m_customActionTypeID)
+            End If
+
 
             'Set Unified Procedure Step State 
+            If m_customProcedureStepState Is Nothing Then
+                If _isCompleted Then
 
-            If _isCompleted Then
-
-                message.Set(Tags.ProcedureStepState, CS, "COMPLETED")
+                    message.Set(Tags.ProcedureStepState, CS, "COMPLETED")
+                Else
+                    message.Set(Tags.ProcedureStepState, CS, "CANCELED")
+                End If
             Else
-                message.Set(Tags.ProcedureStepState, CS, "CANCELED")
+                message.Set(Tags.ProcedureStepState, CS, m_customProcedureStepState)
             End If
 
 
             If Not currentAutomaticTestXMLfile Is Nothing Then
                 ' Transaction UID
-                message.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
+                If m_customTransactionUID Is Nothing Then
+                    message.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
+                Else
+                    message.Set(Tags.TransactionUID, UI, m_customTransactionUID)
+                End If
 
                 datasetMessages.Add(message)
             Else

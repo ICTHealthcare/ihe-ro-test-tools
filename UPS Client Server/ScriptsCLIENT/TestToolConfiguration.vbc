@@ -403,6 +403,7 @@ Public Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile("FileMeta.def")
 
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile("RT Treatment Summary Record Storage.def")
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile("Modality Worklist Information Model - Find.def")
 
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.CTImage))
 
@@ -412,6 +413,8 @@ Public Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanDosimetric))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepPull))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepPush))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepEvent))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepWatch))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTImage))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.StudyRootQueryRetrieveMOVE))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTBeamsTreatmentRecordSTORE))

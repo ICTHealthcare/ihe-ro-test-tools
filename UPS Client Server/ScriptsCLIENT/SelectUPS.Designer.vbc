@@ -23,7 +23,6 @@ Partial Class SelectUPS
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.DataGridUPS = New System.Windows.Forms.DataGridView()
-        Me.SetUPSInProgress = New System.Windows.Forms.Button()
         Me.PatiendIDColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PatientNameColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ProcedureStepStateColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -33,11 +32,16 @@ Partial Class SelectUPS
         Me.ScheduledWorkItemCodeMeaning = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.UnifiedProcedureStepProgressColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TreatmentDeliveryTypeColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.SetUPSInProgress = New System.Windows.Forms.Button()
+        Me.btnDeleteSelectedUPS = New System.Windows.Forms.Button()
+        Me.btnDeleteAll = New System.Windows.Forms.Button()
+        Me.btnOpenSelectedUPS = New System.Windows.Forms.Button()
         CType(Me.DataGridUPS, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DataGridUPS
         '
+        Me.DataGridUPS.AllowUserToAddRows = False
         Me.DataGridUPS.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridUPS.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PatiendIDColumn, Me.PatientNameColumn, Me.ProcedureStepStateColumn, Me.ProcedureStepLabelColumn, Me.SopInstanceUIDColumn, Me.ScheduledWorkItemCodeVale, Me.ScheduledWorkItemCodeMeaning, Me.UnifiedProcedureStepProgressColumn, Me.TreatmentDeliveryTypeColumn})
         Me.DataGridUPS.Location = New System.Drawing.Point(31, 33)
@@ -45,16 +49,6 @@ Partial Class SelectUPS
         Me.DataGridUPS.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.DataGridUPS.Size = New System.Drawing.Size(1068, 300)
         Me.DataGridUPS.TabIndex = 1
-        Me.DataGridUPS.AllowUserToAddRows = False
-        '
-        'SetUPSInProgress
-        '
-        Me.SetUPSInProgress.Location = New System.Drawing.Point(1134, 125)
-        Me.SetUPSInProgress.Name = "SetUPSInProgress"
-        Me.SetUPSInProgress.Size = New System.Drawing.Size(118, 47)
-        Me.SetUPSInProgress.TabIndex = 2
-        Me.SetUPSInProgress.Text = "Set selected UPS in progress"
-        Me.SetUPSInProgress.UseVisualStyleBackColor = True
         '
         'PatiendIDColumn
         '
@@ -114,11 +108,50 @@ Partial Class SelectUPS
         Me.TreatmentDeliveryTypeColumn.Name = "TreatmentDeliveryTypeColumn"
         Me.TreatmentDeliveryTypeColumn.Width = 150
         '
+        'SetUPSInProgress
+        '
+        Me.SetUPSInProgress.Location = New System.Drawing.Point(1134, 125)
+        Me.SetUPSInProgress.Name = "SetUPSInProgress"
+        Me.SetUPSInProgress.Size = New System.Drawing.Size(118, 47)
+        Me.SetUPSInProgress.TabIndex = 2
+        Me.SetUPSInProgress.Text = "Set selected UPS in progress"
+        Me.SetUPSInProgress.UseVisualStyleBackColor = True
+        '
+        'btnDeleteSelectedUPS
+        '
+        Me.btnDeleteSelectedUPS.Location = New System.Drawing.Point(1134, 178)
+        Me.btnDeleteSelectedUPS.Name = "btnDeleteSelectedUPS"
+        Me.btnDeleteSelectedUPS.Size = New System.Drawing.Size(118, 47)
+        Me.btnDeleteSelectedUPS.TabIndex = 3
+        Me.btnDeleteSelectedUPS.Text = "Delete selected UPS(es)"
+        Me.btnDeleteSelectedUPS.UseVisualStyleBackColor = True
+        '
+        'btnDeleteAll
+        '
+        Me.btnDeleteAll.Location = New System.Drawing.Point(1134, 231)
+        Me.btnDeleteAll.Name = "btnDeleteAll"
+        Me.btnDeleteAll.Size = New System.Drawing.Size(118, 47)
+        Me.btnDeleteAll.TabIndex = 4
+        Me.btnDeleteAll.Text = "Delete all UPSes"
+        Me.btnDeleteAll.UseVisualStyleBackColor = True
+        '
+        'btnOpenSelectedUPS
+        '
+        Me.btnOpenSelectedUPS.Location = New System.Drawing.Point(1134, 286)
+        Me.btnOpenSelectedUPS.Name = "btnOpenSelectedUPS"
+        Me.btnOpenSelectedUPS.Size = New System.Drawing.Size(118, 47)
+        Me.btnOpenSelectedUPS.TabIndex = 5
+        Me.btnOpenSelectedUPS.Text = "Edit UPS "
+        Me.btnOpenSelectedUPS.UseVisualStyleBackColor = True
+        '
         'SelectUPS
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1284, 458)
+        Me.Controls.Add(Me.btnOpenSelectedUPS)
+        Me.Controls.Add(Me.btnDeleteAll)
+        Me.Controls.Add(Me.btnDeleteSelectedUPS)
         Me.Controls.Add(Me.SetUPSInProgress)
         Me.Controls.Add(Me.DataGridUPS)
         Me.Name = "SelectUPS"
@@ -138,5 +171,8 @@ Partial Class SelectUPS
     Friend WithEvents ScheduledWorkItemCodeMeaning As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents UnifiedProcedureStepProgressColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TreatmentDeliveryTypeColumn As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnDeleteSelectedUPS As System.Windows.Forms.Button
+    Friend WithEvents btnDeleteAll As System.Windows.Forms.Button
+    Friend WithEvents btnOpenSelectedUPS As System.Windows.Forms.Button
 
 End Class

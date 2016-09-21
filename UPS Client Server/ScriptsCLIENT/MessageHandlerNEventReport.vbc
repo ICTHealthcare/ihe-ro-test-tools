@@ -6,7 +6,7 @@ Class MessageHandlerNEventReport
 
         Dim affectedSOPClassUID As String = theDicomMessage.CommandSet.Item(Tags.AffectedSOPClassUID).Values(0)
 
-        If affectedSOPClassUID = SOPclass.UnifiedProcedureStepPushSOPClassUID.ToString() Then
+        If affectedSOPClassUID = SOPclass.UnifiedProcedureStepEventSOPClass.ToString() Then
 
             Dim responseMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.NEVENTREPORTRSP)
 

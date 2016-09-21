@@ -108,4 +108,9 @@
 #include "NewAutomaticTestScenario.vbc"
 #include "ChooseAutomaticTestScenario.Designer.vbc"
 #include "ChooseAutomaticTestScenario.vbc"
+#include "Subscriber.vbc"
+#include "ReceiveNEventReports.vbc"
+#include "UPS12Transaction.vbc"
+#include "HasValueRule.vbc"
+#include "IsRequiredRule.vbc"
 #End If

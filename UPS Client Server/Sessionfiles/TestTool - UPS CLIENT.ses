@@ -4,7 +4,7 @@ SESSION-TYPE script
 SESSION-FILE-VERSION 2
 
 # SUT Test Session Properties
-SESSION-TITLE "IHE-RO 2014 TestTool - UPS Client 2.0.1"
+SESSION-TITLE "IHE-RO 2014 TestTool - UPS Client 2.0.2"
 SESSION-ID 000
 MANUFACTURER "DVT"
 MODEL-NAME "DVT"
@@ -77,6 +77,8 @@ DEFINITION "Spatial Registration Storage.def"
 DEFINITION "Study Root Query Retrieve - MOVE.def"
 DEFINITION "RT Beams Delivery Instruction Storage.def"
 DEFINITION "RT Beams Treatment Record Storage.def"
+DEFINITION "Unified Procedure Step - Event.def"
+DEFINITION "Unified Procedure Step - Watch.def"
 
 # DICOMScripts
 DICOMSCRIPT-ROOT "..\ScriptsCLIENT\"

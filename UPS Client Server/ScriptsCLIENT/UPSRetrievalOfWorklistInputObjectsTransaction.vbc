@@ -19,6 +19,18 @@ Class UPSRetrievalOfWorklistInputObjects_Transaction
         MyBase.New("RO-20", "Retrieval of worklist input objects from TMS", IODType.StudyRootQueryRetrieveMOVE, True)
         m_sutActorId = SUTActor.Id 'for IPDW: TMS
         m_storeActorId = storeActor.Id 'for IPDW: PDS
+        m_useAutomaticTest = False
+        m_wrongRetrieveSOPInstanceUID = ""
+    End Sub
+
+    Public Sub New(ByVal SUTActor As Actor, ByVal storeActor As Actor, ByVal useAutomaticTest As Boolean, ByVal wrongRetrieveSOPInstanceUID As String)
+
+        MyBase.New("RO-20", "Retrieval of worklist input objects from TMS", IODType.StudyRootQueryRetrieveMOVE, True)
+        m_sutActorId = SUTActor.Id 'for IPDW: TMS
+        m_storeActorId = storeActor.Id 'for IPDW: PDS
+        m_useAutomaticTest = useAutomaticTest
+        m_wrongRetrieveSOPInstanceUID = wrongRetrieveSOPInstanceUID
+
     End Sub
 
     Public Sub New(ByVal SUTActor As Actor, ByVal storeActor As Actor, ByVal selectUPSForm As SelectUPS)
@@ -27,40 +39,79 @@ Class UPSRetrievalOfWorklistInputObjects_Transaction
         m_sutActorId = SUTActor.Id 'for IPDW: TMS
         m_storeActorId = storeActor.Id 'for IPDW: PDS
         m_selectUPSForm = selectUPSForm
+        m_useAutomaticTest = False
+        m_wrongRetrieveSOPInstanceUID = ""
     End Sub
 
     Private m_sutActorId As String
     Private m_storeActorId As String
     Private m_selectUPSForm As SelectUPS
+    Private m_useAutomaticTest As Boolean
+    Private m_wrongRetrieveSOPInstanceUID As String
+
     'method which returns the related reference data messages belonging to this transaction
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
         Dim datasetMessages As ArrayList = New ArrayList()
         Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance()
 
-        For Each DataRow As DataGridViewRow In m_selectUPSForm.UPSDataGridView.Rows
-            If (DataRow.Selected) Then
+        If (m_useAutomaticTest = False) Then
 
-                Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
+            For Each DataRow As DataGridViewRow In m_selectUPSForm.UPSDataGridView.Rows
+                If (DataRow.Selected) Then
 
-                Dim selectedUPS As DvtkHighLevelInterface.Dicom.Other.DataSet = referenceData.GetSelectedCFindRsp(SOPInstanceUID)
+                    Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
 
-                Dim messages As DicomMessageCollection = referenceData.createCMoveRqUPS(DataSetHandler.UPSCacheXMLFileName, m_sutActorId, m_storeActorId, SOPInstanceUID)
-                If messages.Count = 0 Then
-                    'NO messages found in the C-FIND repsonses to retrieve from the SCP
-                    Dim log As String = "The input information sequence has wrong references or the data is not availeble on the OST or TMS (it could be that the AeTitle in the C-FIND-RSP is not the same as the OST or TMS ae title in the configuration file."
-                    Logger.GetInstance().LogErrorMessage(log)
-                    Return Nothing
-                Else
-                    'add the structure set message to the arraylist
-                    For Each message As DicomMessage In messages
-                        datasetMessages.Add(message)
-                    Next
+                    Dim selectedUPS As DvtkHighLevelInterface.Dicom.Other.DataSet = referenceData.GetSelectedCFindRsp(SOPInstanceUID)
+
+                    Dim messages As DicomMessageCollection = referenceData.createCMoveRqUPS(DataSetHandler.UPSCacheXMLFileName, m_sutActorId, m_storeActorId, SOPInstanceUID, m_wrongRetrieveSOPInstanceUID)
+                    If messages.Count = 0 Then
+                        'NO messages found in the C-FIND repsonses to retrieve from the SCP
+                        Dim log As String = "The input information sequence has wrong references or the data is not availeble on the OST or TMS (it could be that the AeTitle in the C-FIND-RSP is not the same as the OST or TMS ae title in the configuration file."
+                        Logger.GetInstance().LogErrorMessage(log)
+                        Return Nothing
+                    Else
+                        'add the structure set message to the arraylist
+                        For Each message As DicomMessage In messages
+                            datasetMessages.Add(message)
+                        Next
+                    End If
+                    'return the array with dataset(s)
+                    Return datasetMessages
+
                 End If
-                'return the array with dataset(s)
-                Return datasetMessages
+            Next
 
+        Else
+
+            Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
+            Try
+                currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+            Catch ex As Exception
+                currentAutomaticTestXMLfile = Nothing
+                Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
+            End Try
+
+            Dim SOPInstanceUID As String = currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText
+
+            Dim selectedUPS As DvtkHighLevelInterface.Dicom.Other.DataSet = referenceData.GetSelectedCFindRsp(SOPInstanceUID)
+
+            Dim messages As DicomMessageCollection = referenceData.createCMoveRqUPS(DataSetHandler.UPSCacheXMLFileName, m_sutActorId, m_storeActorId, SOPInstanceUID, m_wrongRetrieveSOPInstanceUID)
+            If messages.Count = 0 Then
+                'NO messages found in the C-FIND repsonses to retrieve from the SCP
+                Dim log As String = "The input information sequence has wrong references or the data is not availeble on the OST or TMS (it could be that the AeTitle in the C-FIND-RSP is not the same as the OST or TMS ae title in the configuration file."
+                Logger.GetInstance().LogErrorMessage(log)
+                Return Nothing
+            Else
+                'add the structure set message to the arraylist
+                For Each message As DicomMessage In messages
+                    datasetMessages.Add(message)
+                Next
             End If
-        Next
+            'return the array with dataset(s)
+            Return datasetMessages
+
+        End If
+
 
         Return datasetMessages
     End Function

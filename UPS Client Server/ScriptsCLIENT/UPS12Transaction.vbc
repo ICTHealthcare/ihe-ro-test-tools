@@ -1,0 +1,21 @@
+#If Not DVT_INTERPRETS_SCRIPT Then
+Imports System.Collections.Generic
+#End If
+
+Class UPS12Transaction
+    Inherits Transaction
+
+    'Constructor
+    Public Sub New()
+
+        MyBase.New("UPS-12", "Receive UPS notifications", IODType.UnifiedProcedureStepEvent, True)
+
+    End Sub
+
+    'method which returns the related reference data messages belonging to this transaction
+    Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
+        Dim datasetMessages As ArrayList = New ArrayList()
+        Return datasetMessages
+    End Function
+
+End Class

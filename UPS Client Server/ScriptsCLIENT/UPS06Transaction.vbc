@@ -210,7 +210,7 @@ Class UPS06Transaction
                 referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
                 message = ReferenceDataSet.GetInstance().GetUnifiedProcedureStepPush_NSET_REQ_RO21(m_NSetTemplate)
 
-                Dim NSetRQ As DicomMessage = referenceData.createNSetRqUPSFinalUpdate(DataSetHandler.UPSCacheXMLFileName, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText, message)
+                Dim NSetRQ As DicomMessage = referenceData.createNSetRqUPSFinalUpdateAutomaticTest(DataSetHandler.UPSCacheXMLFileName, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText, message)
                 ' Set the Requested SOPClassUID 
                 NSetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 

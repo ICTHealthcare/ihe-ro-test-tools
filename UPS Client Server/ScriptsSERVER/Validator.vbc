@@ -67,7 +67,23 @@ Class Validator
             'Dim affectedSOPClassUIdChanged As Boolean = convertSOPClassUIDforUPS(Tags.AffectedSOPClassUID, receivedMessage)
             'Dim requestedSOPClassUIdChanged As Boolean = convertSOPClassUIDforUPS(Tags.RequestedSOPClassUID, receivedMessage)
 
-            config.GetMainThread.Validate(receivedMessage)
+            If (receivedMessage.CommandSet.DimseCommand = NEVENTREPORTRQ Or receivedMessage.CommandSet.DimseCommand = NEVENTREPORTRSP) Then
+                config.GetMainThread.Validate(receivedMessage, "Unified Procedure Step - Event SOP Class")
+            ElseIf (receivedMessage.CommandSet.Exists(Tags.AffectedSOPClassUID)) Then
+                If (receivedMessage.CommandSet(Tags.AffectedSOPClassUID).Values(0).ToString() = SOPclass.UnifiedProcedureStepWatchSOPClassUID) Then
+                    config.GetMainThread.Validate(receivedMessage, "Unified Procedure Step - Watch SOP Class")
+                Else
+                    config.GetMainThread.Validate(receivedMessage)
+                End If
+            ElseIf (receivedMessage.CommandSet.Exists(Tags.RequestedSOPClassUID)) Then
+                If (receivedMessage.CommandSet(Tags.RequestedSOPClassUID).Values(0).ToString() = SOPclass.UnifiedProcedureStepWatchSOPClassUID) Then
+                    config.GetMainThread.Validate(receivedMessage, "Unified Procedure Step - Watch SOP Class")
+                Else
+                    config.GetMainThread.Validate(receivedMessage)
+                End If
+            Else
+                config.GetMainThread.Validate(receivedMessage)
+            End If
 
             'change back the sop class UID to received sop class UID
             'convertBackSOPClassUIDforUPS(receivedMessage, requestedSOPClassUIdChanged, affectedSOPClassUIdChanged)
