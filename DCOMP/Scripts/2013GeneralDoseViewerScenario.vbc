@@ -14,7 +14,8 @@ Class GeneralDoseViewerScenario
         ' Create transactions.
         Dim mmro_4_Transaction As MMRO_4_Transaction = New MMRO_4_Transaction(New String() {"RS1.dcm"}) ' Registered Structure Set Retrieval.
         Dim rad_4_8_Transaction As RAD_4_8_Transaction = New RAD_4_8_Transaction(IODType.CTImage, "CT1*.dcm") ' Modality Images Stored (CT images).
-        Dim ro_DC1_Transaction As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD2MP.dcm"}) ' General Dose Retrieval.
+        Dim ro_DC1_Transaction As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD1MP.dcm"}) ' General Dose Retrieval.
+        Dim ro_DC1_Transaction2 As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD1P.dcm"}) ' General Dose Retrieval.
 
         ' Send scenario step.
         Dim sendTestDataDialog As SendTestDataDialog = New SendTestDataDialog(generalDoseViewerActor)
@@ -24,6 +25,7 @@ Class GeneralDoseViewerScenario
             Dim sendScenarioStep As SendScenarioStep = New SendScenarioStep(archiveActor, generalDoseViewerActor)
             sendScenarioStep.AddTransaction(rad_4_8_Transaction)
             sendScenarioStep.AddTransaction(ro_DC1_Transaction)
+            sendScenarioStep.AddTransaction(ro_DC1_Transaction2)
             sendScenarioStep.AddTransaction(mmro_4_Transaction)
             m_scenarioSteps.Add(sendScenarioStep)
 

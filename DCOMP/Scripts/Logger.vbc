@@ -85,7 +85,7 @@ Class Logger
     End Sub
 
     Private Shared Function FormatMessageWithTimeStamp(ByVal prefix As System.String, ByVal message As System.String) As String
-        Return String.Format("{0} {1}: {2}", prefix, DateTime.Now, message)
+        Return String.Format("{0} {1}: {2}", prefix, System.DateTime.Now, message)
     End Function
 
     'Static method for creating one single instance

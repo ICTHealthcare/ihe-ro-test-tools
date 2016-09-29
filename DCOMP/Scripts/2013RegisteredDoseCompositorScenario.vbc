@@ -14,7 +14,7 @@ Class RegisteredDoseCompositorScenario
 
         ' Create transactions.
         Dim mmro_2_Transaction As MMRO_II_2_Transaction = New MMRO_II_2_Transaction(New String() {"RE2.dcm"}) ' Spatial Registration Retrieval
-        Dim ro_DC1_Transaction1 As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD1MP.dcm"}) ' General Dose Retrieval.
+        Dim ro_DC1_Transaction1 As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD1P.dcm"}) ' General Dose Retrieval.
         Dim ro_DC1_Transaction2 As RO_DC1_Transaction = New RO_DC1_Transaction(New String() {"RD2P.dcm"}) ' General Dose Retrieval.
         Dim rad_4_8_Transaction1 As RAD_4_8_Transaction = New RAD_4_8_Transaction(IODType.CTImage, "CT1*.dcm") ' Modality Images Stored (CT images).
         Dim rad_4_8_Transaction2 As RAD_4_8_Transaction = New RAD_4_8_Transaction(IODType.CTImage, "CT2*.dcm") ' Modality Images Stored (CT images).

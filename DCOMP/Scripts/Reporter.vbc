@@ -1,9 +1,9 @@
-Class Reporter
+Public Class Reporter
 
     'the actual instance of the Reporter class
     Private Shared m_instance As Reporter
     Private m_testTool As TestToolBase
-    Private reportCollection As StringCollection
+    Private reportCollection As Specialized.StringCollection
     Private unitTestsRunning As Boolean = False
 
 
@@ -79,4 +79,5 @@ Class Reporter
         End If
         m_testTool.WriteErrorNow(vbCrLf + errorText)
     End Sub
+
 End Class 'Reporter Class

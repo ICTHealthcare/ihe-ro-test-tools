@@ -11,23 +11,45 @@ Public Class RORulesFactory
 #Region "Critical Attribute Mapping Rules"
 
     ' This method is currently only applicable for IODTypes RTPlanGeometric, RTPlanDosimetric and RTDose!
-    Public Shared Function CreateCriticalAttributeMappingRules(ByVal sourceMessage As DicomMessage, ByVal iodType As IODType) As IEnumerable(Of Rule)
+    Public Shared Function CreateCriticalAttributeMappingRules(ByVal sourceMessages As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection, ByVal iodType As IODType) As IEnumerable(Of Rule)
 
         Dim rules As List(Of Rule) = New List(Of Rule)
 
-        rules.Add(New InterRelationRule(sourceMessage, Tags.PatientName, Tags.PatientName, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.PatientID, Tags.PatientID, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.PatientsBirthDate, Tags.PatientsBirthDate, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.PatientSex, Tags.PatientSex, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.StudyInstanceUID, Tags.StudyInstanceUID, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.StudyDate, Tags.StudyDate, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.StudyTime, Tags.StudyTime, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.ReferringPhysiciansName, Tags.ReferringPhysiciansName, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.StudyID, Tags.StudyID, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.AccessionNumber, Tags.AccessionNumber, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.StudyDescription, Tags.StudyDescription, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.FrameofReferenceUID, Tags.FrameofReferenceUID, iodType, ErrorSeverity.RuleError))
-        rules.Add(New InterRelationRule(sourceMessage, Tags.PositionReferenceIndicator, Tags.PositionReferenceIndicator, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.PatientName, Tags.PatientName, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.PatientID, Tags.PatientID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.PatientsBirthDate, Tags.PatientsBirthDate, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.PatientSex, Tags.PatientSex, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.StudyInstanceUID, Tags.StudyInstanceUID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.StudyDate, Tags.StudyDate, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.StudyTime, Tags.StudyTime, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.ReferringPhysiciansName, Tags.ReferringPhysiciansName, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.StudyID, Tags.StudyID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.AccessionNumber, Tags.AccessionNumber, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.StudyDescription, Tags.StudyDescription, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.FrameofReferenceUID, Tags.FrameofReferenceUID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages(0), Tags.PositionReferenceIndicator, Tags.PositionReferenceIndicator, iodType, ErrorSeverity.RuleError))
+
+        Return rules
+
+    End Function
+
+    Public Shared Function CreateCriticalAttributeMappingRules(ByVal sourceMessages As DvtkHighLevelInterface.Dicom.Messages.DicomMessage, ByVal iodType As IODType) As IEnumerable(Of Rule)
+
+        Dim rules As List(Of Rule) = New List(Of Rule)
+
+        rules.Add(New InterRelationRule(sourceMessages, Tags.PatientName, Tags.PatientName, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.PatientID, Tags.PatientID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.PatientsBirthDate, Tags.PatientsBirthDate, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.PatientSex, Tags.PatientSex, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.StudyInstanceUID, Tags.StudyInstanceUID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.StudyDate, Tags.StudyDate, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.StudyTime, Tags.StudyTime, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.ReferringPhysiciansName, Tags.ReferringPhysiciansName, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.StudyID, Tags.StudyID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.AccessionNumber, Tags.AccessionNumber, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.StudyDescription, Tags.StudyDescription, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.FrameofReferenceUID, Tags.FrameofReferenceUID, iodType, ErrorSeverity.RuleError))
+        rules.Add(New InterRelationRule(sourceMessages, Tags.PositionReferenceIndicator, Tags.PositionReferenceIndicator, iodType, ErrorSeverity.RuleError))
 
         Return rules
 
