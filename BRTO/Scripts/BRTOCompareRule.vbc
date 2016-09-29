@@ -151,7 +151,7 @@ Class CompareRule
 
         'Create a compare thread
         Dim TheCompareDicomThread As CompareDicomThread = New CompareDicomThread(messageDataSet, refDatasetObject)
-
+        TheCompareDicomThread.Options.GenerateDetailedResults = True
         'Compare message with its reference test data object
         Logger.GetInstance.LogMessage("Comparing message (this takes a while)...")
         TheCompareDicomThread.PerformCompare()
