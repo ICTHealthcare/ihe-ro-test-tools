@@ -14,8 +14,8 @@ Class RO_19_Transaction
 
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean)
-        MyBase.New("RO-19", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ro19IODType = IODType.UnifiedProcedureStepPull
+        MyBase.New("RO-19", "UPS in progress", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
+        ro19IODType = IODType.UnifiedProcedureStepPush
     End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList

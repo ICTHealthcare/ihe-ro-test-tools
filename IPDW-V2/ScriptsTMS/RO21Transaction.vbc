@@ -17,8 +17,8 @@ Class RO_21_Transaction
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean)
 
-        MyBase.New("RO-21", "UPS Final Update", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ro21IODType = IODType.UnifiedProcedureStepPull
+        MyBase.New("RO-21", "UPS Final Update", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
+        ro21IODType = IODType.UnifiedProcedureStepPush
 
     End Sub
 

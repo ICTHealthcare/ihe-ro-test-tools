@@ -12,8 +12,8 @@ Class RO_25_Transaction
     'Constructor
     Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean)
 
-        MyBase.New("RO-25", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ro25IODType = IODType.UnifiedProcedureStepPull
+        MyBase.New("RO-25", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
+        ro25IODType = IODType.UnifiedProcedureStepPush
         _isCompleted = isCompleted
     End Sub
 

@@ -10,8 +10,8 @@ Class RO_26_Transaction
     'Constructor
     Public Sub New()
 
-        MyBase.New("RO-26", "UPS Progress update", IODType.UnifiedProcedureStepPull, True)
-        ro26IODType = IODType.UnifiedProcedureStepPull
+        MyBase.New("RO-26", "UPS Progress update", IODType.UnifiedProcedureStepPush, True)
+        ro26IODType = IODType.UnifiedProcedureStepPush
         'm_isStartProcedure = isStartProcedure
 
     End Sub
