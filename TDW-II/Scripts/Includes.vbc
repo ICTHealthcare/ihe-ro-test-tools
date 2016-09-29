@@ -123,5 +123,6 @@
 #include "RadiationDeliveryDialog.Designer.vbc"
 #include "IodTypeHelper.vbc"
 #include "RequestedCMoveSopClassUIDNotRTBDIRule.vbc"
+#include "IODOneOfCollectionReceivedRule.vbc"
 
 #End If

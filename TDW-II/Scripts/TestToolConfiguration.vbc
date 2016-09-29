@@ -83,6 +83,8 @@ Class TestToolConfiguration
                 Return "Deformable Spatial Registration Storage.def"
             Case iodType.RTPlanDosimetric
                 Return "RT Plan Storage.def"
+            Case iodType.RTIonPlan
+                Return "RT Ion Plan Storage.def"
             Case iodType.RTBeamsTreatmentRecordSTORE
                 Return "RT Beams Treatment Record Storage.def"
 
@@ -360,6 +362,7 @@ Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.SpatialRegistration))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.DeformableSpatialRegistration))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTPlanDosimetric))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTIonPlan))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepPull))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.UnifiedProcedureStepPush))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTImage))

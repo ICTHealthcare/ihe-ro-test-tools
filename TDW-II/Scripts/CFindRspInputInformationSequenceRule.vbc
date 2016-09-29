@@ -39,7 +39,7 @@ Class CFindRspInputInformationSequenceRule
                         If dicomMessage.Exists(m_TagSequence) Then
                             'raise tag
                             itemTag = getItemInSQTag(items, Tags.InputInformationSequence)
-                            If dicomMessage(itemTag).Values.Item(0) = SOPclass.RTPlanDosimetricSOPClassUID Then
+                            If dicomMessage(itemTag).Values.Item(0) = SOPclass.RTPlanDosimetricSOPClassUID Or dicomMessage(itemTag).Values.Item(0) = SOPclass.RTIonPlanSOPClassUID Then
                                 RTPlanFound = True
                             End If
                             If dicomMessage(itemTag).Values.Item(0) = SOPclass.RTBeamsDeliveryInstructionSOPClassUID Then

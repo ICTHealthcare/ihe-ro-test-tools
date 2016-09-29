@@ -55,7 +55,10 @@ Class RO59Transaction
     Public Function GetTransactionRulesForC_StoreRequest() As System.Collections.Generic.IEnumerable(Of Rule)
         Dim m_rules As List(Of Rule) = New List(Of Rule)
         'Atleast one RTPlan should be received. Rule is performed on the messagecollection, not on every C-Store operation, so only once.
-        m_rules.Add(New IODReceivedRule(IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+
+        Dim optionsColletcion As New List(Of IODType)(New IODType() {IODType.RTPlanDosimetric, IODType.RTIonPlan})
+
+        m_rules.Add(New IODOneOfCollectionReceivedRule(optionsColletcion, ErrorSeverity.RuleError))
         m_rules.Add(New IODNotReceivedRule(IODType.RTBeamsDeliveryInstruction, ErrorSeverity.RuleError))
         m_rules.Add(New IsRequiredRule(Tags.AffectedSOPClassUID, IODType.CStoreRequest, ErrorSeverity.RuleError))
 

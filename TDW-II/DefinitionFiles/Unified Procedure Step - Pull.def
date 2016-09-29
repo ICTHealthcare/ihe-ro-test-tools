@@ -2605,6 +2605,7 @@ ENDDEFINE
 
 DEFINE N-GET-RSP
 (0x00000000,1,UL,1)                                 "Group 0000 Length"
+(0x00000002,1,UI,1)                                 "Affected SOP Class UID"
 (0x00000100,1,US,1,E,0x8110)                        "Command Field"
 (0x00000120,1,US,1)                                 "Message ID Being Responded To"
 (0x00000800,1,US,1)                                 "Data Set Type"

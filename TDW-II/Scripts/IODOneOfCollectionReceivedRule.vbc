@@ -1,0 +1,48 @@
+Class IODOneOfCollectionReceivedRule
+    Inherits MessageCollectionRule
+
+    Private m_optionsColletcion As List(Of IODType)
+
+    Public Sub New(ByVal optionsColletcion As List(Of IODType), ByVal severity As ErrorSeverity)
+        MyBase.New("IODRTPlanOrRTIonPlanReceivedRule", IODType.NotSpecified, severity)
+        m_optionsColletcion = optionsColletcion
+    End Sub
+
+
+    Public Overrides Sub ApplyRule(ByRef dataSetCollection As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection)
+
+        Dim errorEncountered As Boolean = False
+        Dim nrOffSoppClassUIDsFound As Integer = 0
+        Dim errorMessage As String
+
+        For Each dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage In dataSetCollection
+            If dicomMessage.Exists(Tags.SOPClassUID) Then
+                If m_optionsColletcion.Contains(SOPclass.GetIODType(dicomMessage.DataSet(Tags.SOPClassUID).Values(0))) Then
+                    nrOffSoppClassUIDsFound = nrOffSoppClassUIDsFound + 1
+                End If
+            End If
+        Next
+
+        Dim stringIODs As New System.Text.StringBuilder
+        Dim optionIOD As IODType
+        For Each optionIOD In m_optionsColletcion
+            stringIODs.Append(optionIOD.ToString() + " or ")
+        Next
+
+        If nrOffSoppClassUIDsFound = 0 Then
+            errorMessage = "No " + stringIODs.ToString().Substring(0, stringIODs.Length - 3) + " received"
+            errorEncountered = True
+        Else
+            errorMessage = stringIODs.ToString().Substring(0, stringIODs.Length - 3) + " is received"
+        End If
+
+        If errorEncountered = True Then
+            Me.SetError(errorMessage)
+        Else
+            Me.SetValid(errorMessage)
+        End If
+
+        Me.Report()
+    End Sub
+End Class
+

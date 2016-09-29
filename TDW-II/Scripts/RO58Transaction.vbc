@@ -40,9 +40,9 @@ Class RO58Transaction
         m_rules.Add(New IsRequiredRule(Tags.ScheduledStationNameCodeSequence, ro58IODType, ErrorSeverity.RuleError))
 
         '(0x00404025[1]/0x00080100) O  Code Value for the Scheduled Station Name shall contain the string used to definitively match the Performing Device instance with its representation on the TMS. It is not necessarily human-readable.
-        m_rules.Add(New IsRequiredRule(Tags.ScheduledStationCodeValue, ro58IODType, ErrorSeverity.RuleError))
+        'm_rules.Add(New OptionalRule(Tags.ScheduledStationCodeValue, ro58IODType, ErrorSeverity.RuleError))
         '(0x00404025[1]/0x00080102) O  Coding Scheme Designator for the Scheduled Station Name is a private coding scheme, and is not used explicitly in this profile.	 
-        m_rules.Add(New OptionalRule(Tags.ScheduledStationCodingSchemeDesignator, ro58IODType, ErrorSeverity.RuleInfo))
+        'm_rules.Add(New OptionalRule(Tags.ScheduledStationCodingSchemeDesignator, ro58IODType, ErrorSeverity.RuleInfo))
 
         'Scheduled Procedure Step Start Date and Time R
         m_rules.Add(New IsRequiredRule(Tags.ScheduledProcedureStepStartDateandTime, ro58IODType, ErrorSeverity.RuleError))

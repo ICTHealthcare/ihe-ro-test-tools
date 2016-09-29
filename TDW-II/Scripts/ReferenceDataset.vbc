@@ -155,8 +155,8 @@ Class ReferenceDataSet
             responseMessage.DataSet.Read(fileName)
             Logger.GetInstance().LogMessage(String.Format("Read reference dataset file (UnifiedProcedureStepPull RSP): '{0}'.", fileName))
 
-            'responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, &HFF00) ' Status.
-            responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, 0) ' Status = Success
+            responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, &HFF00) ' Status.
+            'responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, 0) ' Status = Success
 
             'The values in the C-FIND RSP are dependant on the configuration file
             'at least for the OST and the TMS actor, the names should be conform the configuration
@@ -660,7 +660,7 @@ Class ReferenceDataSet
                         If retrieveAeTitle = sutAeTitle Then
                             Dim sopClassUID As String = sqIisItem.GetValues(Tags.ReferencedSOPSequenceSOPClassUID).Item(0)
 
-                            If sopClassUID = SOPclass.RTPlanDosimetricSOPClassUID Then
+                            If sopClassUID = SOPclass.RTPlanDosimetricSOPClassUID Or sopClassUID = SOPclass.RTIonPlanSOPClassUID Then
                                 Dim serieInstanceUID As String = sqIisItem.GetValues(Tags.SeriesInstanceUID).Item(0)
 
                                 Dim nrOfSopItems As Integer = sqIisItem.GetitemCount(Tags.ReferencedSOPSequenceMOVE)

@@ -183,6 +183,10 @@ Class MessageHandlerCFind
                 Send(message)
             Next
 
+            Dim responseMessage2 As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CFINDRSP)
+            responseMessage2.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, 0) ' Status = Success
+            Send(responseMessage2)
+
             Return (True)
 
         Else
