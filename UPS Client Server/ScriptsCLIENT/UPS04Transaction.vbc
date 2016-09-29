@@ -161,6 +161,9 @@ Class UPS04Transaction
             End If
 
             Dim tagsList As New List(Of Object)
+            Dim multipuleValue As String = ""
+
+
             Using r As StreamReader = New StreamReader(TestToolConfiguration.GetInstance().GetScriptPath() + "\..\..\Datasets\CLIENTSERVER\UPSMessages\N-Get-Tags.txt")
                 ' Store contents in this String.
                 Dim line As String
@@ -172,13 +175,16 @@ Class UPS04Transaction
                 Do While (Not String.IsNullOrEmpty(line))
 
                     Dim trimTag As String = line.Trim()
-                    Dim i As Object = Convert.ToInt32(trimTag, 16)
+                    multipuleValue = multipuleValue + "(" + trimTag.Substring(0, 4) + "," + trimTag.Substring(4, 4) + ")\"
+                    Dim i As Integer = Convert.ToInt32(trimTag, 16)
                     tagsList.Add(i)
                     line = r.ReadLine
                 Loop
             End Using
 
-            NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, tagsList.ToArray())
+            Dim hexTags(tagsList.Count - 1) As Object
+            hexTags = tagsList.ToArray()
+            NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, hexTags)
 
             datasetMessages.Add(NGetRQ)
 

@@ -99,7 +99,7 @@ Class SenderThread
         End If
 
         If sop_uid = SOPclass.UnifiedProcedureStepPushSOPClassUID Then
-            If Not message.CommandSet.DimseCommand = CFINDRQ Then
+            If Not message.CommandSet.DimseCommand = NCREATERQ Then
                 sop_uid = SOPclass.UnifiedProcedureStepPullSOPClassUID
             End If
         End If
@@ -261,6 +261,14 @@ Class SenderThread
                         'collect the received messages for the specific command
                         If receivedCStore.CommandSet.DimseCommand = DvtkData.Dimse.DimseCommand.CSTORERQ Then
                             m_ReceivedMessages.Add(receivedCStore)
+                            Try
+
+                            If (receivedCStore.DataSet(Tags.SOPClassUID).Values(0).ToString() = SOPclass.RTBeamsDeliveryInstructionSOPClassUID) Then
+                                DataSetHandler.SaveDatasetToFileUPS(receivedCStore.DataSet, DataSetHandler.UPSCacheXMLFileName, "RTBeamsDeliveryInstruction" + ReferenceDataSet.GetInstance().GetNumberOfRTBDIinCache().ToString())
+                            End If
+                            Catch ex As Exception
+                                Logger.GetInstance().LogMessage(ex.Message.ToString())
+                            End Try
                             Validate(receivedCStore)
                         End If
                     Next

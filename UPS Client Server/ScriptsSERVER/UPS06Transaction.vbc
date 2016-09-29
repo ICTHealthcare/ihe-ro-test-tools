@@ -17,8 +17,8 @@ Class UPS06Transaction
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal NSetTemplate As String)
 
-        MyBase.New("UPS-06", "UPS Final Update", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ups06IODType = IODType.UnifiedProcedureStepPull
+        MyBase.New("UPS-06", "UPS Final Update", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
+        ups06IODType = IODType.UnifiedProcedureStepPush
         m_NSetTemplate = NSetTemplate
     End Sub
 
