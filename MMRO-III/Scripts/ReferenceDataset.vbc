@@ -109,7 +109,7 @@ Class ReferenceDataSet
 
             'Checking the existance of PETImage files now
             If Not validateSliceImageFilesExistance(IODType.PETImage) Then
-                loadingSucceeded = False
+                'loadingSucceeded = False
                 'No debug line, validateCTImageFilesExistance() does that for us
                 Return loadingSucceeded
             End If
@@ -273,22 +273,27 @@ Class ReferenceDataSet
     End Function
     Public Function GetSpatialRegistration() As Object
         Dim nodes As System.Xml.XmlNodeList = m_DataSetXML.SelectNodes("/DataSet/SpatialRegistration")
+        Dim SpatialRegistrationList As New List(Of DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
 
         If m_SpatialRegistration Is Nothing Then
             Dim regSet As System.Xml.XmlNodeList = nodes.Item(0).ChildNodes()
-            ReDim m_SpatialRegistration(regSet.Count - 1)
 
             Dim i As Integer
             For i = 0 To regSet.Count - 1
                 Dim fileName = m_datasetPath + "\" + regSet.Item(i).InnerText
-                m_SpatialRegistration(i) = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CSTORERQ)
-                Try
-                    m_SpatialRegistration(i).DataSet.Read(fileName)
-                Catch ex As DvtkHighLevelInterface.Common.Other.HliException
-                    Throw New System.Exception("Error Reading the file from the Dataset: " + fileName)
-                End Try
+                If (fileName.EndsWith(".dcm")) Then
+                    Dim dicomMessage As New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CSTORERQ)
+                    Try
+                        dicomMessage.DataSet.Read(fileName)
+                        SpatialRegistrationList.Add(dicomMessage)
+                    Catch ex As DvtkHighLevelInterface.Common.Other.HliException
+                        Throw New System.Exception("Error Reading the file from the Dataset: " + fileName)
+                    End Try
+                End If
             Next
+            m_SpatialRegistration = SpatialRegistrationList.ToArray()
         End If
+
         Return m_SpatialRegistration
     End Function
 

@@ -33,6 +33,7 @@ Class RegisteredDoseDisplayScenario1
 
             If DefOrCustomDatasetDialog.Custom Then
                 chozenFolder = DefOrCustomDatasetDialog.lbCustomDatasets.SelectedItem.ToString()
+                m_scenarioDatasetXmlFileName = chozenFolder + ".xml"
             End If
 
             send.AddTransaction(New RAD_8_Transaction(IODType.CTImage))

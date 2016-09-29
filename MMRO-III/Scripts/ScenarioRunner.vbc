@@ -13,7 +13,7 @@ Class ScenarioRunner
         Try
             ' - loading the scenario dataset
             If Not scenario.ScenarioDatasetFile = "" Or Not scenario.ScenarioDatasetFile = Nothing Then
-                'LoadScenarioDataset(scenario.ScenarioDatasetFile)
+                LoadScenarioDataset(scenario.ScenarioDatasetFile)
             End If
             'Run the scenario steps
             For Each scenarioStep As ScenarioStep In scenario.ScenarioSteps

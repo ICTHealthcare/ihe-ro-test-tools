@@ -25,32 +25,33 @@ Class MMRO_III_2_Transaction
         Dim MessageArray() As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = Nothing
 
         MessageArray = referenceData.GetSpatialRegistration()
-
+        Dim sequenceItemNumberToCheck As Integer = 0
         Dim length As Integer = MessageArray.GetLength(0)
         Dim i As Integer
         For i = 0 To length - 1
-            Select Case m_ScenarioVariant
-                Case "MR"
-                    If MessageArray(i).DataSet.GetValues("0x00700308[2]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.MRImage).DataSet.GetValues("0x00200052").Item(0)) Then
-                        datasetMessages.Add(MessageArray(i))
-                    End If
-                Case "PET"
-                    If MessageArray(i).DataSet.GetValues("0x00700308[2]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.PETImage).DataSet.GetValues("0x00200052").Item(0)) Then
-                        datasetMessages.Add(MessageArray(i))
-                    End If
-                Case "CT"
-                    If MessageArray(i).DataSet.GetValues("0x00700308[2]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.CTImage).DataSet.GetValues("0x00200052").Item(0)) Then
-                        datasetMessages.Add(MessageArray(i))
-                    End If
-                Case Else
+            Dim registrationFrameOfReferenceUID As String = MessageArray(i).DataSet("0x00200052").Values(0).ToString()
+
+            If (MessageArray(i).DataSet.GetValues("0x00700308[1]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.CTImage).DataSet.GetValues("0x00200052").Item(0))) Then
+                sequenceItemNumberToCheck = 2
+                If MessageArray(i).DataSet.GetValues("0x00700308[" + sequenceItemNumberToCheck.ToString() + "]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.MRImage).DataSet.GetValues("0x00200052").Item(0)) Then
                     datasetMessages.Add(MessageArray(i))
-            End Select
+                End If
+            ElseIf (MessageArray(i).DataSet.GetValues("0x00700308[2]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.CTImage).DataSet.GetValues("0x00200052").Item(0))) Then
+                sequenceItemNumberToCheck = 1
+                If MessageArray(i).DataSet.GetValues("0x00700308[" + sequenceItemNumberToCheck.ToString() + "]/0x00200052").Item(0).Equals(referenceData.GetSliceImage(1, 1, IODType.MRImage).DataSet.GetValues("0x00200052").Item(0)) Then
+                    datasetMessages.Add(MessageArray(i))
+                End If
+            End If
         Next
+
+        If (sequenceItemNumberToCheck = 0) Then
+            Reporter.GetInstance.ReportErrorMessage("Frame of reference of the spatial registration not in one of the items of the registration sequence")
+        End If
 
         'return the array with dataset(s)
 
         If (datasetMessages.Count = 0) Then
-            Reporter.GetInstance.ReportErrorMessage("Spatial registration referenced object is not in the dataset")
+            Reporter.GetInstance.ReportErrorMessage("One of the items of the registration sequence does not reference to the frame of reference of FOR 2")
         End If
 
 
