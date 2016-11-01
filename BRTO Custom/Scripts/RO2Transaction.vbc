@@ -20,7 +20,7 @@ Inherits Transaction
 		
 		'return the array with dataset(s)
 		return datasetMessages
-    End Function
+	End Function
 
 
 End Class
