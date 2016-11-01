@@ -7,7 +7,6 @@ Class UPS05Transaction
 
     Private ups05IODType As IODType = Nothing
     Private m_NSetTemplate As String
-    Private m_customSOPClassUID, m_customSOPInstanceUID, m_customTransactionUID As String
 
     'Constructor
     Public Sub New(ByVal NSetTemplate As String)
@@ -15,19 +14,7 @@ Class UPS05Transaction
         MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPull, False)
         ups05IODType = IODType.UnifiedProcedureStepPull
         m_NSetTemplate = NSetTemplate
-        m_customSOPClassUID = Nothing
-        m_customSOPInstanceUID = Nothing
-        m_customTransactionUID = Nothing
-    End Sub
 
-    Public Sub New(ByVal NSetTemplate As String, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customTransactionUID As String)
-
-        MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPull, False)
-        ups05IODType = IODType.UnifiedProcedureStepPull
-        m_NSetTemplate = NSetTemplate
-        m_customSOPClassUID = customSOPClassUID
-        m_customSOPInstanceUID = customSOPInstanceUID
-        m_customTransactionUID = customTransactionUID
     End Sub
 
 
@@ -169,28 +156,11 @@ Class UPS05Transaction
                 message = ReferenceDataSet.GetInstance().GetUnifiedProcedureStepPush_NSET_REQ_RO26(m_NSetTemplate)
 
                 Dim NSetRQ As DicomMessage = referenceData.createNSetRqUPSProgressUpdate(DataSetHandler.UPSCacheXMLFileName, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText, message)
-
                 ' Set the Requested SOPClassUID 
-                If m_customSOPClassUID Is Nothing Then
-                    NSetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-                Else
-                    NSetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, m_customSOPClassUID)
-                End If
-
-                ' SOP instance UID
-                If m_customSOPInstanceUID Is Nothing Then
-                    NSetRQ.Set(Tags.RequestedSOPInstanceUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText)
-                Else
-                    NSetRQ.Set(Tags.RequestedSOPInstanceUID, UI, m_customSOPInstanceUID)
-                End If
+                NSetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
                 ' Transaction UID
-                If m_customTransactionUID Is Nothing Then
-                    NSetRQ.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
-                Else
-                    NSetRQ.DataSet.Set(Tags.TransactionUID, UI, m_customTransactionUID)
-                End If
-
+                NSetRQ.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
 
                 datasetMessages.Add(NSetRQ)
             Else

@@ -94,10 +94,9 @@ Class SenderThread
         'always use the SOP class UID from the commandset, the dataset doesn't always need to have a SOP Class UID
         Dim sop_uid As String = message.CommandSet.GetSopClassUid()
 
-        If (String.IsNullOrEmpty(sop_uid) Or sop_uid = "1.2.3") Then
-            sop_uid = SOPclass.UnifiedProcedureStepPushSOPClassUID
-        End If
-
+        'RVDH: When an UPS PUSH is in the requested SOP Class UID in the commandset of the DICOM message, 
+        'the transfersyntax that should be negotiated should be a UPS PULL
+        'this only occurs when sending an N-ACTION-RQ, N-SET-RQ or N-GET-RQ
         If sop_uid = SOPclass.UnifiedProcedureStepPushSOPClassUID Then
             If Not message.CommandSet.DimseCommand = CFINDRQ Then
                 sop_uid = SOPclass.UnifiedProcedureStepPullSOPClassUID
@@ -221,11 +220,7 @@ Class SenderThread
                 End If
 
                 Dim sopClassUid As String = sndMessage.CommandSet.GetSopClassUid()
-
-                If ((String.IsNullOrEmpty(sopClassUid) Or sopClassUid = "1.2.3")) Then
-                Else
-                    Logger.GetInstance().LogMessage(String.Format("Sending message with Sop class '{0}' ({1})", SOPclass.GetIODType(sopClassUid), sopClassUid))
-                End If
+                Logger.GetInstance().LogMessage(String.Format("Sending message with Sop class '{0}' ({1})", SOPclass.GetIODType(sopClassUid), sopClassUid))
 
                 If Not presentationContext = Nothing Then
                     Send(sndMessage, presentationContext)
@@ -261,7 +256,6 @@ Class SenderThread
                         'collect the received messages for the specific command
                         If receivedCStore.CommandSet.DimseCommand = DvtkData.Dimse.DimseCommand.CSTORERQ Then
                             m_ReceivedMessages.Add(receivedCStore)
-                            Validate(receivedCStore)
                         End If
                     Next
                 End If

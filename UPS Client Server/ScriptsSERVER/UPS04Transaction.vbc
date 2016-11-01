@@ -6,184 +6,114 @@ Class UPS04Transaction
     Inherits Transaction
 
     Private NGetIODType As IODType = Nothing
-    Private m_useAutomaticTest As Boolean
-    Private m_useWrongInstanceUID As Boolean
+    'Private m_isStartProcedure As Boolean
 
     'Constructor
     Public Sub New()
 
         MyBase.New("UPS-04", "UPS get information", IODType.UnifiedProcedureStepPush, True)
         NGetIODType = IODType.UnifiedProcedureStepPush
-        m_useAutomaticTest = False
-        m_useWrongInstanceUID = False
+        'm_isStartProcedure = isStartProcedure
+
     End Sub
 
-    'Constructor
-    Public Sub New(ByVal useAutomaticTest As Boolean)
-
-        MyBase.New("UPS-04", "UPS get information", IODType.UnifiedProcedureStepPush, True)
-        NGetIODType = IODType.UnifiedProcedureStepPush
-        m_useAutomaticTest = useAutomaticTest
-        m_useWrongInstanceUID = False
-    End Sub
-
-    'Constructor
-    Public Sub New(ByVal useAutomaticTest As Boolean, ByVal UseWrongInstanceUID As Boolean)
-
-        MyBase.New("UPS-04", "UPS get information", IODType.UnifiedProcedureStepPush, True)
-        NGetIODType = IODType.UnifiedProcedureStepPush
-        m_useAutomaticTest = useAutomaticTest
-        m_useWrongInstanceUID = UseWrongInstanceUID
-    End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
+
+        ' Some rules need the dataset used in the request.
+        Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance
+        referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
 
         Dim datasetMessages As ArrayList = New ArrayList()
 
         Dim NGetRQ As DicomMessage
 
-        If Not (m_useAutomaticTest) Then
-
-            ' Some rules need the dataset used in the request.
-            Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance
-            referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
-
-            Dim selectUPSForm As SelectUPS = New SelectUPS()
-            Dim getInformationContent As GetInformationContent = New GetInformationContent()
-            selectUPSForm.DataGridUPS.MultiSelect = False
-            selectUPSForm.SetUPSInProgress.Text = "Send N-Get-RQ for information of selected UPS"
-            selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
+        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        Dim getInformationContent As GetInformationContent = New GetInformationContent()
+        selectUPSForm.DataGridUPS.MultiSelect = False
+        selectUPSForm.SetUPSInProgress.Text = "Send N-Get-RQ for information of selected UPS"
+        selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
 
 
-            selectUPSForm.ShowDialog()
+        selectUPSForm.ShowDialog()
 
-            If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
-
-
-                For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
-                    If (DataRow.Selected) Then
-
-                        Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
-
-                        If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
-
-                            Dim selectedUPS As DvtkHighLevelInterface.Dicom.Other.DataSet = referenceData.GetSelectedCFindRsp(SOPInstanceUID)
-
-                            referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
-                            Dim NGetTagFile As String = referenceData.m_datasetPath + "\N-Get-Tags.txt"
-
-                            Try
-                                Using sr As New StreamReader(NGetTagFile)
-                                    Do While sr.Peek() >= 0
-                                        Dim line As String
-                                        line = sr.ReadLine()
-                                        Try
-                                            getInformationContent.DataGridViewNGet.Rows.Add(line, Tags.GetTagName("0x" + line.Substring(0, 8)))
-                                        Catch ex As Exception
-                                            getInformationContent.DataGridViewNGet.Rows.Add(line, "")
-                                        End Try
-
-                                    Loop
+        If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
 
 
-                                End Using
-                            Catch e As Exception
-                                Console.WriteLine("The file could not be read:")
-                                Console.WriteLine(e.Message)
-                            End Try
+            For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
+                If (DataRow.Selected) Then
 
-                            getInformationContent.ShowDialog()
+                    Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
 
-                            If getInformationContent.DialogResult = Windows.Forms.DialogResult.OK Then
+                    If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
 
-                                NGetRQ = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.NGETRQ)
+                        Dim selectedUPS As DvtkHighLevelInterface.Dicom.Other.DataSet = referenceData.GetSelectedCFindRsp(SOPInstanceUID)
 
-                                NGetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-                                NGetRQ.Set(Tags.RequestedSOPInstanceUID, DvtkData.Dimse.VR.UI, SOPInstanceUID)
+                        referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
+                        Dim NGetTagFile As String = referenceData.m_datasetPath + "\N-Get-Tags.txt"
 
-                                'Dim givenTags As String() = getInformationContent.TextBox1.Text.Split(", ")
+                        Try
+                            Using sr As New StreamReader(NGetTagFile)
+                                Do While sr.Peek() >= 0
+                                    Dim line As String
+                                    line = sr.ReadLine()
+                                    Try
+                                        getInformationContent.DataGridViewNGet.Rows.Add(line, Tags.GetTagName("0x" + line.Substring(0, 8)))
+                                    Catch ex As Exception
+                                        getInformationContent.DataGridViewNGet.Rows.Add(line, "")
+                                    End Try
 
-                                Dim hexTags(getInformationContent.DataGridViewNGet.Rows.Count - 1) As Object
-                                Dim count As Integer = 0
+                                Loop
 
 
-                                For Each row As DataGridViewRow In getInformationContent.DataGridViewNGet.Rows
-                                    If Not (String.IsNullOrEmpty(row.Cells("Tag").Value.ToString().Trim())) Then
-                                        Dim trimTag As String = row.Cells("Tag").Value.ToString().Trim()
-                                        Dim i As Integer = Convert.ToInt32(trimTag, 16)
-                                        hexTags(count) = i
+                            End Using
+                        Catch e As Exception
+                            Console.WriteLine("The file could not be read:")
+                            Console.WriteLine(e.Message)
+                        End Try
 
-                                        count = count + 1
-                                    End If
+                        getInformationContent.ShowDialog()
 
-                                Next
+                        If getInformationContent.DialogResult = Windows.Forms.DialogResult.OK Then
 
-                                NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, hexTags)
+                            NGetRQ = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.NGETRQ)
 
-                                'NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, &H741000, &H741002, &H741216)
+                            NGetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+                            NGetRQ.Set(Tags.RequestedSOPInstanceUID, DvtkData.Dimse.VR.UI, SOPInstanceUID)
 
-                                datasetMessages.Add(NGetRQ)
-                            End If
-                            'Else
-                            '    Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an Transaction UID"))
-                            'End If
-                        Else
-                            Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
+                            'Dim givenTags As String() = getInformationContent.TextBox1.Text.Split(", ")
+
+                            Dim hexTags(getInformationContent.DataGridViewNGet.Rows.Count - 1) As Object
+                            Dim count As Integer = 0
+
+
+                            For Each row As DataGridViewRow In getInformationContent.DataGridViewNGet.Rows
+
+                                Dim trimTag As Integer = row.Cells("Tag").Value.ToString().Trim()
+                                Dim i As Integer = Convert.ToInt32(trimTag, 16)
+                                hexTags(count) = i
+
+                                count = count + 1
+                                'End If
+
+                            Next
+
+                            NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, hexTags)
+
+                            'NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, &H741000, &H741002, &H741216)
+
+                            datasetMessages.Add(NGetRQ)
                         End If
+                        'Else
+                        '    Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an Transaction UID"))
+                        'End If
+                    Else
+                        Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
                     End If
-                Next
-
-            End If
-
-        Else
-            Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
-            Try
-                currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
-            Catch ex As Exception
-                currentAutomaticTestXMLfile = Nothing
-                Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
-            End Try
-
-            NGetRQ = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.NGETRQ)
-
-            NGetRQ.Set(Tags.RequestedSOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-
-            If Not currentAutomaticTestXMLfile Is Nothing Then
-
-                If Not m_useWrongInstanceUID Then
-                    NGetRQ.Set(Tags.RequestedSOPInstanceUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText)
-                Else
-                    NGetRQ.Set(Tags.RequestedSOPInstanceUID, UI, "6.6.6")
                 End If
-
-            Else
-                Logger.GetInstance().LogErrorMessage(String.Format("First run the Create UPS or the WorklistQuery scenario, now not a UPS available on the server"))
-            End If
-
-            Dim tagsList As New List(Of Object)
-            Using r As StreamReader = New StreamReader(TestToolConfiguration.GetInstance().GetScriptPath() + "\..\..\Datasets\CLIENTSERVER\UPSMessages\N-Get-Tags.txt")
-                ' Store contents in this String.
-                Dim line As String
-
-                ' Read first line.
-                line = r.ReadLine
-
-                ' Loop over each line in file, While list is Not Nothing.
-                Do While (Not String.IsNullOrEmpty(line))
-
-                    Dim trimTag As String = line.Trim()
-                    Dim i As Object = Convert.ToInt32(trimTag, 16)
-                    tagsList.Add(i)
-                    line = r.ReadLine
-                Loop
-            End Using
-
-            NGetRQ.Set(Tags.AttributeIdentifierList, DvtkData.Dimse.VR.AT, tagsList.ToArray())
-
-            datasetMessages.Add(NGetRQ)
+            Next
 
         End If
-
         Return datasetMessages
     End Function
 

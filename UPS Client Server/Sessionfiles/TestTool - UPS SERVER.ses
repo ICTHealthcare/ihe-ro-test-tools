@@ -4,7 +4,7 @@ SESSION-TYPE script
 SESSION-FILE-VERSION 2
 
 # SUT Test Session Properties
-SESSION-TITLE "IHE-RO 2014 TestTool - UPS Server 2.0.2"
+SESSION-TITLE "IHE-RO 2014 TestTool - UPS Server 2.0.1"
 SESSION-ID 000
 MANUFACTURER "DVT"
 MODEL-NAME "DVT"
@@ -67,8 +67,6 @@ DEFINITION-DIRECTORY "..\DefinitionFiles\"
 DEFINITION "All Dimse Commands.def"
 DEFINITION "Unified Procedure Step - Pull.def"
 DEFINITION "Unified Procedure Step - Push.def"
-DEFINITION "Unified Procedure Step - Event.def"
-DEFINITION "Unified Procedure Step - Watch.def"
 DEFINITION "CT Image Storage.def"
 DEFINITION "MR Image Storage.def"
 DEFINITION "PET Image Storage.def"

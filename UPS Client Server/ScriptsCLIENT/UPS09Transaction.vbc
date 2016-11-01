@@ -53,7 +53,7 @@ Class UPS09Transaction
                                 Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
                                 ' Set the Requested SOPClassUID 
-                                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepWatchSOPClassUID)
+                                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
                                 ' Set the Requested SOP Instance UID
                                 message.Set(Tags.RequestedSOPInstanceUID, UI, SOPInstanceUID)
@@ -88,7 +88,7 @@ Class UPS09Transaction
                 Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
                 ' Set the Requested SOPClassUID 
-                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepWatchSOPClassUID)
+                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
                 ' Set the Requested SOP Instance UID
                 message.Set(Tags.RequestedSOPInstanceUID, UI, "1.2.840.10008.5.1.4.34.5")

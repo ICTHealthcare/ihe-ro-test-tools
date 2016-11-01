@@ -120,7 +120,4 @@ Public Enum UPS_Scenario
     '''<remarks/>
     UpsSubscribe
 
-    '''<remarks/>
-    UpsNEventUpdate
-
 End Enum

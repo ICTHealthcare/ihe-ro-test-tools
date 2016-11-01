@@ -8,8 +8,6 @@ Class UPS03Transaction
     Private ups03IODType As IODType = Nothing
     Private countSelectedUPSes As Integer = 0
     Private m_useAutomaticTesting As Boolean
-    Private m_customSOPClassUID, m_customSOPInstanceUID, m_customActionTypeID, m_customProcedureStepState, m_customTransactionUID As String
-
     'Constructor
     Public Sub New()
         MyClass.New(True, False)
@@ -20,22 +18,6 @@ Class UPS03Transaction
         MyBase.New("UPS-03", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
         ups03IODType = IODType.UnifiedProcedureStepPull
         m_useAutomaticTesting = useAutomaticTesting
-        m_customSOPClassUID = Nothing
-        m_customSOPInstanceUID = Nothing
-        m_customActionTypeID = Nothing
-        m_customProcedureStepState = Nothing
-        m_customTransactionUID = Nothing
-    End Sub
-
-    Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal useAutomaticTesting As Boolean, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customActionTypeID As String, ByVal customProcedureStepState As String, ByVal customTransactionUID As String)
-        MyBase.New("UPS-03", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ups03IODType = IODType.UnifiedProcedureStepPull
-        m_useAutomaticTesting = useAutomaticTesting
-        m_customSOPClassUID = customSOPClassUID
-        m_customSOPInstanceUID = customSOPInstanceUID
-        m_customActionTypeID = customActionTypeID
-        m_customProcedureStepState = customProcedureStepState
-        m_customTransactionUID = customTransactionUID
     End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
@@ -119,42 +101,24 @@ Class UPS03Transaction
                 Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
                 ' Set the Requested SOPClassUID 
-                If m_customSOPClassUID Is Nothing Then
-                    message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-                Else
-                    message.Set(Tags.RequestedSOPClassUID, UI, m_customSOPClassUID)
-                End If
+                message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
                 ' Set the Requested SOP Instance UID
-                If m_customSOPInstanceUID Is Nothing Then
-                    message.Set(Tags.RequestedSOPInstanceUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText)
-                Else
-                    message.Set(Tags.RequestedSOPInstanceUID, UI, m_customSOPInstanceUID)
-                End If
+                message.Set(Tags.RequestedSOPInstanceUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText)
 
                 ' ActionType ID
-                If m_customActionTypeID Is Nothing Then
-                    message.Set(Tags.ActionTypeID, US, "1")
-                Else
-                    message.Set(Tags.ActionTypeID, US, m_customActionTypeID)
-                End If
+                message.Set(Tags.ActionTypeID, US, "1")
 
                 'Set Unified Procedure Step State to "IN PROGRESS"
-                If m_customProcedureStepState Is Nothing Then
-                    message.Set(Tags.ProcedureStepState, CS, "IN PROGRESS")
-                Else
-                    message.Set(Tags.ProcedureStepState, CS, m_customProcedureStepState)
-                End If
+                message.Set(Tags.ProcedureStepState, CS, "IN PROGRESS")
 
                 ' Transaction UID
-                If m_customTransactionUID Is Nothing Then
-                    Dim transactionUID As String = DvtkHighLevelInterface.Dicom.Other.UID.Create()
-                    message.Set(Tags.TransactionUID, UI, transactionUID)
-                    currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText = transactionUID
-                    currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
-                Else
-                    message.Set(Tags.TransactionUID, UI, m_customTransactionUID)
-                End If
+                Dim transactionUID As String = DvtkHighLevelInterface.Dicom.Other.UID.Create()
+                message.Set(Tags.TransactionUID, UI, transactionUID)
+                currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText = transactionUID
+
+
+                currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
 
                 datasetMessages.Add(message)
 

@@ -5993,7 +5993,7 @@ MODULE "General Series Module" M
                       |"HFDL"
                       |"HFDR"
                       |"HFP"
-                      |"HFS") "Patient Position"
+                      |"HFS") "Patient Position"  : NOT PRESENT 0x00540410
 (0x00200060,2C,CS,1,E,"L"
                       |"R") "Laterality"  : "INFO(Required if the body part examined is a paired structure and Image Laterality (0020,0062) or Frame Laterality (0020,9072) are not sent.)"
 (0x00080021,3,DA,1) "Series Date" 

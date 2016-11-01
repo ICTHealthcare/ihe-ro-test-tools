@@ -74,20 +74,18 @@ Class MessageHandlerNCreate
 
         ReferenceDataSet.GetInstance.LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
         Dim AEtitlesSubscribers As New List(Of String)
-        If File.Exists(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.xml") Then
-            Dim Subscribers As New Subscribers()
-            Dim objStreamReader As New StreamReader(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.xml")
-            Dim x As New System.Xml.Serialization.XmlSerializer(GetType(Subscribers), New System.Xml.Serialization.XmlRootAttribute("Subscribers"))
+        If File.Exists(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt") Then
+            Dim lines As String() = System.IO.File.ReadAllLines(ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
+            For Each line As String In lines
+                If (line.Contains(SOPInstanceUID) Or line.Contains("1.2.840.10008.5.1.4.34.5")) Then
 
-            Subscribers = x.Deserialize(objStreamReader)
-            objStreamReader.Close()
-            For Each s As Subscriber In Subscribers
-                If (s.SOPInstanceUID.Contains(SOPInstanceUID) Or s.SOPInstanceUID.Contains("1.2.840.10008.5.1.4.34.5")) Then
-                    AEtitlesSubscribers.Add(s.AETitle)
+                    Dim split As String() = line.Split(" ")
+
+                    AEtitlesSubscribers.Add(split(split.Length() - 3))
                 End If
             Next
         Else
-            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.xml")
+            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
         End If
 
         For Each subscriber As String In AEtitlesSubscribers
@@ -103,7 +101,7 @@ Class MessageHandlerNCreate
 
                 Dim messageToSend As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.NEVENTREPORTRQ)
 
-                messageToSend.Set(Tags.AffectedSOPClassUID, UI, SOPclass.UnifiedProcedureStepEventSOPClass.ToString())
+                messageToSend.Set(Tags.AffectedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID.ToString())
                 messageToSend.Set(Tags.AffectedSOPInstanceUID, UI, SOPInstanceUID)
                 messageToSend.Set(Tags.EventTypeID, US, "1")
 

@@ -18,7 +18,7 @@ Class UPSCreate
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSCreate(TestToolConfiguration.GetInstance().GetScriptPath() + "..\..\Datasets\CLIENTSERVER\UPSMessages\N-CREATE-REQ.dcm")
+        Return New SendUPSCreate("C:\ASTRO\UPS Client Server\Datasets\CLIENTSERVER\UPSMessages\N-CREATE-REQ.dcm")
     End Function
 
 End Class
@@ -31,7 +31,7 @@ Class UPSWorklistQuery
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSWorklistQuery(TestToolConfiguration.GetInstance().GetScriptPath() + "..\..\Datasets\CLIENTSERVER\UPSMessages\C-FIND-RQ.dcm")
+        Return New SendUPSWorklistQuery("C:\ASTRO\UPS Client Server\Datasets\CLIENTSERVER\UPSMessages\C-FIND-RQ.dcm")
     End Function
 
 End Class
@@ -57,7 +57,7 @@ Class UPSProgressUpdate
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSProgressUpdate(TestToolConfiguration.GetInstance().GetScriptPath() + "..\..\Datasets\CLIENTSERVER\UPSMessages\N-SET-RQ[RO26].dcm")
+        Return New SendUPSProgressUpdate("C:\ASTRO\UPS Client Server\Datasets\CLIENTSERVER\UPSMessages\N-SET-RQ[RO26].dcm")
     End Function
 
 End Class
@@ -70,7 +70,7 @@ Class UPSFinalUpdate
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSFinalUpdate(TestToolConfiguration.GetInstance().GetScriptPath() + "..\..\Datasets\CLIENTSERVER\UPSMessages\N-SET-RQ[RO21].dcm")
+        Return New SendUPSFinalUpdate("C:\ASTRO\UPS Client Server\Datasets\CLIENTSERVER\UPSMessages\N-SET-RQ[RO21].dcm")
     End Function
 
 End Class
@@ -88,44 +88,17 @@ Class UPSCompletedOrCancelled
 
 End Class
 
-Class Example1 
-    Inherits TestToolBase
-
-    Public Sub New()
-        MyBase.New()
-    End Sub
-
-    Protected Overrides Sub Execute()
-    End Sub
-        
-End Class
-
 'Implementation of the main function of DVTk scripts
 Module DvtkScript
 
     ' Entry point of this Visual Basic Script.
     Sub Main(ByVal CmdArgs() As String)
 
-    Dim selectedAutomaticTestingConfiguration As System.Xml.XmlDocument = New System.Xml.XmlDocument
-
-    TesttoolRunner.RunTool(new Example1(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
-
-    Try
-        selectedAutomaticTestingConfiguration.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
-    Catch ex As Exception
-        selectedAutomaticTestingConfiguration = Nothing
-        Reporter.GetInstance().ReportErrorMessage("XML node CurrentAutomaticTestName in the <Instalation dir>\Sessionfiles\Scripts\CurrentAutomaticTestingConfiguration.xml doesn't have a correct value")
-    End Try
-
-    If Not (selectedAutomaticTestingConfiguration Is Nothing)
-
         TesttoolRunner.RunTool(New UPSCreate(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
         TesttoolRunner.RunTool(New UPSInProgess(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
         TesttoolRunner.RunTool(New UPSProgressUpdate(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
         TesttoolRunner.RunTool(New UPSFinalUpdate(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
         TesttoolRunner.RunTool(New UPSCompletedOrCancelled(), TesttoolRunner.TestSessionFileName_UPS_CLIENT)
-    End if
-
     End Sub
 
 End Module

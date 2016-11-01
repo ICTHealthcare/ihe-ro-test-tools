@@ -113,7 +113,7 @@ MODULE "Unified Procedure Step Relationship Module" U
    >(0x00400033,1,CS,1) "Universal Entity ID Type"
    >(0x00400031,1,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,SH,1) "Requested Procedure ID"
+ >(0x00401001,2,LO,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -606,7 +606,7 @@ MODULE "Unified Procedure Step Relationship Module" U
    >(0x00400033,1C,CS,1) "Universal Entity ID Type"
    >(0x00400031,1C,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,SH,1) "Requested Procedure ID"
+ >(0x00401001,2,LO,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
