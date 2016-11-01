@@ -47,8 +47,6 @@ Class ValidatorDataSet
                     Reporter.GetInstance.ReportDebugMessage("Spatial Registration validation")
                 End If
 
-                'Apply ContentValidation level rules
-                ApplyContentValidationRules(file)
                 'Apply Attribute level rules
                 ApplyAttributeRules(file)
                 'Apply Module level rules
@@ -94,20 +92,6 @@ Class ValidatorDataSet
         Next
     End Sub
 
-    'This method applies the content validation rules
-    Protected Sub ApplyContentValidationRules(ByRef file As DvtkHighLevelInterface.Dicom.Files.DicomFile)
-        'Determine message iodType
-        Dim attRule As ContentValidationRule
-        Dim msgIodType As IODType = DetermineIodType(file)
-
-        'iterate through the scenariorules
-        For Each scenariorule As Rule In rules
-            If ((TypeOf scenariorule Is ContentValidationRule) And (msgIodType = scenariorule.IODTypeRule)) Then
-                attRule = DirectCast(scenariorule, ContentValidationRule)
-                attRule.ApplyRule(file, msgIodType)
-            End If
-        Next
-    End Sub
 
     'This method applies the attribute rules
     Protected Sub ApplyAttributeRules(ByRef file As DvtkHighLevelInterface.Dicom.Files.DicomFile)

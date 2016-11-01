@@ -118,17 +118,8 @@ Module DvtkScript
         theDvtThreadManager.WaitForCompletionThreads()
 
          If( IO.File.Exists("..\ResultDicomValidation\Summary_CustomDatasetValidation.html"))
-         Dim line As String
-
-            ' Create new StreamReader instance with Using block.
-            Using reader As IO.StreamReader = New IO.StreamReader("..\ResultDicomValidation\Summary_CustomDatasetValidation.html", True)
-                ' Read whole file
-                line = reader.ReadToEnd
-            End Using
-
-            Dim newLine As String =  System.Text.RegularExpressions.Regex.Replace(line, "\xA0", "")
-            Dim newnewline as String = newLine.Replace("&gt;", ">")
-            theTestTool.WriteHtml(newnewline, False, True)
+            Dim readText As String = IO.File.ReadAllText("..\ResultDicomValidation\Summary_CustomDatasetValidation.html")
+            theTestTool.WriteHtml(readText, False, True)
         End If
 
 #If Not DVT_INTERPRETS_SCRIPT Then

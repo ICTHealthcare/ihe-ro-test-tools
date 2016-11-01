@@ -1,4 +1,4 @@
-Public Class ScenarioRunner
+Class ScenarioRunner
 
     'Constructor
     Public Sub New()

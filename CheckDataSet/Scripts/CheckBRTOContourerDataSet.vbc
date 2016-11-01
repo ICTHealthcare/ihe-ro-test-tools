@@ -8,7 +8,6 @@ Class CheckBRTOContourerDataSet
         m_mediaSession = mediaSession
 
         Dim contourerCheckDataSetSelectionDialog As ContourerCheckDataSetSelection = New ContourerCheckDataSetSelection
-        Dim m_chooseStructureSetDialog As New ChooseStructureSetDialog()
         Dim CustomFolder As String
 
         'Dim doc As Xml.XmlDocument = New Xml.XmlDocument()
@@ -49,8 +48,6 @@ Class CheckBRTOContourerDataSet
         End If
 
         contourerCheckDataSetSelectionDialog.ShowDialog()
-
-        m_chooseStructureSetDialog.ShowDialog()
 
         Dim receivedFilesArray(0) As DvtkHighLevelInterface.Dicom.Files.DicomFile
         Dim receivedDicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
@@ -163,13 +160,6 @@ Class CheckBRTOContourerDataSet
 
             If (referencedImages.Count > 1) Then
 
-                If m_chooseStructureSetDialog.NormalStructureSet Then
-                    validate.Rules = BRTO_RTStructureSet_Rules.CreateRules()
-                Else
-                    validate.Rules = BRTO_RTStructureSetHighResolution_Rules.CreateRules()
-                End If
-
-
                 'C.7.1.1 Patient Module
 
                 'Patient() 's Name	(0010,0010), same as in reference data
@@ -218,6 +208,15 @@ Class CheckBRTOContourerDataSet
 
 
                 'C.8.8.5 Structure Set Module
+                'Structure Set Label 3006,0002 is required
+                validate.AddRule(New IsRequiredRule(Tags.StructureSetLabel, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                'Structure Set Date	3006,0008 is required
+                validate.AddRule(New IsRequiredRule(Tags.StructureSetDate, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                'Structure Set Time	3006,0009 is required
+                validate.AddRule(New IsRequiredRule(Tags.StructureSetTime, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+                'Referenced Frame of Reference Sequence (0x30060010), may only contain one item
+                validate.AddRule(New NrIntOfSequenceItemRule(Tags.ReferencedFrameofReferenceSequence, 1, IODType.RTStructureSet, ErrorSeverity.RuleError))
 
                 'Frame of Reference UID	(0020,0052), same as in reference data
                 validate.AddRule(New SameFrameOfReferenceMappingCustomDatasetRule(Tags.ReferencedFrameofReferenceUID, IODType.RTStructureSet, ErrorSeverity.RuleError, CustomFolder))
@@ -231,6 +230,10 @@ Class CheckBRTOContourerDataSet
 
                 'validate.AddRule(New ReferencedSOPInstanceUIDStructureSetInterRelationRule(ErrorSeverity.RuleError, IODType.RTStructureSet))
 
+                'RT Referenced Series Sequence, Only one item allowed in this sequence
+                validate.AddRule(New NrIntOfSequenceItemRule(Tags.RTReferencedSeriesSequence, 1, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+
 
                 'Series Instance UID (0020,000E), Shall contain the series to which the set of CT images upon which the structure set is based belong. 
                 'Contains an item fo each CT image in the volume up which the structure set is based.
@@ -242,6 +245,21 @@ Class CheckBRTOContourerDataSet
                 'Based on the single image-serie input CT-Images, MR-Images or PET-Images 
                 validate.AddRule(New ContourImageSequenceStructureSetCustomDatasetRule(ErrorSeverity.RuleError, ErrorSeverity.RuleError, CustomFolder, contourerCheckDataSetSelectionDialog.tbSelectedStructureSet.Text))
 
+
+                'Referenced SOP Class UID if present shall be the value 1.2.840.10008.5.1.4.1.1.2 or
+                '1.2.840.10008.5.1.4.1.1.4 or 1.2.840.10008.5.1.4.1.1.128
+                validate.AddRule(New IsRequiredRule(Tags.RTReferencedSOPClassUID, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                Dim values4(2) As String
+                values4(0) = SOPclass.CTImageSOPClassUID
+                values4(1) = SOPclass.MRImageSOPClassUID
+                values4(2) = SOPclass.PetImageSOPClassUID
+                validate.AddRule(New ValueListRule(Tags.RTReferencedSOPClassUID, values4, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+                'Referenced Frame Number (0x00081160), 	Shall not be present, so test the the attribute is not included
+                validate.AddRule(New NotPresentRule(Tags.ReferencedFrameNumberTag, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+                'StructureSetROITagSequence 3006,0020 is required
+                validate.AddRule(New IsRequiredRule(Tags.StructureSetROITagSequence, IODType.RTStructureSet, ErrorSeverity.RuleError))
 
                 'ROI Number	(0x30060022), This defines an index to be used for referencing a particular ROI item from other sequences. 
                 'It is required to be unique within the scope of this message.  No limitation on values other than uniqueness within sequence"
@@ -256,13 +274,46 @@ Class CheckBRTOContourerDataSet
                 'ROI Name (0x30060026),	Must be unique within ROI sequence
                 validate.AddRule(New ROINameRule(IODType.RTStructureSet, ErrorSeverity.RuleError))
 
+                'ROI Generation Algorithm should be one of these values AUTOMATIC, SEMIAUTOMATIC or MANUAL.
+                Dim values2(3) As String
+                values2(0) = "AUTOMATIC"
+                values2(1) = "SEMIAUTOMATIC"
+                values2(2) = "MANUAL"
+                values2(3) = "RESAMPLED"
+                validate.AddRule(New ValueListRule(Tags.ROIGenerationAlgorithm, values2, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
 
                 'C.8.8.6 ROI Contour Module
+
+                'validate.AddRule(New ContourImageSequenceContourInterRelationCustomDatasetRule(IODType.Generic, ErrorSeverity.RuleError, FOR1iodType, CustomFolder, registeredContourerCheckDataSetSelectionDialog.tbSelectedStructureSet.Text))
+
+                'ContourReferencedSOPClassUID 0008,1155	should have value = 1.2.840.10008.5.1.4.1.1.2
+                validate.AddRule(New IsRequiredRule(Tags.ContourReferencedSOPClassUID, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+                If FOR1iodType = IODType.PETImage Then
+                    validate.AddRule(New ValueRule(Tags.ContourReferencedSOPClassUID, SOPclass.PetImageSOPClassUID, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                ElseIf FOR1iodType = IODType.MRImage Then
+                    validate.AddRule(New ValueRule(Tags.ContourReferencedSOPClassUID, SOPclass.MRImageSOPClassUID, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                ElseIf FOR1iodType = IODType.CTImage Then
+                    validate.AddRule(New ValueRule(Tags.ContourReferencedSOPClassUID, SOPclass.CTImageSOPClassUID, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                End If
+
                 'Referenced SOP Instance UID (0x00081155), Equals to the SOP Instance UID of the referenced CT image
+
                 validate.AddRule(New ReferencedSOPInstanceUIDContourModuleCustomDatasetRule(IODType.Generic, ErrorSeverity.RuleError, FOR1iodType, CustomFolder))
 
                 'Referenced Frame Number (0x00081160), This attribute shall not be present.
                 validate.AddRule(New ReferencedFrameNumberRule(IODType.Generic, ErrorSeverity.RuleError))
+
+                'Contour Geometric Type should be one of these values POINT or CLOSED_PLANAR
+                validate.AddRule(New IsRequiredRule(Tags.ContourGeometricType, IODType.RTStructureSet, ErrorSeverity.RuleError))
+                Dim values1(1) As String
+                values1(0) = "POINT"
+                values1(1) = "CLOSED_PLANAR"
+                validate.AddRule(New ValueListRule(Tags.ContourGeometricType, values1, IODType.RTStructureSet, ErrorSeverity.RuleError))
+
+                '>>Contour Offset Vector 3006,0045 should have value 0
+                validate.AddRule(New ValueRule(Tags.ContourOffsetVector, "0", IODType.RTStructureSet, ErrorSeverity.RuleError))
 
                 'Number of Contour Points (0x30060046) 
                 '1. Must match the actual number of points in Contour Data.
@@ -293,7 +344,18 @@ Class CheckBRTOContourerDataSet
                 ' have one of the following values: MARKER, REGISTRATION, ISOCENTER
                 validate.AddRule(New RTROIInterpretedTypeRule(IODType.Generic, ErrorSeverity.RuleError))
 
+                '>>ROI Physical Property 3006,00B2 should have value = REL_ELEC_DENSITY
+                validate.AddRule(New ValueRule(Tags.ROIPhysicalProperty, "REL_ELEC_DENSITY", IODType.RTStructureSet, ErrorSeverity.RuleError))
+
                 'C.12.1 SOP Common Module
+
+                'SOP Instance UID	(0008,0018)	If an application alters an Information Object instance, then the new Information Object instance shall be assigned a new UID.
+                'validate.AddRule(New SOPInstanceUIDRule(IODType.RTStructureSet, ErrorSeverity.RuleError, FOR1iodType))
+
+                'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
+                validate.AddRule(New ValueInterRelationRule(Tags.SpecificCharacterSet, "ISO_IR 100", FOR1iodType, ErrorSeverity.RuleError))
+                'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
+                validate.AddRule(New ValueRule(Tags.SpecificCharacterSet, "ISO_IR 100", IODType.RTStructureSet, ErrorSeverity.RuleError))
 
                 m_scenarioSteps.Add(validate)
 

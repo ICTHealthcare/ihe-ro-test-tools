@@ -6,13 +6,13 @@ SESSION-FILE-VERSION 2
 # Product Test Session Properties
 SESSION-TITLE "Media Session"
 SESSION-ID 001
-MANUFACTURER "C:\ASTRO\BRTO Custom\Datasets\Custom"
+MANUFACTURER "C:\"
 MODEL-NAME "Product Name"
 SOFTWARE-VERSIONS "Version 2.4"
 APPLICATION-ENTITY-NAME "DICOM"
 APPLICATION-ENTITY-VERSION "3.0"
 TESTED-BY "DVT"
-DATE "20160203"
+DATE "20150922"
 
 # Test Session Properties
 LOG-ERROR true
@@ -38,8 +38,6 @@ DEFINITION "RT Plan Storage.def"
 DEFINITION "RT Structure Set Storage.def"
 DEFINITION "Spatial Registration Storage.def"
 DEFINITION "All Dimse Commands.def"
-DEFINITION "FileMeta.def"
-DEFINITION "C:\Program Files (x86)\DVTk\DVT\Bin\AllDimseCommands.def"
 
 # Results
 RESULTS-ROOT "..\ResultDicomValidation\"

@@ -215,8 +215,6 @@ Class CheckBRTODoseDataSet
 
                         If (referencedObjects.Count > 3) Then
 
-                            validate.Rules = BRTO_RTDose_Rules.CreateRules()
-
                             'C.7.1.1 Patient Module
                             'Patient's Name	(0010,0010), same as in other received objects
                             validate.AddRule((New CriticalAttributeInterRelationRule(Tags.PatientName, True, False, ErrorSeverity.RuleError, IODType.Generic)))
@@ -290,6 +288,18 @@ Class CheckBRTODoseDataSet
                             validate.AddRule(New FrameIncrementPointerRule(IODType.RTDose, ErrorSeverity.RuleError))
 
                             'C.8.8.3 RT Dose
+                            'Samples per Pixel 0028,0002 Value shall be 1
+                            validate.AddRule(New IsRequiredRule(Tags.SamplesperPixel, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.SamplesperPixel, "1", IODType.RTDose, ErrorSeverity.RuleError))
+                            'Photometric Interpretation	0028,0004 Value shall be MONOCHROME2
+                            validate.AddRule(New IsRequiredRule(Tags.PhotometricInterpretation, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.PhotometricInterpretation, "MONOCHROME2", IODType.RTDose, ErrorSeverity.RuleError))
+                            'Bits Allocated	0028,0100 Value should be 16 or 32
+                            validate.AddRule(New IsRequiredRule(Tags.BitsAllocated, IODType.RTDose, ErrorSeverity.RuleError))
+                            Dim values3(1) As String
+                            values3(0) = "16"
+                            values3(1) = "32"
+                            validate.AddRule(New ValueListRule(Tags.BitsAllocated, values3, IODType.RTDose, ErrorSeverity.RuleError))
 
                             'Bits Stored (0028,0101) Value equal to Bits Allocated (0028,0100)
                             validate.AddRule(New EqualToRule(Tags.BitsStored, IODType.RTDose, ErrorSeverity.RuleError, Tags.BitsAllocated))
@@ -298,7 +308,23 @@ Class CheckBRTODoseDataSet
                             'Dose Comment (3004,0006) Shall be present if Referenced RT Plan Sequence is NOT PRESENT
                             'If present it should have the same value as RT Plan Description and it should not be empty"
 
+                            'Pixel Representation	0028,0103	R+*	Shall have the value 0 = unsigned integer. Negative dose values shall not be present."
+                            validate.AddRule(New IsRequiredRule(Tags.PixelRepresentation, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.PixelRepresentation, "0", IODType.RTDose, ErrorSeverity.RuleError))
+                            'Dose Units	3004,0002	R+*	Shall be equal to the enumerated value GY
+                            validate.AddRule(New IsRequiredRule(Tags.DoseUnits, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.DoseUnits, "GY", IODType.RTDose, ErrorSeverity.RuleError))
+                            'Dose Type	3004,0004	R+*	Shall be equal to the defined term PHYSICAL
+                            validate.AddRule(New IsRequiredRule(Tags.DoseType, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.DoseType, "PHYSICAL", IODType.RTDose, ErrorSeverity.RuleError))
+
                             validate.AddRule(New DoseCommentRule(IODType.Generic, ErrorSeverity.RuleError))
+
+                            'Dose Summation Type 3004,000A Shall have the value PLAN
+                            validate.AddRule(New IsRequiredRule(Tags.DoseSummationType, IODType.RTDose, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueRule(Tags.DoseSummationType, "PLAN", IODType.RTDose, ErrorSeverity.RuleError))
+                            'Referenced RT Plan Sequence 300C,0002 Shall be present if Dose Summation Type (3004,000A) has the value PLAN
+                            validate.AddRule(New IsRequiredRule(Tags.ReferencedRTPlanSequence, IODType.RTDose, ErrorSeverity.RuleError))
 
                             'Referenced Fraction(Group) Sequence (300C,0020) Shall be present if the parent sequence is present, and
                             'shall reference a single fraction group within the referenced RT Plan. Referenced Frame of Reference"
@@ -310,6 +336,12 @@ Class CheckBRTODoseDataSet
 
 
                             'C.12.1 SOP Common Module
+
+                            'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
+                            validate.AddRule(New ValueInterRelationRule(Tags.SpecificCharacterSet, "ISO_IR 100", FOR1iodType, ErrorSeverity.RuleError))
+                            validate.AddRule(New ValueInterRelationRule(Tags.SpecificCharacterSet, "ISO_IR 100", IODType.RTStructureSet, ErrorSeverity.RuleError))
+                            'Specific Character Set (0008,0005) if present shall be the value "ISO_IR 100".
+                            validate.AddRule(New ValueRule(Tags.SpecificCharacterSet, "ISO_IR 100", IODType.RTDose, ErrorSeverity.RuleError))
 
                             m_scenarioSteps.Add(validate)
 

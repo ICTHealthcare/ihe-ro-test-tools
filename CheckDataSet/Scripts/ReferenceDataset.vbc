@@ -773,7 +773,7 @@ Class ReferenceDataSet
         'End If
         xslArgList.AddParam("filter", "", filtertemp)
         'xslArgList.AddParam("filterXMLfilename", "", filterXMLfilenametemp)
-
+'
         Dim xslt As Xml.Xsl.XslCompiledTransform = New Xml.Xsl.XslCompiledTransform
         Dim settings As Xml.Xsl.XsltSettings = New Xml.Xsl.XsltSettings
         settings.EnableDocumentFunction = True

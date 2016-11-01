@@ -1,4 +1,4 @@
-Public Class Reporter
+Class Reporter
 
     'the actual instance of the Reporter class
     Private Shared m_instance As Reporter
