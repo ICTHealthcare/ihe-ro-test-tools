@@ -1,9 +1,9 @@
-Public Class Reporter
+Class Reporter
 
     'the actual instance of the Reporter class
     Private Shared m_instance As Reporter
     Private m_testTool As TestToolBase
-    Private Shared m_reportCollection As StringCollection
+    Private reportCollection As StringCollection
 
     'we hide the constructor from the outside
     Private Sub New()
@@ -14,24 +14,11 @@ Public Class Reporter
         ' initialize if not already done
         If m_instance Is Nothing Then
             m_instance = New Reporter
-            m_reportCollection = New StringCollection
         End If
         ' return the initialized instance of the Reporter Class
         Return m_instance
     End Function 'Instance
 
-    Public Function ReportCollection() As StringCollection
-        Return m_reportCollection
-
-    End Function
-
-    Public Shared Sub ResetReporter()
-        m_instance = Nothing
-    End Sub
-
-    Public Sub AddErrorMessageToCollection(ByVal errorText As String)
-        m_reportCollection.Add(errorText)
-    End Sub
 
     Public Sub SetTestTool(ByRef testTool As TestToolBase)
         m_testTool = testTool
@@ -43,8 +30,10 @@ Public Class Reporter
         End If
 
         If severity = ErrorSeverity.RuleError Then
-            Dim errorMessage As String = vbCrLf + "IHE-RO Error : " + errorText
-            m_testTool.WriteErrorNow(errorMessage)
+            'm.testtool.WriteInformation("[Error]")
+            m_testTool.WriteErrorNow(vbCrLf + "IHE-RO Error : " + errorText)
+            'm.testtool.WriteInformation("[/Error]" + vbCrLf)
+
 
         ElseIf severity = ErrorSeverity.RuleInfo Then
             m_testTool.WriteInformationNow(vbCrLf + "IHE-RO Info : " + errorText)
@@ -56,8 +45,7 @@ Public Class Reporter
         If m_testTool Is Nothing Then
             Throw New System.Exception("The testToolobject is not set")
         End If
-        Dim errorMessage As String = vbCrLf + "DICOM Error : " + errorText
-        m_testTool.WriteErrorNow(errorMessage)
+        m_testTool.WriteErrorNow(vbCrLf + "DICOM Error : " + errorText)
     End Sub
 
     Public Sub ReportDebugMessage(ByVal errorText As String)
@@ -78,7 +66,6 @@ Public Class Reporter
         If m_testTool Is Nothing Then
             Throw New System.Exception("The testToolobject is not set")
         End If
-        Dim errorMessage As String = vbCrLf + errorText
-        m_testTool.WriteErrorNow(errorMessage)
+        m_testTool.WriteErrorNow(vbCrLf + errorText)
     End Sub
 End Class 'Reporter Class

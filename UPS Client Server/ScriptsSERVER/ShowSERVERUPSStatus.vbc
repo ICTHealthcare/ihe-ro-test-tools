@@ -1,4 +1,4 @@
-Public Class ShowSERVERUPSStatus
+Class ShowSERVERUPSStatus
     Inherits Scenario
 
     'Constructor

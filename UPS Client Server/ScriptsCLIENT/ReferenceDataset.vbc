@@ -1,6 +1,6 @@
 
 
-Public Class ReferenceDataSet
+Class ReferenceDataSet
 
 #Region "Private Fields"
 
@@ -10,7 +10,6 @@ Public Class ReferenceDataSet
     'the actual instance of the ReferenceDataSet class
     Private Shared m_instance As ReferenceDataSet = Nothing
     Public m_datasetPath As String
-    Private m_customAutomaticTestXMLFileName As String = Nothing
 
 #End Region
 
@@ -61,21 +60,7 @@ Public Class ReferenceDataSet
 
     Public Function getCurrentAutomaticTestXMLFileName() As String
         Dim automaticTestingConfiguration As System.Xml.XmlDocument = New System.Xml.XmlDocument
-
-        If m_customAutomaticTestXMLFileName Is Nothing Then
-            automaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + "CurrentAutomaticTestingConfiguration.xml")
-        Else
-            automaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + m_customAutomaticTestXMLFileName)
-        End If
-
-        Dim fileName As String = automaticTestingConfiguration.SelectSingleNode("//Scenarios/CurrentAutomaticTestName").InnerText
-        Return fileName
-    End Function
-
-    Public Function getCurrentAutomaticTestXMLFileName(ByVal AutomaticTestFileName As String) As String
-        Dim automaticTestingConfiguration As System.Xml.XmlDocument = New System.Xml.XmlDocument
-        automaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + AutomaticTestFileName)
-        m_customAutomaticTestXMLFileName = AutomaticTestFileName
+        automaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + "CurrentAutomaticTestingConfiguration.xml")
         Dim fileName As String = automaticTestingConfiguration.SelectSingleNode("//Scenarios/CurrentAutomaticTestName").InnerText
         Return fileName
     End Function
@@ -184,7 +169,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Sub SetCacheCFind_ResponsesTransactionUID(ByVal SOPInstanceUID As String, ByVal TransactionUID As String)
+    Public Sub SetCacheCFind_ResponsesTransactionUID(SOPInstanceUID As String, TransactionUID As String)
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -208,7 +193,7 @@ Public Class ReferenceDataSet
 
     End Sub
 
-    Public Sub UpdateCacheCFind_Response(ByVal SOPInstanceUID As String, ByVal MessageToSend As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
+    Public Sub UpdateCacheCFind_Response(SOPInstanceUID As String, MessageToSend As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -276,7 +261,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Function GetAvailebleUPS(ByVal SOPInstanceUID As String) As DvtkHighLevelInterface.Dicom.Files.DicomFile
+    Public Function GetAvailebleUPS(SOPInstanceUID As String) As DvtkHighLevelInterface.Dicom.Files.DicomFile
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -300,7 +285,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Function GetAvailebleUPS(ByVal SOPInstanceUID As String, ByVal TransactionUID As String) As DvtkHighLevelInterface.Dicom.Files.DicomFile
+    Public Function GetAvailebleUPS(SOPInstanceUID As String, TransactionUID As String) As DvtkHighLevelInterface.Dicom.Files.DicomFile
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -324,7 +309,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Function GetSelectedCFindRsp(ByVal SOPInstanceUID As String) As DvtkHighLevelInterface.Dicom.Other.DataSet
+    Public Function GetSelectedCFindRsp(SOPInstanceUID As String) As DvtkHighLevelInterface.Dicom.Other.DataSet
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -347,7 +332,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Sub UpdateCacheCFind_Responses_NGet(ByVal SOPInstanceUID As String, ByVal receivedMessage As DicomMessage)
+    Public Sub UpdateCacheCFind_Responses_NGet(SOPInstanceUID As String, receivedMessage As DicomMessage)
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -387,7 +372,7 @@ Public Class ReferenceDataSet
 
     End Sub
 
-    Public Sub UpdateCacheCFind_Responses_InProgress(ByVal SOPInstanceUID As String)
+    Public Sub UpdateCacheCFind_Responses_InProgress(SOPInstanceUID As String)
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
 
@@ -418,7 +403,7 @@ Public Class ReferenceDataSet
     End Sub
 
     'Returns the DataSets of the Unified Procedure Step Pull Response
-    Public Function GetUnifiedProcedureStepPull_Responses(ByVal dicomMessageCFindReq As DicomMessage) As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
+    Public Function GetUnifiedProcedureStepPull_Responses(dicomMessageCFindReq As DicomMessage) As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
         Dim responseMessages As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection = New DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection()
         Dim index As Integer = 0
         Dim CFindRspCount As Integer = 0
@@ -580,7 +565,7 @@ Public Class ReferenceDataSet
         Return responseMessages
     End Function
 
-    Public Function GetUPSPull_NGET_Response(ByVal dicomMessageNGetReq As DicomMessage) As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
+    Public Function GetUPSPull_NGET_Response(dicomMessageNGetReq As DicomMessage) As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
         Dim responseMessages As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection = New DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection()
         Dim config As TestToolConfiguration = TestToolConfiguration.GetInstance()
 
@@ -856,7 +841,7 @@ Public Class ReferenceDataSet
         Return retVal
     End Function
 
-    Public Function createNSetRqUPSProgressUpdate(ByVal XMLFileName As String, ByVal SOPInstanceUIDUPS As String, ByVal NsetRq As DicomMessage) As DicomMessage
+    Public Function createNSetRqUPSProgressUpdate(ByVal XMLFileName As String, ByVal SOPInstanceUIDUPS As String, NsetRq As DicomMessage) As DicomMessage
 
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
@@ -913,7 +898,7 @@ Public Class ReferenceDataSet
         Return NsetRq
     End Function
 
-    Public Function createNSetRqUPSFinalUpdate(ByVal XMLFileName As String, ByVal SOPInstanceUIDUPS As String, ByVal NsetRq As DicomMessage) As DicomMessage
+    Public Function createNSetRqUPSFinalUpdate(ByVal XMLFileName As String, ByVal SOPInstanceUIDUPS As String, NsetRq As DicomMessage) As DicomMessage
 
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
@@ -1004,7 +989,7 @@ Public Class ReferenceDataSet
         Return ""
     End Function
 
-    Public Function checkUPSSequenceAttribute(ByVal sequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute, ByVal respons As DvtkHighLevelInterface.Dicom.Messages.DicomMessage, ByVal dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+    Public Function checkUPSSequenceAttribute(sequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute, respons As DvtkHighLevelInterface.Dicom.Messages.DicomMessage, dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
         Dim x As Integer
         Dim SeqItem As DvtkHighLevelInterface.Dicom.Other.SequenceItem = Nothing
         For x = 1 To sequenceAttribute.ItemCount()
@@ -1045,7 +1030,7 @@ Public Class ReferenceDataSet
     End Function
 
     'Returns the DataSet of the Unified Procedure Step Pull Object in the ReferenceDataSet
-    Public Function GetUnifiedProcedureStepPush_NSET_REQ_RO21(ByVal fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+    Public Function GetUnifiedProcedureStepPush_NSET_REQ_RO21(fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
         'Dim fileName As String = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/N-SET-RQ-RO21").InnerText
         Dim UnifiedProcedureStepPush_NSET_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DicomMessage(NSETRQ)
         Try
@@ -1061,7 +1046,7 @@ Public Class ReferenceDataSet
     End Function
 
     'Returns the DataSet of the Unified Procedure Step Pull Object in the ReferenceDataSet
-    Public Function GetUnifiedProcedureStepPush_NSET_REQ_RO26(ByVal fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+    Public Function GetUnifiedProcedureStepPush_NSET_REQ_RO26(fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
         'Dim fileName As String = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/N-SET-RQ-RO26").InnerText
         Dim UnifiedProcedureStepPush_NSET_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DicomMessage(NSETRQ)
 
@@ -1077,7 +1062,7 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Function GetUnifiedProcedureStepPush_NGET_REQ(ByVal fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+    Public Function GetUnifiedProcedureStepPush_NGET_REQ(fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
         'Dim fileName As String = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/N-SET-RQ-RO26").InnerText
         Dim UnifiedProcedureStepPush_NGET_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DicomMessage(NGETRQ)
 
@@ -1094,7 +1079,7 @@ Public Class ReferenceDataSet
     End Function
 
     'Returns the DataSet of the Unified Procedure Step Pull Object in the ReferenceDataSet
-    Public Function GetUnifiedProcedureStepPush_NCREATE_REQ(ByVal fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+    Public Function GetUnifiedProcedureStepPush_NCREATE_REQ(fileName As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
 
         Dim UnifiedProcedureStepPush_NCREATE_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(NCREATERQ)
 

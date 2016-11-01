@@ -1,4 +1,4 @@
-Public Class SendUPSSubscribeOrUnsubscribe
+Class SendUPSSubscribeOrUnsubscribe
     Inherits Scenario
 
     'Constructor

@@ -1,4 +1,4 @@
-Public Class SendStoreResults
+Class SendStoreResults
     Inherits Scenario
 
     'Constructor

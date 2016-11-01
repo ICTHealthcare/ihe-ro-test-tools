@@ -1,4 +1,4 @@
-Public Class SendUPSInProgress
+Class SendUPSInProgress
     Inherits Scenario
 
     'Constructor

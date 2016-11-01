@@ -1,6 +1,6 @@
 
 ' Scenario class.  A scenario represents a IHE-RO test scenario 
-Public MustInherit Class Scenario
+MustInherit Class Scenario
 
     'has scenario dataset (xml filename)
     Protected m_scenarioDatasetXmlFileName As String

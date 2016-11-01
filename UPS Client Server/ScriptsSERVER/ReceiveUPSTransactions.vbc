@@ -1,4 +1,4 @@
-Public Class ReceiveUPSTransactions
+Class ReceiveUPSTransactions
     Inherits Scenario
 
     'Constructor

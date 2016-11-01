@@ -31,13 +31,13 @@ Class SaveScenarioStep
 
 
             For Each message As DicomMessage In m_ReceivedMessagesContainer.ReceivedMessages
-                If (message.DataSet.Exists(Tags.SOPInstanceUID)) Then
+                If (message.DataSet.Exists(Tags.PatientID)) Then
                     DataSetHandler.SaveDatasetToFileUPS(message.DataSet, DataSetHandler.UPSCacheXMLFileName, m_DataSetName + count.ToString())
                     count = count + 1
 
                     Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
                     Try
-                        currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                        currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
                     Catch ex As Exception
                         currentAutomaticTestXMLfile = Nothing
                         Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
@@ -45,14 +45,12 @@ Class SaveScenarioStep
 
                     If Not currentAutomaticTestXMLfile Is Nothing Then
                         currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSSOPInstanceUID").InnerText = message.DataSet(Tags.SOPInstanceUID).Values(0).ToString()
-                        currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                        currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
                     End If
 
                 ElseIf (message(Tags.StatusCommandElement).Values(0).ToString() = "0") Then
-                    'DataSetHandler.SaveDatasetToFileUPS(New Dicom.Other.DataSet, DataSetHandler.UPSCacheXMLFileName, m_DataSetName + count.ToString())
                     count = count + 1
-                Else
-                    Reporter.GetInstance().ReportErrorMessage("The " + m_DataSetName + count.ToString() + " has an Status Command Element value of: " + message(Tags.StatusCommandElement).Values(0).ToString())
+
                 End If
 
             Next

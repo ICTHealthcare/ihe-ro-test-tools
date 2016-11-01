@@ -12,7 +12,7 @@ Class UPS02Transaction
     'Constructor
     Public Sub New(ByVal CFindTemplate As String)
 
-        MyBase.New("UPS-02", "Worklist Query for Positioning and Delivery", IODType.UnifiedProcedureStepPull, False)
+        MyBase.New("UPS-02", "Worklist Query for Positioning and Delivery", IODType.UnifiedProcedureStepPull, True)
         ro17IODType = IODType.UnifiedProcedureStepPull
         m_CFindTemplate = CFindTemplate
     End Sub
@@ -29,7 +29,7 @@ Class UPS02Transaction
 
             Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
             Try
-                currentAutomaticTestXMLfile.Load(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
             Catch ex As Exception
                 currentAutomaticTestXMLfile = Nothing
                 Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
@@ -46,10 +46,10 @@ Class UPS02Transaction
                 ScenarioNode.AppendChild(TemplateNode)
                 currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios").AppendChild(ScenarioNode)
 
-                currentAutomaticTestXMLfile.Save(TestToolConfiguration.GetInstance().GetScriptPath() + ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
+                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
 
                 Dim UnifiedProcedureStepPull_CFIND_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = datasetMessages(0)
-                UnifiedProcedureStepPull_CFIND_REQ.DataSet.Write(TestToolConfiguration.GetInstance().GetScriptPath() + currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "C-FIND-REQ.dcm")
+                UnifiedProcedureStepPull_CFIND_REQ.DataSet.Write(currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/CurrentAutomaticTestMessagesFolder").InnerText + "C-FIND-REQ.dcm")
 
             End If
         End If
