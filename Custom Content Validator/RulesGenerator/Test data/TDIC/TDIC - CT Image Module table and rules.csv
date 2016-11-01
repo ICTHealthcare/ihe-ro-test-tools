@@ -1,9 +1,0 @@
-[Module name];CT Image Module;;;;
-[Module table header];Attribute Name;Tag;Presence;Attribute Note;
-[Attribute];Table Height;DICOM tag (0018,1130);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Isocenter Position;DICOM tag (300A,012C);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Patient Support Angle;DICOM tag (300A,0122);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Table Top Pitch Angle;DICOM tag (300A,0140);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Table Top Roll Angle;DICOM tag (300A,0144);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Table Top Longitudinal Position;DICOM tag (300A,0129);R+;shall have a value.;AttributeHasValueRule()
-[Attribute];Table Top Lateral Position;DICOM tag (300A,012A);R+;shall have a value.;AttributeHasValueRule()

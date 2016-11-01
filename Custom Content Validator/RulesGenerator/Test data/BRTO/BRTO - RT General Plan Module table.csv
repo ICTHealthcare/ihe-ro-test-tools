@@ -1,6 +1,0 @@
-;RT General Plan Module;;
-Attribute Name;Tag;Presence;Attribute Note
-RT Plan Label;(300A,0002);R+;The label, which serves as the identification of the plan for the user.
-RT Plan Date;(300A,0006);R+;The date, when the plan was last modified.
-RT Plan Time;(300A,0007);R+;The time, when the plan was last modified.
-RT Plan Geometry;(300A,000C);R+;Shall be PATIENT. This implies, that the RT Structure Set exists and is referenced in the General Plan module.
