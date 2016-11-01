@@ -105,7 +105,6 @@ Class RO_21_Transaction
 
                                 If (FinalProgressUpdateForm.dtPSCDT.Enabled) Then
 
-                                    NSetRQ.Set(Tags.UPSProgressInformationUnifiedProcedureStepCancellationDateTime, DT, FinalProgressUpdateForm.dtPSCDT.Value.ToString("yyyyMMddHHmmss" + ".0000"))
                                     NSetRQ.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeValue, SH, FinalProgressUpdateForm.tbDiscontinuationReasonCodeValue.Text)
                                     NSetRQ.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodingSchemeDesignator, SH, FinalProgressUpdateForm.tbDiscontinuationReasonCodingSchemeDesignator.Text)
                                     NSetRQ.Set(Tags.UPSProgressInformationProcedureStepDiscontinuationReasonCodeSequenceCodeMeaning, LO, FinalProgressUpdateForm.tbDiscontinuationReasonCodeMeaning.Text)

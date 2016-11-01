@@ -1,5 +1,5 @@
-Public Interface IReceivedMessagesContainer
+Interface IReceivedMessagesContainer
 
     ReadOnly Property ReceivedMessages() As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
-
+        
 End Interface
