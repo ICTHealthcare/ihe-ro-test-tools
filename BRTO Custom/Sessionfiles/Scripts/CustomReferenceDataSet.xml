@@ -86,8 +86,7 @@
   </CTImageSet>
   <CTImageSet description="MultiSeries">
   </CTImageSet>
-  <RTStructureSet>
-  </RTStructureSet>
+  <RTStructureSet>RTStructureSet.dcm</RTStructureSet>
   <RTPlanDosimetric>
   </RTPlanDosimetric>
   <RTPlanGeometric>
