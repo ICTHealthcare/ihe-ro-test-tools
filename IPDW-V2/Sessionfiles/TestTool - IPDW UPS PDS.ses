@@ -4,7 +4,11 @@ SESSION-TYPE script
 SESSION-FILE-VERSION 2
 
 # SUT Test Session Properties
+<<<<<<< HEAD
 SESSION-TITLE "IHE-RO TestTool - IPDW UPS PDS 1.1.1"
+=======
+SESSION-TITLE "IHE-RO TestTool - IPDW UPS PDS 1.0.0"
+>>>>>>> parent of 9e84986... IPDW-V2 release 1.1.0
 SESSION-ID 000
 MANUFACTURER "DVT"
 MODEL-NAME "DVT"
