@@ -58,13 +58,6 @@ Class ReferenceDataSet
         Return loadingSucceeded
     End Function
 
-    Public Function getCurrentAutomaticTestXMLFileName() As String
-        Dim automaticTestingConfiguration As System.Xml.XmlDocument = New System.Xml.XmlDocument
-        automaticTestingConfiguration.Load(TestToolConfiguration.GetInstance.GetScriptPath() + "CurrentAutomaticTestingConfiguration.xml")
-        Dim fileName As String = automaticTestingConfiguration.SelectSingleNode("//Scenarios/CurrentAutomaticTestName").InnerText
-        Return fileName
-    End Function
-
     'Returns the structure set in the ReferenceDataSet
     Public Function GetStructureSet() As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
 
@@ -117,17 +110,8 @@ Class ReferenceDataSet
     End Function
 
     'Returns the DataSet of the Unified Procedure Step Pull Object in the ReferenceDataSet
-    Public Function GetUnifiedProcedureStepPull_CFIND_REQ(ByVal CFindTemplate As String) As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
-
-        Dim fileName As String
-
-        If (CFindTemplate = "") Then
-            fileName = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/C-FIND-RQ").InnerText
-        Else
-            fileName = CFindTemplate
-        End If
-
-
+    Public Function GetUnifiedProcedureStepPull_CFIND_REQ() As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
+        Dim fileName As String = m_datasetPath + "\" + m_DataSetXML.SelectSingleNode("/DataSet/C-FIND-RQ").InnerText
         Dim UnifiedProcedureStepPull_CFIND_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CFINDRQ)
         UnifiedProcedureStepPull_CFIND_REQ.CommandSet.Set(Tags.AffectedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPullSOPClassUID)
         Try
@@ -142,6 +126,8 @@ Class ReferenceDataSet
         Catch ex As DvtkHighLevelInterface.Common.Other.HliException
             Throw New System.Exception("Error Reading the file from the Dataset: " + fileName, ex)
         End Try
+
+
 
         Return UnifiedProcedureStepPull_CFIND_REQ
     End Function
@@ -521,8 +507,8 @@ Class ReferenceDataSet
                     Logger.GetInstance().LogMessage("Make reference dataset file (C-Find-RSP) for each UPS that matches.")
 
                     responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, &HFF00) ' Status.
-                    responseMessage.DataSet.Set(Tags.SOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPullSOPClassUID)
-                    responseMessage.DataSet.Set(Tags.SOPInstanceUID, DvtkData.Dimse.VR.UI, dicomFile.DataSet(Tags.SOPInstanceUID).Values(0))
+                    responseMessage.Set(Tags.SOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPullSOPClassUID)
+                    responseMessage.Set(Tags.SOPInstanceUID, DvtkData.Dimse.VR.UI, dicomFile.DataSet(Tags.SOPInstanceUID).Values(0))
 
                     Dim i As Integer
                     For i = 0 To dicomMessageCFindReq.DataSet.Count - 1
@@ -540,11 +526,19 @@ Class ReferenceDataSet
 
                         Else
                             If (dicomFile.DataSet.Exists(dicomMessageCFindReq.DataSet.Item(i).TagSequenceString)) Then
-                                responseMessage.DataSet.Set(dicomMessageCFindReq.DataSet.Item(i).TagSequenceString, dicomMessageCFindReq.DataSet.Item(i).VR, dicomFile.DataSet(dicomMessageCFindReq.DataSet.Item(i).TagSequenceString).Values(0))
+                                responseMessage.Set(dicomMessageCFindReq.DataSet.Item(i).TagSequenceString, dicomMessageCFindReq.DataSet.Item(i).VR, dicomFile.DataSet(dicomMessageCFindReq.DataSet.Item(i).TagSequenceString).Values(0))
                             End If
                         End If
 
                     Next
+
+                    'responseMessage.DataSet.Set(Tags.IisTypeOfInstances, CS, "Test")
+                    responseMessage.DataSet.Delete(Tags.IisTypeOfInstances)
+
+                    'responseMessage.DataSet.Set(Tags.IisTypeOfInstances, CS, "")
+                    responseMessage.DataSet.Delete("0x00404021[1]/0x00080000")
+                    responseMessage.DataSet.Delete("0x00404021[1]/0x00200000")
+                    responseMessage.DataSet.Delete("0x00404021[1]/0x00400000")
 
                     responseMessages.Add(responseMessage)
                     'responseMessage.DataSet.Write(m_datasetPath + "\..\Cache\PDS\C-FIND-RSP" + CFindRspCount.ToString() + ".dcm")
@@ -628,7 +622,7 @@ Class ReferenceDataSet
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
 
-            If (File.Name.EndsWith(".dcm")) Then
+            If (File.Name.StartsWith("C-FIND-RSP")) Then
 
                 Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
                 dicomFile.Read(File.FullName)
@@ -846,7 +840,7 @@ Class ReferenceDataSet
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
 
-            If (File.Name.EndsWith(".dcm")) Then
+            If (File.Name.StartsWith("C-FIND-RSP")) Then
 
                 Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
                 dicomFile.Read(File.FullName)
@@ -903,7 +897,7 @@ Class ReferenceDataSet
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
 
-            If (File.Name.EndsWith(".dcm")) Then
+            If (File.Name.StartsWith("C-FIND-RSP")) Then
 
                 Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
                 dicomFile.Read(File.FullName)
@@ -972,7 +966,7 @@ Class ReferenceDataSet
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
 
-            If (File.Name.EndsWith(".dcm")) Then
+            If (File.Name.StartsWith("C-FIND-RSP")) Then
 
                 Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
                 dicomFile.Read(File.FullName)
@@ -1002,7 +996,7 @@ Class ReferenceDataSet
                     checkUPSSequenceAttribute(SeqItem.Item(i), respons, dicomFile)
                 Else
                     If (dicomFile.DataSet.Exists(SeqItem.Item(i).TagSequenceString)) Then
-                        respons.DataSet.Set(SeqItem.Item(i).TagSequenceString, SeqItem.Item(i).VR, dicomFile.DataSet(SeqItem.Item(i).TagSequenceString).Values(0))
+                        respons.Set(SeqItem.Item(i).TagSequenceString, SeqItem.Item(i).VR, dicomFile.DataSet(SeqItem.Item(i).TagSequenceString).Values(0))
                     End If
                 End If
             Next
@@ -1117,7 +1111,6 @@ Class ReferenceDataSet
                 dicomFile.DataSet.Set(Tags.SOPInstanceUID, UI, UnifiedProcedureStepPush_NCREATE_REQ(Tags.AffectedSOPInstanceUID).Values(0))
 
                 dicomFile.Write(fileName2)
-
             Catch ex As DvtkHighLevelInterface.Common.Other.HliException
                 Throw New System.Exception("Error writing the Dataset to file: " + fileName, ex)
             End Try

@@ -2,11 +2,11 @@ Class SendUPSInProgress
     Inherits Scenario
 
     'Constructor
-    Public Sub New(ByVal useAutomaticTesting As Boolean)
+    Public Sub New()
 
         'Configure the send step
         Dim sendStep As SendScenarioStep = New SendScenarioStep(New PDSActor(), New TMSActor(), True)
-        Dim ups03transaction As UPS03Transaction = New UPS03Transaction(False, useAutomaticTesting)
+        Dim ups03transaction As UPS03Transaction = New UPS03Transaction(False)
         sendStep.AddTransaction(ups03transaction)
 
         ' Response validation step

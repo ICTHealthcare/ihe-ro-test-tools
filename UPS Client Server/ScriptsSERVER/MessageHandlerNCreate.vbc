@@ -85,7 +85,7 @@ Class MessageHandlerNCreate
                 End If
             Next
         Else
-            Logger.GetInstance().LogMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
+            Logger.GetInstance().LogErrorMessage("Error Reading the subscribers file: " + ReferenceDataSet.GetInstance.m_datasetPath + "\SUBSCRIBERS\subscribers.txt")
         End If
 
         For Each subscriber As String In AEtitlesSubscribers

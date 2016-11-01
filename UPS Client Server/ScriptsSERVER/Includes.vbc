@@ -103,9 +103,4 @@
 #include "UPSCancelNAction.Designer.vbc"
 #include "UPSCancelNAction.vbc"
 #include "HexadecimalValueRule.vbc"
-#include "NewAutomaticTestingScenario.Designer.vbc"
-#include "NewAutomaticTestingScenario.vbc"
-#include "NewAutomaticTestScenario.vbc"
-#include "ChooseAutomaticTestScenario.Designer.vbc"
-#include "ChooseAutomaticTestScenario.vbc"
 #End If

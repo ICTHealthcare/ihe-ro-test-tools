@@ -8,137 +8,82 @@ Class UPS07Transaction
     Private m_procedureStep As ProcedureStep
     Private ups07IODType As IODType = Nothing
     Private _isCompleted As Boolean
-    Private m_SOPInstanceUID As String
 
     'Constructor
-    Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean, ByVal SOPInstanceUID As String)
+    Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean)
 
         MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
         ups07IODType = IODType.UnifiedProcedureStepPull
         _isCompleted = isCompleted
-        m_SOPInstanceUID = SOPInstanceUID
     End Sub
 
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
         Dim datasetMessages As ArrayList = New ArrayList()
 
-        Dim currentAutomaticTestXMLfile As New System.Xml.XmlDocument()
-        Try
-            currentAutomaticTestXMLfile.Load(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
-        Catch ex As Exception
-            currentAutomaticTestXMLfile = Nothing
-            Reporter.GetInstance().ReportDebugMessage("Automatic test scenario not loaded")
-        End Try
+        Dim selectUPSForm As SelectUPS = New SelectUPS()
+        selectUPSForm.DataGridUPS.MultiSelect = False
+        selectUPSForm.SetUPSInProgress.Text = "Send N-Action-RQ with COMPLETED/CANCELED status to selected UPS"
+        selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
 
-        If (m_SOPInstanceUID = "") Then
+        selectUPSForm.ShowDialog()
 
-            Dim selectUPSForm As SelectUPS = New SelectUPS()
-            selectUPSForm.DataGridUPS.MultiSelect = False
-            selectUPSForm.SetUPSInProgress.Text = "Send N-Action-RQ with COMPLETED/CANCELED status to selected UPS"
-            selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
-
-            selectUPSForm.ShowDialog()
-
-            If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
-
-                For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
-
-                    If (DataRow.Selected) Then
-
-                        Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
-
-                        If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
+        If selectUPSForm.DialogResult = Windows.Forms.DialogResult.OK Then
 
 
-                            ' Make the N-ACTION-RQ message
-                            Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
-                            ' Set the Requested SOPClassUID 
-                            message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
+            For Each DataRow As DataGridViewRow In selectUPSForm.UPSDataGridView.Rows
 
-                            ' Set the Requested SOP Instance UID
-                            message.Set(Tags.RequestedSOPInstanceUID, UI, SOPInstanceUID)
+                If (DataRow.Selected) Then
 
-                            ' ActionType ID
-                            message.Set(Tags.ActionTypeID, US, "1")
+                    Dim SOPInstanceUID As String = DataRow.Cells("SopInstanceUIDColumn").Value.ToString()
 
-                            'Set Unified Procedure Step State 
-
-                            If _isCompleted Then
-
-                                message.Set(Tags.ProcedureStepState, CS, "COMPLETED")
-                            Else
-                                message.Set(Tags.ProcedureStepState, CS, "CANCELED")
-                            End If
+                    If Not (String.IsNullOrEmpty(SOPInstanceUID)) Then
 
 
-                            If Not (String.IsNullOrEmpty(ReferenceDataSet.GetInstance.getTrainsactionUIDUPS(SOPInstanceUID))) Then
-                                ' Transaction UID
-                                message.DataSet.Set(Tags.TransactionUID, UI, ReferenceDataSet.GetInstance.getTrainsactionUIDUPS(SOPInstanceUID))
+                        ' Make the N-ACTION-RQ message
+                        Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
 
-                                datasetMessages.Add(message)
-                            Else
-                                Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an Transaction UID"))
-                            End If
+                        ' Set the Requested SOPClassUID 
+                        message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
-                            If Not currentAutomaticTestXMLfile Is Nothing Then
+                        ' Set the Requested SOP Instance UID
+                        message.Set(Tags.RequestedSOPInstanceUID, UI, SOPInstanceUID)
 
-                                Dim ScenarioNode As System.Xml.XmlNode = currentAutomaticTestXMLfile.CreateNode("element", "Scenario", "")
-                                Dim nameAttr As System.Xml.XmlAttribute = currentAutomaticTestXMLfile.CreateAttribute("Name")
-                                nameAttr.Value = "SendUPSCompletedOrCanceled"
-                                ScenarioNode.Attributes.Append(nameAttr)
+                        ' ActionType ID
+                        message.Set(Tags.ActionTypeID, US, "1")
 
-                                Dim TemplateNode As System.Xml.XmlNode = currentAutomaticTestXMLfile.CreateNode("element", "isCompleted", "")
-                                TemplateNode.InnerText = _isCompleted.ToString()
-                                ScenarioNode.AppendChild(TemplateNode)
+                        'Set Unified Procedure Step State 
 
-                                currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios").AppendChild(ScenarioNode)
-                                currentAutomaticTestXMLfile.Save(ReferenceDataSet.GetInstance().getCurrentAutomaticTestXMLFileName)
-                            End If
+                        If _isCompleted Then
 
-
+                            message.Set(Tags.ProcedureStepState, CS, "COMPLETED")
                         Else
-                            Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
+                            message.Set(Tags.ProcedureStepState, CS, "CANCELED")
                         End If
+
+
+                        If Not (String.IsNullOrEmpty(ReferenceDataSet.GetInstance.getTrainsactionUIDUPS(SOPInstanceUID))) Then
+                            ' Transactuion ID
+                            message.DataSet.Set(Tags.TransactionUID, UI, ReferenceDataSet.GetInstance.getTrainsactionUIDUPS(SOPInstanceUID))
+
+                            datasetMessages.Add(message)
+                        Else
+                            Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an Transaction UID"))
+                        End If
+
+                        'ReferenceDataSet.GetInstance.UpdateCacheCFind_Response(SOPInstanceUID, message)
+
+                    Else
+                        Logger.GetInstance().LogErrorMessage(String.Format("Selected UPS has not an SOP Instance UID"))
                     End If
-                Next
+                End If
+            Next
 
-            Else
-                ' cancel scenario
-            End If
         Else
-            ' Make the N-ACTION-RQ message
-            Dim message As DicomMessage = New DicomMessage(NACTIONRQ)
-
-            ' Set the Requested SOPClassUID 
-            message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-
-            ' Set the Requested SOP Instance UID
-            message.Set(Tags.RequestedSOPInstanceUID, UI, m_SOPInstanceUID)
-
-            ' ActionType ID
-            message.Set(Tags.ActionTypeID, US, "1")
-
-            'Set Unified Procedure Step State 
-
-            If _isCompleted Then
-
-                message.Set(Tags.ProcedureStepState, CS, "COMPLETED")
-            Else
-                message.Set(Tags.ProcedureStepState, CS, "CANCELED")
-            End If
-
-
-            If Not currentAutomaticTestXMLfile Is Nothing Then
-                ' Transaction UID
-                message.DataSet.Set(Tags.TransactionUID, UI, currentAutomaticTestXMLfile.SelectSingleNode("//Scenarios/UPSTransactionUID").InnerText)
-
-                datasetMessages.Add(message)
-            Else
-                Logger.GetInstance().LogErrorMessage(String.Format("Used UPS has not an Transaction UID"))
-            End If
-
+            ' cancel scenario
         End If
+
+
         Return datasetMessages
 
 

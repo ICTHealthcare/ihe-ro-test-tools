@@ -11,7 +11,7 @@ Class UPS04Transaction
     'Constructor
     Public Sub New()
 
-        MyBase.New("UPS-04", "UPS get information", IODType.UnifiedProcedureStepPush, True)
+        MyBase.New("UPS N-Get", "UPS get information", IODType.UnifiedProcedureStepPush, True)
         NGetIODType = IODType.UnifiedProcedureStepPush
         'm_isStartProcedure = isStartProcedure
 

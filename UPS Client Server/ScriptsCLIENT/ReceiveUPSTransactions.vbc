@@ -15,7 +15,7 @@ Class ReceiveUPSTransactions
         'Configure the receive step: set the cstore thread as part of the C-Move command
         Dim receive As ReceiveScenarioStep = New ReceiveScenarioStep(tmsActor, pdsActor, True, ostActor, DvtkData.Dimse.DimseCommand.NSETRQ)
 
-        Dim ups01Transaction As UPS01Transaction = New UPS01Transaction("")
+        Dim ups01Transaction As UPS01Transaction = New UPS01Transaction()
         receive.AddTransaction(ups01Transaction)
 
         'Add the steps to the list

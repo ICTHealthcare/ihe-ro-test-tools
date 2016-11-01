@@ -1,11 +1,11 @@
 Class SendUPSProgressUpdate
     Inherits Scenario
 
-    Public Sub New(ByVal NSetTemplate As String)
+    Public Sub New()
 
         Dim TMSActor As TMSActor = New TMSActor()
         Dim PDSActor As PDSActor = New PDSActor()
-        Dim ups05Transaction As UPS05Transaction = New UPS05Transaction(NSetTemplate)
+        Dim ups05Transaction As UPS05Transaction = New UPS05Transaction()
 
         'Send N-Set REQ (UPS final update)
         Dim sendNSetReq As SendScenarioStep = New SendScenarioStep(PDSActor, TMSActor, True)

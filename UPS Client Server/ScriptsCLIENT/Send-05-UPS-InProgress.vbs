@@ -18,7 +18,7 @@ Class TestTool
     End Sub
 
     Public Overrides Function GetScenarioToRun() As Scenario
-        Return New SendUPSInProgress(false)
+        Return New SendUPSInProgress
     End Function
 
 End Class

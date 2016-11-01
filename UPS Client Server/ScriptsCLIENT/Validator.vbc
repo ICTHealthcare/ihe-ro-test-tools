@@ -88,7 +88,7 @@ Class Validator
 
             'convert original request to another dicom message
             Dim sendMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage _
-                            = ReferenceDataSet.GetInstance().GetUnifiedProcedureStepPull_CFIND_REQ("")
+                            = ReferenceDataSet.GetInstance().GetUnifiedProcedureStepPull_CFIND_REQ()
 
             Dim cFindRequest As DvtkData.Dimse.DicomMessage = New DvtkData.Dimse.DicomMessage()
             cFindRequest.CommandSet = New DvtkData.Dimse.CommandSet(CFINDRQ)
