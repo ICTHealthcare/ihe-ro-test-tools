@@ -5,10 +5,14 @@ SESSION-FILE-VERSION 2
 
 # SUT Test Session Properties
 <<<<<<< HEAD
+<<<<<<< HEAD
 SESSION-TITLE "IHE-RO TestTool - IPDW UPS TMS 1.1.1"
 =======
 SESSION-TITLE "IHE-RO TestTool - IPDW UPS TMS 1.0.0"
 >>>>>>> parent of 9e84986... IPDW-V2 release 1.1.0
+=======
+SESSION-TITLE "IHE-RO TestTool - IPDW UPS TMS 1.1.0"
+>>>>>>> parent of 687447f... Release DCOMP 1.2.1, QAPV 1.3.1, TDW-II 1.3.1, IPDW-V2 1.1.1 en UPS Client Server 1.0.1
 SESSION-ID 000
 MANUFACTURER "DVT"
 MODEL-NAME "DVT"
