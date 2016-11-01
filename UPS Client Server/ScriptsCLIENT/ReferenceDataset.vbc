@@ -184,29 +184,6 @@ Public Class ReferenceDataSet
 
     End Function
 
-    Public Function GetCacheUPSes() As DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-        Dim responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection = New DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-
-        LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
-
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\SERVER")
-        For Each File As FileInfo In directoryInfo.GetFiles
-
-            If (File.Name.EndsWith(".dcm")) Then
-
-                Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
-                'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-                dicomFile.Read(File.FullName)
-
-                responseDataSets.Add(dicomFile.DataSet)
-
-            End If
-        Next
-
-        Return responseDataSets
-
-    End Function
-
     Public Sub SetCacheCFind_ResponsesTransactionUID(ByVal SOPInstanceUID As String, ByVal TransactionUID As String)
 
         LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
@@ -476,28 +453,6 @@ Public Class ReferenceDataSet
         Next
     End Sub
 
-    Public Function countClientCacheFiles(ByVal XMLFileName As String, ByVal DataSetName As String) As Integer
-        ' set path to script dir in front of the filename
-        Dim count As Integer = 0
-        Dim XMLPathAndFile As String = TestToolConfiguration.GetInstance.GetScriptPath + XMLFileName
-        ' Create and load new XML document
-        Dim m_DataSetXML As System.Xml.XmlDocument = New System.Xml.XmlDocument
-        m_DataSetXML.Load(XMLPathAndFile)
-        ' create the relative datapath
-        Dim relativeTestDataPath As String = m_DataSetXML.SelectSingleNode("/DataSet/DataSetPath").InnerText
-        Dim datasetPath As String = TestToolConfiguration.GetInstance.SessionPath + relativeTestDataPath
-
-        Dim dirInfo As DirectoryInfo = New DirectoryInfo(datasetPath + "\CLIENT")
-
-        For Each File As FileInfo In dirInfo.GetFiles
-            If (File.Name.StartsWith(DataSetName.Substring(0, DataSetName.Length - 1))) Then
-                count = count + 1
-            End If
-        Next
-
-        Return count
-    End Function
-
     Public Sub deleteAllClientCacheFiles()
         For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\CLIENT", _
             Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
@@ -505,30 +460,8 @@ Public Class ReferenceDataSet
         Next
     End Sub
 
-    Public Sub deleteAllServerCacheFiles()
-        For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\SERVER", _
-            Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
-            File.Delete(foundFile)
-        Next
-    End Sub
-
     Public Sub DeleteSelectedClientUPS(ByVal UPSSOPInstanceUID As String)
         For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\CLIENT", _
-            Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
-
-            Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
-            'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-            dicomFile.Read(foundFile)
-
-            If (dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() = UPSSOPInstanceUID) Then
-
-                File.Delete(foundFile)
-            End If
-        Next
-    End Sub
-
-    Public Sub DeleteSelectedServerUPS(ByVal UPSSOPInstanceUID As String)
-        For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\SERVER", _
             Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
 
             Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
@@ -559,23 +492,6 @@ Public Class ReferenceDataSet
     End Function
 
 
-    Public Function GetSelectedServerUPSFilename(ByVal UPSSOPInstanceUID As String) As String
-        For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\SERVER", _
-            Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
-
-            Dim dicomFile As DvtkHighLevelInterface.Dicom.Files.DicomFile = New DvtkHighLevelInterface.Dicom.Files.DicomFile
-            'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-            dicomFile.Read(foundFile)
-
-            If (dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() = UPSSOPInstanceUID) Then
-
-                Return foundFile
-            End If
-        Next
-        Return ""
-    End Function
-
-
     'Returns the DataSets of the Unified Procedure Step Pull Response
     Public Function GetUnifiedProcedureStepPull_Responses(ByVal dicomMessageCFindReq As DicomMessage) As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection
         Dim responseMessages As DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection = New DvtkHighLevelInterface.Dicom.Messages.DicomMessageCollection()
@@ -583,27 +499,33 @@ Public Class ReferenceDataSet
         Dim CFindRspCount As Integer = 0
         Dim config As TestToolConfiguration = TestToolConfiguration.GetInstance()
 
-        Dim dirInfoServerCache As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\SERVER")
+        'used to retrieve correct AE Titles
+        'Dim dvtkSettingTMS As DVTKAEConfiguration = config.GetDVTKAEConfiguration(New TMSActor().Id)
+        'Dim dvtkSettingOST As DVTKAEConfiguration = config.GetDVTKAEConfiguration(New OSTActor().Id)
 
-        Dim dirInfoUserUPSes As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\TestData\UPS")
+        'dicomMessageCFindReq.DataSet.Write("C:\Projecten\ASTRO\IHE_RO2013\03-Code\DVtkProject\IPDW\Datasets\IPDW\Cache\CFindRequest.dcm")
+        For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Cache\SERVER", _
+            Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
+            File.Delete(foundFile)
+        Next
 
-        If (dirInfoServerCache.GetFiles().Length = 0) Then
+        Dim dirInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\TestData\UPS")
 
-            If (dirInfoUserUPSes.GetFiles().Length > 0) Then
-                For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\TestData\UPS", _
-                    Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly, "*.*")
-                    Dim fileInfo As FileInfo = New FileInfo(foundFile)
-                    My.Computer.FileSystem.CopyFile(foundFile, m_datasetPath + "\..\Cache\SERVER\" + fileInfo.Name)
-                Next
-            Else
-                For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Originals\UPS", _
-                    Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
-                    Dim fileInfo As FileInfo = New FileInfo(foundFile)
-                    My.Computer.FileSystem.CopyFile(foundFile, m_datasetPath + "\..\Cache\SERVER\" + fileInfo.Name)
-                Next
-            End If
-
+        If (dirInfo.GetFiles().Length > 0) Then
+            For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\TestData\UPS", _
+                Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly, "*.*")
+                Dim fileInfo As FileInfo = New FileInfo(foundFile)
+                My.Computer.FileSystem.CopyFile(foundFile, m_datasetPath + "\..\Cache\SERVER\" + fileInfo.Name)
+            Next
+        Else
+            For Each foundFile As String In My.Computer.FileSystem.GetFiles(m_datasetPath + "\..\Originals\UPS", _
+                Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories, "*.*")
+                Dim fileInfo As FileInfo = New FileInfo(foundFile)
+                My.Computer.FileSystem.CopyFile(foundFile, m_datasetPath + "\..\Cache\SERVER\" + fileInfo.Name)
+            Next
         End If
+
+
 
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\..\Cache\SERVER")
         For Each File As FileInfo In directoryInfo.GetFiles
@@ -1174,13 +1096,6 @@ Public Class ReferenceDataSet
 
                     ' Fill  (0x00081195)  Transaction UID
                     NsetRq.DataSet.Set(Tags.TransactionUID, UI, dataSet(Tags.TransactionUID).Values(0))
-
-
-                    If (NsetRq.DataSet.Exists(Tags.UPSPerformedProcedureOutputInformationSequence)) Then
-                        If (NsetRq.DataSet.Exists(Tags.UPSPerformedProcedureOutputInformationSequenceStudyInstanceUID)) Then
-                            NsetRq.DataSet.Set(Tags.UPSPerformedProcedureOutputInformationSequenceStudyInstanceUID, UI, dataSet(Tags.StudyInstanceUID).Values(0))
-                        End If
-                    End If
 
 
                     For i As Integer = 0 To NsetRq.DataSet.Count - 1

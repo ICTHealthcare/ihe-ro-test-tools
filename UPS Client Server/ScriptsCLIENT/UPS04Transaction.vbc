@@ -48,7 +48,7 @@ Class UPS04Transaction
             Dim referenceData As ReferenceDataSet = ReferenceDataSet.GetInstance
             referenceData.LoadNewDataSet(DataSetHandler.UPSMessagesXMLFileName)
 
-            Dim selectUPSForm As SelectUPS = New SelectUPS(True)
+            Dim selectUPSForm As SelectUPS = New SelectUPS()
             Dim getInformationContent As GetInformationContent = New GetInformationContent()
             selectUPSForm.DataGridUPS.MultiSelect = False
             selectUPSForm.SetUPSInProgress.Text = "Send N-Get-RQ for information of selected UPS"

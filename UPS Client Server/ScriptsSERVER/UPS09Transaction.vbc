@@ -24,7 +24,7 @@ Class UPS09Transaction
     Protected Overrides Function GetTransactionReferenceDataMessages() As System.Collections.ArrayList
         Dim datasetMessages As ArrayList = New ArrayList()
 
-        Dim selectUPSForm As SelectUPS = New SelectUPS(True)
+        Dim selectUPSForm As SelectUPS = New SelectUPS()
         Dim giveAETitleDialog As GiveAETitleDialog = New GiveAETitleDialog()
 
 

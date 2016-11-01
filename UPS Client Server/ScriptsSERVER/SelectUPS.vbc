@@ -2,18 +2,6 @@
     Public responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection
     Public UPSDataGridView As DataGridView
     Public selectedDataGridRows As DataGridViewRowCollection
-    Public m_usedForUPSClient As Boolean
-
-    Public Sub New(ByVal usedForUPSClient As Boolean)
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        m_usedForUPSClient = usedForUPSClient
-
-    End Sub
-
-
     Private Sub SelectUPS_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         loadTable()
@@ -58,36 +46,20 @@
     Private Sub btnDeleteSelectedUPS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDeleteSelectedUPS.Click
         For Each selectedDataGridRow As DataGridViewRow In DataGridUPS.SelectedRows
             Dim SOPInstanceUID As String = selectedDataGridRow.Cells(4).Value
+            ReferenceDataSet.GetInstance().DeleteSelectedClientUPS(SOPInstanceUID)
 
-            If (m_usedForUPSClient) Then
-                ReferenceDataSet.GetInstance().DeleteSelectedClientUPS(SOPInstanceUID)
-                Me.DataGridUPS.Rows.Clear()
-                responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
-            Else
-                ReferenceDataSet.GetInstance().DeleteSelectedServerUPS(SOPInstanceUID)
-                Me.DataGridUPS.Rows.Clear()
-                responseDataSets = ReferenceDataSet.GetInstance.GetCacheUPSes()
-            End If
         Next
 
+        Me.DataGridUPS.Rows.Clear()
+        responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
         loadTable()
     End Sub
 
     Private Sub btnDeleteAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDeleteAll.Click
-
-        If (m_usedForUPSClient) Then
-            ReferenceDataSet.GetInstance().deleteAllClientCacheFiles()
-            Me.DataGridUPS.Rows.Clear()
-            responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
-            loadTable()
-        Else
-            ReferenceDataSet.GetInstance().deleteAllServerCacheFiles()
-            Me.DataGridUPS.Rows.Clear()
-            responseDataSets = ReferenceDataSet.GetInstance.GetCacheUPSes()
-            loadTable()
-        End If
-
-        
+        ReferenceDataSet.GetInstance().deleteAllClientCacheFiles()
+        Me.DataGridUPS.Rows.Clear()
+        responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
+        loadTable()
     End Sub
 
     Private Sub ShellExecute(ByVal File As Object)
@@ -103,19 +75,12 @@
     Private Sub btnOpenSelectedUPS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenSelectedUPS.Click
         For Each selectedDataGridRow As DataGridViewRow In DataGridUPS.SelectedRows
             Dim SOPInstanceUID As String = selectedDataGridRow.Cells(4).Value
-            Dim File As Object
-
-            If (m_usedForUPSClient) Then
-                File = ReferenceDataSet.GetInstance().GetSelectedClientUPSFilename(SOPInstanceUID)
-            Else
-                File = ReferenceDataSet.GetInstance().GetSelectedServerUPSFilename(SOPInstanceUID)
-            End If
+            Dim File As Object = ReferenceDataSet.GetInstance().GetSelectedClientUPSFilename(SOPInstanceUID)
 
             Dim Thread1 As New System.Threading.Thread( _
-                            AddressOf ShellExecute)
+            AddressOf ShellExecute)
 
             Thread1.Start(File)
-            
         Next
 
     End Sub

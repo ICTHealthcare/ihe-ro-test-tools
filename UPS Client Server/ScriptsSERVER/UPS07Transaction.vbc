@@ -51,7 +51,7 @@ Class UPS07Transaction
 
         If (m_SOPInstanceUID = "") Then
 
-            Dim selectUPSForm As SelectUPS = New SelectUPS(True)
+            Dim selectUPSForm As SelectUPS = New SelectUPS()
             selectUPSForm.DataGridUPS.MultiSelect = False
             selectUPSForm.SetUPSInProgress.Text = "Send N-Action-RQ with COMPLETED/CANCELED status to selected UPS"
             selectUPSForm.responseDataSets = ReferenceDataSet.GetInstance.GetCacheCFind_Responses()
