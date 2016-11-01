@@ -20,9 +20,6 @@ Class RegisteredDoseDisplayScenario2
         dialog.ShowDialog()
         Dim chozenFolder As String = ""
 
-        'scenario dataset
-        m_scenarioDatasetXmlFileName = "HybridReferenceDataSet.xml"
-
         If Not (dialog.RegistratorDialogResult = DialogResult.CANCEL) Then
 
             DefOrCustomDatasetDialog = New DefaultOrCustomDatasetDialog()
@@ -33,7 +30,6 @@ Class RegisteredDoseDisplayScenario2
 
             If DefOrCustomDatasetDialog.Custom Then
                 chozenFolder = DefOrCustomDatasetDialog.lbCustomDatasets.SelectedItem.ToString()
-                m_scenarioDatasetXmlFileName = chozenFolder + ".xml"
             End If
 
             Select Case dialog.RegistratorDialogResult
@@ -54,6 +50,9 @@ Class RegisteredDoseDisplayScenario2
         End If
 
         If Cancelclicked = False Then
+
+            'scenario dataset
+            m_scenarioDatasetXmlFileName = "HybridReferenceDataSet.xml"
 
             'Configurate the aditional send step
             send.AddTransaction(New MMRO_4_Transaction())

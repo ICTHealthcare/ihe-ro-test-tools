@@ -51,25 +51,25 @@ Public Class RegisteredDoseDisplayScenario1Dlg
         '
         Me.RadioButton1.Location = New System.Drawing.Point(40, 264)
         Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(330, 24)
+        Me.RadioButton1.Size = New System.Drawing.Size(160, 24)
         Me.RadioButton1.TabIndex = 0
-        Me.RadioButton1.Text = "CT - PET (Custom FOR1 - FOR3)"
+        Me.RadioButton1.Text = "CT - PET"
         '
         'RadioButton2
         '
         Me.RadioButton2.Location = New System.Drawing.Point(40, 288)
         Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(330, 24)
+        Me.RadioButton2.Size = New System.Drawing.Size(152, 24)
         Me.RadioButton2.TabIndex = 1
-        Me.RadioButton2.Text = "CT - MR (Custom FOR1 - FOR2)"
+        Me.RadioButton2.Text = "CT - MR"
         '
         'RadioButton3
         '
         Me.RadioButton3.Location = New System.Drawing.Point(40, 312)
         Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(360, 24)
+        Me.RadioButton3.Size = New System.Drawing.Size(152, 24)
         Me.RadioButton3.TabIndex = 2
-        Me.RadioButton3.Text = "CT - MR - PET  (Custom All FOR's)"
+        Me.RadioButton3.Text = "CT - MR - PET"
         '
         'PictureBox1
         '

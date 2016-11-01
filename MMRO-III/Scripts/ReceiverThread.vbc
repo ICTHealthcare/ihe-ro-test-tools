@@ -69,23 +69,23 @@ Class ReceiverThread
     'End Sub
     Protected Overrides Sub AfterHandlingCFindRequest(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
         MyBase.AfterHandlingCFindRequest(dicomMessage)
-        ' dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
+        dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
     End Sub
     Protected Overrides Sub AfterHandlingCStoreRequest(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
         MyBase.AfterHandlingCStoreRequest(dicomMessage)
-        'dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
+        dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
     End Sub
     Protected Overrides Sub AfterHandlingCmoveRequest(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
         MyBase.AfterHandlingCMoveRequest(dicomMessage)
-        'dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
+        dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
     End Sub
     Protected Overrides Sub AfterHandlingNSetRequest(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
         MyBase.AfterHandlingNSetRequest(dicomMessage)
-        'dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
+        dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
     End Sub
     Protected Overrides Sub AfterHandlingNActionRequest(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage)
         MyBase.AfterHandlingNActionRequest(dicomMessage)
-        'dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
+        dicomMessage.Set(Tags.privateTransferSyntaxAttribute, DvtkData.Dimse.VR.UI, GetTransferSyntax(dicomMessage))
     End Sub
 
     Private Function GetTransferSyntax(ByVal dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage) As String

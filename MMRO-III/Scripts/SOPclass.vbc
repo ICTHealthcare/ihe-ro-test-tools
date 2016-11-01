@@ -1,5 +1,5 @@
 
-Public Class SOPclass
+Class SOPclass
 
 #Region "SOP UIDs"
 
@@ -27,10 +27,6 @@ Public Class SOPclass
     Public Shared ReadOnly RTBrachyTreatmentRecordSOPClassUID As String = "1.2.840.10008.5.1.4.1.1.481.6"
     Public Shared ReadOnly RTTreatmentSummaryRecordSOPClassUID As String = "1.2.840.10008.5.1.4.1.1.481.7"
     Public Shared ReadOnly XRayRadiationDoseSRSOPClassUID As String = "1.2.840.10008.5.1.4.1.1.88.67"
-    Public Shared ReadOnly ModalityWorklistInformationModelFIND As String = "1.2.840.10008.5.1.4.31"
-    Public Shared ReadOnly ModalityPerformedProcedureStepSOPClassUID As String = "1.2.840.10008.3.1.2.3.3"
-    Public Shared ReadOnly ModalityPerformedProcedureStepRetrieveSOPClassUID As String = "1.2.840.10008.3.1.2.3.4"
-    Public Shared ReadOnly ModalityPerformedProcedureStepNotificationSOPClassUID As String = "1.2.840.10008.3.1.2.3.5"
 #End Region
 
 #Region "Private Fields"
@@ -53,8 +49,6 @@ Public Class SOPclass
         m_IODtoSOPMapping.Add(IODType.RTPlanDosimetric, RTPlanDosimetricSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.UnifiedProcedureStepPull, UnifiedProcedureStepPullSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.UnifiedProcedureStepPush, UnifiedProcedureStepPushSOPClassUID)
-        m_IODtoSOPMapping.Add(IODType.UnifiedProcedureStepEvent, UnifiedProcedureStepEventSOPClass)
-        m_IODtoSOPMapping.Add(IODType.UnifiedProcedureStepWatch, UnifiedProcedureStepWatchSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.RTBeamsDeliveryInstruction, RTBeamsDeliveryInstructionSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.RTImage, RTImageSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.StudyRootQueryRetrieveMOVE, StudyRootQueryRetrieveMOVESOPClassUID)
@@ -66,8 +60,6 @@ Public Class SOPclass
         m_IODtoSOPMapping.Add(IODType.RTIonBeamsTreatmentRecord, RTIonBeamsTreatmentRecordSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.RTBrachyTreatmentRecord, RTBrachyTreatmentRecordSOPClassUID)
         m_IODtoSOPMapping.Add(IODType.RTTreatmentSummaryRecord, RTTreatmentSummaryRecordSOPClassUID)
-        m_IODtoSOPMapping.Add(IODType.ModalityWorklistInformationModelFIND, ModalityWorklistInformationModelFIND)
-        m_IODtoSOPMapping.Add(IODType.ModalityPerformedProcedureStep, ModalityPerformedProcedureStepSOPClassUID)
     End Sub
 
 #End Region
