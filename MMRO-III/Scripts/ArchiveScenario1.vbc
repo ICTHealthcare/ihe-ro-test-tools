@@ -38,59 +38,52 @@ Class ArchiveScenario1
 
         ReferenceDataSet.GetInstance().LoadNewDataSet(XMLFilePath + m_scenarioDatasetXmlFileName)
 
+        Dim FOR1DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetCTImage(1, 1)
         Dim FOR1IODType As String = ""
-        Dim countFOR1 As Integer = ReferenceDataSet.GetInstance().GetImageCount(1, IODType.CTImage)
-        If (countFOR1 > 0) Then
-            Dim FOR1DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetCTImage(1, 1)
-            If (FOR1DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
-                If (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
-                    FOR1IODType = "CT"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
-                ElseIf (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
-                    FOR1IODType = "MR"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
-                ElseIf (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
-                    FOR1IODType = "PET"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
+        If (FOR1DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
+            If (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
+                FOR1IODType = "CT"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
+            ElseIf (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
+                FOR1IODType = "MR"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
+            ElseIf (FOR1DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
+                FOR1IODType = "PET"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
 
-                End If
             End If
         End If
 
+        Dim FOR2DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetMRImage(1, 1)
         Dim FOR2IODType As String = ""
-        Dim countFOR2 As Integer = ReferenceDataSet.GetInstance().GetImageCount(1, IODType.MRImage)
-        If (countFOR2 > 0) Then
-            Dim FOR2DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetMRImage(1, 1)
-            If (FOR2DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
-                If (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
-                    FOR2IODType = "CT"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
-                ElseIf (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
-                    FOR2IODType = "MR"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
-                ElseIf (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
-                    FOR2IODType = "PET"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
-                End If
+        If (FOR2DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
+            If (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
+                FOR2IODType = "CT"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
+            ElseIf (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
+                FOR2IODType = "MR"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
+            ElseIf (FOR2DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
+                FOR2IODType = "PET"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
             End If
         End If
 
+        Dim bla As Integer = ReferenceDataSet.GetInstance().GetImageCount(1, IODType.CTImage)
+        Dim bla2 As Integer = ReferenceDataSet.GetInstance().GetImageCount(1, IODType.PETImage)
 
+        Dim FOR3DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetPETImage(1, 1)
         Dim FOR3IODType As String = ""
-        Dim countFOR3 As Integer = ReferenceDataSet.GetInstance().GetImageCount(1, IODType.PETImage)
-        If (countFOR3 > 0) Then
-            Dim FOR3DICOMmessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = ReferenceDataSet.GetInstance().GetPETImage(1, 1)
-            If (FOR3DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
-                If (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
-                    FOR3IODType = "CT"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
-                ElseIf (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
-                    FOR3IODType = "MR"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
-                ElseIf (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
-                    FOR3IODType = "PET"
-                    sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
-                End If
+        If (FOR3DICOMmessage.DataSet.Exists(Tags.SOPClassUID)) Then
+            If (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.CTImageSOPClassUID) Then
+                FOR3IODType = "CT"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
+            ElseIf (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.MRImageSOPClassUID) Then
+                FOR3IODType = "MR"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
+            ElseIf (FOR3DICOMmessage.DataSet(Tags.SOPClassUID).Values(0) = SOPclass.PetImageSOPClassUID) Then
+                FOR3IODType = "PET"
+                sendRefDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
             End If
         End If
 
@@ -108,11 +101,11 @@ Class ArchiveScenario1
         'configure the recieve scenario step
         recieveDataSet.AddActor(archiveActor)
 
-        If (FOR1IODType = "CT" Or FOR2IODType = "CT" Or FOR3IODType = "CT") Then
+        If (FOR1IODType = "CT" Or FOR2IODType = "CT") Then
             recieveDataSet.AddTransaction(New RAD_8_Transaction(IODType.CTImage))
-        ElseIf (FOR1IODType = "MR" Or FOR2IODType = "MR" Or FOR3IODType = "MR") Then
+        ElseIf (FOR1IODType = "MR" Or FOR2IODType = "MR") Then
             recieveDataSet.AddTransaction(New RAD_8_Transaction(IODType.MRImage))
-        ElseIf (FOR1IODType = "PET" Or FOR2IODType = "PET" Or FOR3IODType = "PET") Then
+        ElseIf (FOR1IODType = "PET" Or FOR2IODType = "PET") Then
             recieveDataSet.AddTransaction(New RAD_8_Transaction(IODType.PETImage))
         End If
 
