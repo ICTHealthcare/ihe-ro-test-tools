@@ -1,6 +1,0 @@
-;Image Plane Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Image Orientation (Patient);(0020,0037);R+*;This element shall be present in every RT Dose IOD.  For BRTO, this element shall be restricted to AXIAL images only.  For an axial image, direction cosines shall be ( 1, 0, 0, 0,  1, 0) with an angle tolerance of 0.001 radians (~0.057 degrees)
-Slice Thickness;(0018,0050);O+*;Shall not be relied on.
-Slice Location;(0020,1041);O+*;Shall not be relied on.
-Pixel Spacing ;(0028,0030);O+*;For CT, non-isotropic pixels are outside the scope of the profile. For RT Dose, pixel spacing may be non-isotropic.

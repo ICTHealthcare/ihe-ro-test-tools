@@ -1,5 +1,0 @@
-;RT Prescription Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Dose Reference Sequence;(300A,0010);R+*;
-> Dose Reference UID;(300A,0013);R+*;
-> Dose Reference Description;(300A,0016);R+;

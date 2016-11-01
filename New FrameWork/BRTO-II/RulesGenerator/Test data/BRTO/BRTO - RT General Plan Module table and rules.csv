@@ -1,6 +1,0 @@
-[Module name];RT General Plan Module;;;;
-[Module table header];Attribute Name;Tag;Presence;Attribute Note;
-[Attribute];RT Plan Label;DICOM tag (300A,0002);R+;the label, which serves as the identification of the plan for the user.;AttributeIsRequiredHasValueRule()
-[Attribute];RT Plan Date;DICOM tag (300A,0006);R+;the date, when the plan was last modified.;AttributeIsRequiredHasValueRule()
-[Attribute];RT Plan Time;DICOM tag (300A,0007);R+;the time, when the plan was last modified.;AttributeIsRequiredHasValueRule()
-[Attribute];RT Plan Geometry;DICOM tag (300A,000C);R+;shall be patient. this implies, that the rt structure set exists and is referenced in the general plan module.;"AttributeValueRule(""patient"")"

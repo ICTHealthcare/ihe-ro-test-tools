@@ -1,5 +1,0 @@
-[Module name];RT Patient Setup Plan Module;;;;
-[Module table header];Attribute Name;Tag;Presence;Attribute Note;
-[Attribute];Patient Setup Sequence;DICOM tag (300A,0180);R+*;an actor must not rely on the presence of: fixation device sequence, shielding device sequence, setup device sequence, table top vertical setup displacement, table top longitudinal setup displacement, table top lateral setup displacement within the patient setup sequence for proper operation.;
-[Attribute];>Patient Position;DICOM tag (0018,5100);R+;shall be one of {hfs, ffs, hfp, ffp}. (decubitus left and decubitus right positions shall not be supported in the brto profile.);"AttributeValueListRule(New String() {""hfs"", ""ffs"", ""hfp"", ""ffp""})"
-[Attribute];>Setup Technique;DICOM tag (300A,01B0);R+*;-;AttributeIsRequiredHasValueRule()

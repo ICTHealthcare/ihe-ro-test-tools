@@ -1,4 +1,0 @@
-;General Image Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Acquisition Date;(0008,0022);R+;In case of CT Images: Shall be present, is CT Image was acquired by Radiotherapy equipment. In case of RT Image: Shall be present, if the Value 1 / Value 2 of Image Type (0008,0008) is ORIGINAL\PRIMARY.
-Acquisition Time;(0008,0032);R+;In case of CT Images: Shall be present, is CT Image was acquired by Radiotherapy equipment. In case of RT Image: Shall be present, if the Value 1 / Value 2 of Image Type (0008,0008) is ORIGINAL\PRIMARY.

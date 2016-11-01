@@ -1,6 +1,0 @@
-;Patient Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Patient's Name;(0010,0010);R+;IHE requires that this element be present. This element is one of the primary patient identifying elements, and as such, all DICOM objects with the same Study Instance UID, must have the same value in this element. Equipment which creates new series based on other series (i.e. resampled series, new structure sets, plans, etc) must preserve the value of this element to adhere to this profile.
-Patient ID;(0010,0020);R+;See Patient's Name (0010,0010)
-Patient's Birth Date;(0010,0030);O+;See Patient's Name (0010,0010)
-Patient's Sex;(0010,0040);O+;See Patient's Name (0010,0010)

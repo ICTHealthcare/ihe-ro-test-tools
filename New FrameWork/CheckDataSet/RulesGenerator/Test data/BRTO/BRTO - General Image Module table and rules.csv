@@ -1,4 +1,0 @@
-[Module name];General Image Module;;;;
-[Module table header];Attribute Name;Tag;Presence;Attribute Note;
-[Attribute];Acquisition Date;DICOM tag (0008,0022);R+;in case of ct images: shall be present, is ct image was acquired by radiotherapy equipment. in case of rt image: shall be present, if the value 1 / value 2 of image type (0008,0008) is original\primary.;AttributeIsRequiredHasValueRule()
-[Attribute];Acquisition Time;DICOM tag (0008,0032);R+;in case of ct images: shall be present, is ct image was acquired by radiotherapy equipment. in case of rt image: shall be present, if the value 1 / value 2 of image type (0008,0008) is original\primary.;AttributeIsRequiredHasValueRule()

@@ -1,5 +1,0 @@
-;RT Patient Setup Plan Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Patient Setup Sequence;(300A,0180);R+*;An actor must not rely on the presence of: Fixation Device Sequence, Shielding Device Sequence, Setup Device Sequence, Table Top Vertical Setup Displacement, Table Top Longitudinal Setup Displacement, Table Top Lateral Setup Displacement within the Patient Setup Sequence for proper operation.
->Patient Position;(0018,5100);R+;Shall be one of {HFS, FFS, HFP, FFP}. (Decubitus Left and Decubitus Right Positions shall not be supported in the BRTO Profile.)
->Setup Technique;(300A,01B0);R+*;-

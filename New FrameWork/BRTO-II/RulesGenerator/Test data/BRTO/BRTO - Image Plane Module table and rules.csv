@@ -1,6 +1,0 @@
-[Module name];Image Plane Module;;;;
-[Module table header];Attribute Name;Tag;Presence;Attribute Note;
-[Attribute];Image Orientation (Patient);DICOM tag (0020,0037);R+*;this element shall be present in every rt dose iod.  for brto, this element shall be restricted to axial images only.  for an axial image, direction cosines shall be ( 1, 0, 0, 0,  1, 0) with an angle tolerance of 0.001 radians (~0.057 degrees);AttributeIsRequiredHasValueRule()
-[Attribute];Slice Thickness;DICOM tag (0018,0050);O+*;shall not be relied on.;
-[Attribute];Slice Location;DICOM tag (0020,1041);O+*;shall not be relied on.;
-[Attribute];Pixel Spacing ;DICOM tag (0028,0030);O+*;for ct, non-isotropic pixels are outside the scope of the profile. for rt dose, pixel spacing may be non-isotropic.;

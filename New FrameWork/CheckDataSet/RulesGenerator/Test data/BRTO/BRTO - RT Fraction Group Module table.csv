@@ -1,4 +1,0 @@
-;RT Fraction Group Module;;
-Attribute Name;Tag;Presence;Attribute Note
-Fraction Group Sequence;(300A,0070);R+*;Shall have only a single item in the sequence
->Number of Brachy Application Setups;(300A,00A0);R+*;Shall be 0. Brachytherapy is not supported in the BRTO Profile.
