@@ -14,8 +14,8 @@ Class UPS07Transaction
     'Constructor
     Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean, ByVal SOPInstanceUID As String)
 
-        MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
-        ups07IODType = IODType.UnifiedProcedureStepPush
+        MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
+        ups07IODType = IODType.UnifiedProcedureStepPull
         _isCompleted = isCompleted
         m_SOPInstanceUID = SOPInstanceUID
         m_customSOPClassUID = Nothing
@@ -27,8 +27,8 @@ Class UPS07Transaction
 
     Public Sub New(ByVal isCompleted As Boolean, ByVal clearMessageDataAfterSend As Boolean, ByVal SOPInstanceUID As String, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customActionTypeID As String, ByVal customProcedureStepState As String, ByVal customTransactionUID As String)
 
-        MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
-        ups07IODType = IODType.UnifiedProcedureStepPush
+        MyBase.New("UPS-07", "UPS Completed/Canceleled", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
+        ups07IODType = IODType.UnifiedProcedureStepPull
         _isCompleted = isCompleted
         m_SOPInstanceUID = SOPInstanceUID
         m_customSOPClassUID = customSOPClassUID

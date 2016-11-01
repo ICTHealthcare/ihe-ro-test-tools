@@ -52,13 +52,10 @@ Public Class Tags
     Public Shared ReadOnly WedgeSequence As String = String.Format("{0}[1]/{1}", BeamSequence, "0x300A00D1")
     Public Shared ReadOnly WedgeNumber As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00D2")
     Public Shared ReadOnly WedgeType As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00D3")
-    Public Shared ReadOnly WedgeTypeOnly As String = "0x300A00D3"
-    Public Shared ReadOnly WedgeNumberOnly As String = "0x300A00D2"
     Public Shared ReadOnly WedgeID As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00D4")
     Public Shared ReadOnly WedgeAngle As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00D5")
     Public Shared ReadOnly WedgeOrientation As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00D8")
     Public Shared ReadOnly SourceToWedgeTrayDistance As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00DA")
-    Public Shared ReadOnly EffectiveWedgeAngle As String = String.Format("{0}[1]/{1}", WedgeSequence, "0x300A00DE")
 
     'Compensators
     Public Shared ReadOnly NumberOfCompensators As String = String.Format("{0}[1]/{1}", BeamSequence, "0x300A00E0")
@@ -103,7 +100,6 @@ Public Class Tags
     Public Shared ReadOnly LeafJawPositions As String = String.Format("{0}[1]/{1}", BeamLimitingDevicePositionSequence, "0x300A011C")
     Public Shared ReadOnly IsocenterPosition As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A012C")
     Public Shared ReadOnly SourceToSurfaceDistance As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A0130")
-    Public Shared ReadOnly SourceToExternalContourDistance As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A0132")
     Public Shared ReadOnly GantryRotationDirection As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A011F")
     Public Shared ReadOnly GantryPitchAngle As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A014A")
     Public Shared ReadOnly BeamLimitingDeviceAngle As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A0120")
@@ -166,8 +162,6 @@ Public Class Tags
     Public Shared ReadOnly WedgePosition2 As String = String.Format("{0}[1]/{1}", WedgePositionSequence2, "0x300A0118")
     Public Shared ReadOnly WedgePosition3 As String = String.Format("{0}[1]/{1}", WedgePositionSequence3, "0x300A0118")
     Public Shared ReadOnly WedgePosition4 As String = String.Format("{0}[1]/{1}", WedgePositionSequence4, "0x300A0118")
-    Public Shared ReadOnly ReferencedWedgeNumberOnly As String = "0x300C00C0"
-    Public Shared ReadOnly WedgePositionOnly As String = "0x300A0118"
 
     Public Shared ReadOnly Test As String = String.Format("{0}[1]/{1}", ControlPointSequence, "0x300A0112")
 
@@ -289,16 +283,6 @@ Public Class Tags
     Public Shared ReadOnly BeamDose As String = String.Format("{0}[1]/{1}", ReferencedBeamSequence, "0x300A0084")
     Public Shared ReadOnly BeamDoseSpecificationPoint As String = String.Format("{0}[1]/{1}", ReferencedBeamSequence, "0x300A0082")
     Public Shared ReadOnly BeamMeterset As String = String.Format("{0}[1]/{1}", ReferencedBeamSequence, "0x300A0086")
-
-    Public Shared ReadOnly BeamDeliveryDurationLimit As String = String.Format("{0}[1]/{1}", ReferencedBeamSequence, "0x300A00C5")
-    Public Shared ReadOnly BeamDoseVerificationControlPointSequence As String = String.Format("{0}[1]/{1}", ReferencedBeamSequence, "0x300A008C")
-
-    Public Shared ReadOnly BeamDoseVerificationControlPointCumulativeMetersetWeight As String = String.Format("{0}[1]/{1}", BeamDoseVerificationControlPointSequence, "0x300A0134")
-    Public Shared ReadOnly BeamDoseVerificationControlPointAverageBeamDosePointDepth As String = String.Format("{0}[1]/{1}", BeamDoseVerificationControlPointSequence, "0x300A008D")
-    Public Shared ReadOnly BeamDoseVerificationControlPointAverageBeamDosePointEquivalentDepth As String = String.Format("{0}[1]/{1}", BeamDoseVerificationControlPointSequence, "0x300A008E")
-    Public Shared ReadOnly BeamDoseVerificationControlPointAverageBeamDosePointSSD As String = String.Format("{0}[1]/{1}", BeamDoseVerificationControlPointSequence, "0x300A008F")
-    Public Shared ReadOnly BeamDoseVerificationControlPointAverageBeamDosePointSourcetoExternalContourDistance As String = String.Format("{0}[1]/{1}", BeamDoseVerificationControlPointSequence, "0x300A0131")
-
     Public Shared ReadOnly NumberofBrachyApplicationSetups As String = String.Format("{0}[1]/{1}", FractionGroupSequence, "0x300A00A0")
 
     'RT GENERAL PLAN MODULE
@@ -603,7 +587,6 @@ Public Class Tags
     Public Shared ReadOnly ReferencedFractionGroupSequence As String = String.Format("{0}[1]/{1}", ReferencedRTPlanSequence, "0x300C0020")
     Public Shared ReadOnly DoseComment As String = "0x30040006"
     Public Shared ReadOnly ReferencedFrameNumberTag As String = "0x00081160"
-    Public Shared ReadOnly CurrentFractionNumberItem As String = "0x30080022"
 
     Public Shared ReadOnly TableTopVerticalAdjustedPosition As String = String.Format("{0}[1]/{1}", BeamTaskSequence, "0x00741026")
     Public Shared ReadOnly TableTopLongitudinalAdjustedPosition As String = String.Format("{0}[1]/{1}", BeamTaskSequence, "0x00741027")

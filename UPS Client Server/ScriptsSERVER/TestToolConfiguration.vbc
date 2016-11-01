@@ -15,7 +15,7 @@ Public Class TestToolConfiguration
 #Region "Private Fields"
 
     'the actual instance of the ReferenceDataSet class
-    Public Shared m_instance As TestToolConfiguration
+    Private Shared m_instance As TestToolConfiguration
 
     Private m_threadManager As DvtkHighLevelInterface.Common.Threads.ThreadManager = Nothing
     Private m_session As Dvtk.Sessions.ScriptSession = Nothing

@@ -38,7 +38,7 @@
     </DVTKAEConfiguration>
     <DVTKAEConfiguration Actor="PDS" Command="NEVENTREPORT">
       <AETitle>SUBSCRIBER</AETitle>
-      <Port>112</Port>
+      <Port>110</Port>
     </DVTKAEConfiguration>
     <DVTKAEConfiguration Actor="TMS" Command="CMOVE">
       <AETitle>TMS</AETitle>

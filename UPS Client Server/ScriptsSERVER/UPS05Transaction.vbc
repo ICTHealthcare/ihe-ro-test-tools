@@ -12,8 +12,8 @@ Class UPS05Transaction
     'Constructor
     Public Sub New(ByVal NSetTemplate As String)
 
-        MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPush, False)
-        ups05IODType = IODType.UnifiedProcedureStepPush
+        MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPull, False)
+        ups05IODType = IODType.UnifiedProcedureStepPull
         m_NSetTemplate = NSetTemplate
         m_customSOPClassUID = Nothing
         m_customSOPInstanceUID = Nothing
@@ -22,8 +22,8 @@ Class UPS05Transaction
 
     Public Sub New(ByVal NSetTemplate As String, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customTransactionUID As String)
 
-        MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPush, False)
-        ups05IODType = IODType.UnifiedProcedureStepPush
+        MyBase.New("UPS-05", "UPS Progress update", IODType.UnifiedProcedureStepPull, False)
+        ups05IODType = IODType.UnifiedProcedureStepPull
         m_NSetTemplate = NSetTemplate
         m_customSOPClassUID = customSOPClassUID
         m_customSOPInstanceUID = customSOPInstanceUID

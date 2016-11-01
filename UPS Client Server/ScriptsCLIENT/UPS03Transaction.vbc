@@ -18,7 +18,7 @@ Class UPS03Transaction
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal useAutomaticTesting As Boolean)
         MyBase.New("UPS-03", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ups03IODType = IODType.UnifiedProcedureStepPush
+        ups03IODType = IODType.UnifiedProcedureStepPull
         m_useAutomaticTesting = useAutomaticTesting
         m_customSOPClassUID = Nothing
         m_customSOPInstanceUID = Nothing
@@ -29,7 +29,7 @@ Class UPS03Transaction
 
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal useAutomaticTesting As Boolean, ByVal customSOPClassUID As String, ByVal customSOPInstanceUID As String, ByVal customActionTypeID As String, ByVal customProcedureStepState As String, ByVal customTransactionUID As String)
         MyBase.New("UPS-03", "UPS in progress", IODType.UnifiedProcedureStepPull, clearMessageDataAfterSend)
-        ups03IODType = IODType.UnifiedProcedureStepPush
+        ups03IODType = IODType.UnifiedProcedureStepPull
         m_useAutomaticTesting = useAutomaticTesting
         m_customSOPClassUID = customSOPClassUID
         m_customSOPInstanceUID = customSOPInstanceUID

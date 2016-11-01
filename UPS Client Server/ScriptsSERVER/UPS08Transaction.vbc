@@ -17,8 +17,8 @@ Class UPS08Transaction
 
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal deletionLock As Boolean, ByVal globalSubOrUnsub As Boolean, ByVal suspend As Boolean)
-        MyBase.New("UPS-08", "Subscribe on UPS", IODType.UnifiedProcedureStepWatch, clearMessageDataAfterSend)
-        ups08IODType = IODType.UnifiedProcedureStepWatch
+        MyBase.New("UPS-08", "Subscribe on UPS", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
+        ups08IODType = IODType.UnifiedProcedureStepPush
         _deletionLock = deletionLock
         _globalSubOrUnsub = globalSubOrUnsub
         _suspend = suspend

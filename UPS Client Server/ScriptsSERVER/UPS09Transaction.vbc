@@ -17,7 +17,7 @@ Class UPS09Transaction
     'Constructor
     Public Sub New(ByVal clearMessageDataAfterSend As Boolean, ByVal globalSubOrUnsub As Boolean)
         MyBase.New("UPS-09", "Unsubscribe on UPS", IODType.UnifiedProcedureStepPush, clearMessageDataAfterSend)
-        ups09IODType = IODType.UnifiedProcedureStepWatch
+        ups09IODType = IODType.UnifiedProcedureStepPush
         _globalSubOrUnsub = globalSubOrUnsub
     End Sub
 

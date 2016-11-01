@@ -169,7 +169,7 @@ Public Class ReferenceDataSet
         Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\CLIENT")
         For Each File As FileInfo In directoryInfo.GetFiles
 
-            If (File.Name.EndsWith(".dcm") And File.Name.StartsWith("C-FIND-RSP")) Then
+            If (File.Name.EndsWith(".dcm")) Then
 
                 Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
                 'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
@@ -181,95 +181,6 @@ Public Class ReferenceDataSet
         Next
 
         Return responseDataSets
-
-    End Function
-
-    Public Function GetCacheNEvent_Req() As DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-        Dim responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection = New DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-
-        LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
-
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\CLIENT")
-        For Each File As FileInfo In directoryInfo.GetFiles
-
-            If (File.Name.EndsWith(".dcm") And File.Name.StartsWith("N-Event-Report-Req")) Then
-
-                Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
-                'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-                dicomFile.Read(File.FullName)
-
-                responseDataSets.Add(dicomFile.DataSet)
-
-            End If
-        Next
-
-        Return responseDataSets
-
-    End Function
-
-    Public Function GetCacheNGet_Responses() As DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-        Dim responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection = New DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-
-        LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
-
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\CLIENT")
-        For Each File As FileInfo In directoryInfo.GetFiles
-
-            If (File.Name.EndsWith(".dcm") And File.Name.StartsWith("N-GET-RSP")) Then
-
-                Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
-                'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-                dicomFile.Read(File.FullName)
-
-                responseDataSets.Add(dicomFile.DataSet)
-
-            End If
-        Next
-
-        Return responseDataSets
-
-    End Function
-
-
-    Public Function GetCacheRTBDI() As DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-        Dim responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection = New DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-
-        LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
-
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\CLIENT")
-        For Each File As FileInfo In directoryInfo.GetFiles
-
-            If (File.Name.EndsWith(".dcm") And File.Name.StartsWith("RTBeamsDeliveryInstruction")) Then
-
-                Dim dicomFile As New DvtkHighLevelInterface.Dicom.Files.DicomFile
-                'Dim dataSet As DvtkHighLevelInterface.Dicom.Other.DataSet = New DvtkHighLevelInterface.Dicom.Other.DataSet()
-                dicomFile.Read(File.FullName)
-
-                responseDataSets.Add(dicomFile.DataSet)
-
-            End If
-        Next
-
-        Return responseDataSets
-
-    End Function
-
-    Public Function GetNumberOfRTBDIinCache() As Integer
-        Dim responseDataSets As DvtkHighLevelInterface.Dicom.Other.DataSetCollection = New DvtkHighLevelInterface.Dicom.Other.DataSetCollection
-        Dim count As Integer = 1
-        LoadNewDataSet(DataSetHandler.UPSCacheXMLFileName)
-
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(m_datasetPath + "\CLIENT")
-        For Each File As FileInfo In directoryInfo.GetFiles
-
-            If (File.Name.StartsWith("RTBeamsDeliveryInstruction")) Then
-
-                count = count + 1
-
-            End If
-        Next
-
-        Return count
 
     End Function
 
@@ -710,29 +621,20 @@ Public Class ReferenceDataSet
                 Dim cFindReqEndDateTime As New Date(Convert.ToInt32(Left(strBeginAndEndDate(1), 4)), Convert.ToInt32(strBeginAndEndDate(1).Substring(4, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(6, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(8, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(10, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(12, 2)))
 
 
-                If Not dicomFile.DataSet.Exists(Tags.ProcedureStepState) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the Server with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.ProcedureStepState) + "' (" + Tags.ProcedureStepState + ") is a required attribute of the UPS")
+                If Not dicomMessageCFindReq(Tags.ProcedureStepState).Values(0) = dicomFile.DataSet(Tags.ProcedureStepState).Values(0) Then
                     matchReqWithUPS = False
-                Else
-                    If Not dicomMessageCFindReq(Tags.ProcedureStepState).Values(0) = dicomFile.DataSet(Tags.ProcedureStepState).Values(0) Then
-                        matchReqWithUPS = False
-                    End If
                 End If
 
-                If Not dicomFile.DataSet.Exists(Tags.ScheduledProcedureStepStartDateandTime) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the Sever with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.ScheduledProcedureStepStartDateandTime) + "' (" + Tags.ScheduledProcedureStepStartDateandTime + ") is a required attribute of the UPS")
-                    matchReqWithUPS = False
-                Else
-                    If Not dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0) = "" And dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Length > 13 Then
-                        Dim UPSDateTime As New Date(Convert.ToInt32(Left(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0), 4)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(4, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(6, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(8, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(10, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(12, 2)))
-                        UPSDateTime = UPSDateTime.AddSeconds(1.0)
 
-                        If Not (UPSDateTime <= cFindReqEndDateTime And UPSDateTime >= cFindReqBeginDateTime) Then
-                            matchReqWithUPS = False
-                            'responseMessage.Set(Tags.ScheduledProcedureStepStartDateandTime, DvtkData.Dimse.VR.DT, dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0))
-                        End If
+                If Not dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0) = "" And dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Length > 13 Then
+                    Dim UPSDateTime As New Date(Convert.ToInt32(Left(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0), 4)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(4, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(6, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(8, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(10, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(12, 2)))
+                    UPSDateTime = UPSDateTime.AddSeconds(1.0)
 
+                    If Not (UPSDateTime <= cFindReqEndDateTime And UPSDateTime >= cFindReqBeginDateTime) Then
+                        matchReqWithUPS = False
+                        'responseMessage.Set(Tags.ScheduledProcedureStepStartDateandTime, DvtkData.Dimse.VR.DT, dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0))
                     End If
+
                 End If
 
 
@@ -768,15 +670,13 @@ Public Class ReferenceDataSet
                         End If
                     End If
                 End If
-
-                If Not dicomFile.DataSet.Exists(Tags.PatientID) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the Server with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.PatientID) + "' (" + Tags.PatientID + ") is a required attribute of the UPS")
-                    matchReqWithUPS = False
+                'If dicomMessageCFindReq(Tags.ScheduledStationCodeMeaning).Values(0) = "" Or dicomMessageCFindReq(Tags.ScheduledStationCodeMeaning).Values(0) = dicomFile.DataSet(Tags.ScheduledStationCodeMeaning).Values(0) Then
+                'Else
+                '    matchReqWithUPS = False
+                'End If
+                If dicomMessageCFindReq(Tags.PatientID).Values(0) = "" Or dicomMessageCFindReq(Tags.PatientID).Values(0) = dicomFile.DataSet(Tags.PatientID).Values(0) Then
                 Else
-                    If dicomMessageCFindReq(Tags.PatientID).Values(0) = "" Or dicomMessageCFindReq(Tags.PatientID).Values(0) = dicomFile.DataSet(Tags.PatientID).Values(0) Then
-                    Else
-                        matchReqWithUPS = False
-                    End If
+                    matchReqWithUPS = False
                 End If
 
                 If matchReqWithUPS Then
@@ -1274,20 +1174,12 @@ Public Class ReferenceDataSet
 
                     ' Fill  (0x00081195)  Transaction UID
                     NsetRq.DataSet.Set(Tags.TransactionUID, UI, dataSet(Tags.TransactionUID).Values(0))
-                    Dim index As Integer
+
 
                     If (NsetRq.DataSet.Exists(Tags.UPSPerformedProcedureOutputInformationSequence)) Then
-                        Dim numberOfOutputItems As Integer = NsetRq.DataSet.GetitemCount(Tags.UPSPerformedProcedureOutputInformationSequence)
-                        For index = 1 To numberOfOutputItems
-
-                            If (NsetRq.DataSet.Exists(Tags.UPSPerformedProcedureOutputInformationSequence + "[" + index.ToString() + "]/" + Tags.StudyInstanceUID)) Then
-
-                                NsetRq.DataSet.Set(Tags.UPSPerformedProcedureOutputInformationSequence + "[" + index.ToString() + "]/" + Tags.StudyInstanceUID, UI, dataSet(Tags.StudyInstanceUID).Values(0))
-                            End If
-
-
-                        Next
-                        
+                        If (NsetRq.DataSet.Exists(Tags.UPSPerformedProcedureOutputInformationSequenceStudyInstanceUID)) Then
+                            NsetRq.DataSet.Set(Tags.UPSPerformedProcedureOutputInformationSequenceStudyInstanceUID, UI, dataSet(Tags.StudyInstanceUID).Values(0))
+                        End If
                     End If
 
 
