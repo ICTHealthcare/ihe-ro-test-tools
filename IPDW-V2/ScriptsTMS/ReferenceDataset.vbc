@@ -394,30 +394,23 @@ Class ReferenceDataSet
                 Dim cFindReqBeginDateTime As New Date(Convert.ToInt32(Left(strBeginAndEndDate(0), 4)), Convert.ToInt32(strBeginAndEndDate(0).Substring(4, 2)), Convert.ToInt32(strBeginAndEndDate(0).Substring(6, 2)), Convert.ToInt32(strBeginAndEndDate(0).Substring(8, 2)), Convert.ToInt32(strBeginAndEndDate(0).Substring(10, 2)), Convert.ToInt32(strBeginAndEndDate(0).Substring(12, 2)))
                 Dim cFindReqEndDateTime As New Date(Convert.ToInt32(Left(strBeginAndEndDate(1), 4)), Convert.ToInt32(strBeginAndEndDate(1).Substring(4, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(6, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(8, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(10, 2)), Convert.ToInt32(strBeginAndEndDate(1).Substring(12, 2)))
 
-                If Not dicomFile.DataSet.Exists(Tags.ProcedureStepState) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the TMS with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.ProcedureStepState) + "' (" + Tags.ProcedureStepState + ") is a required attribute of the UPS")
+
+                If Not dicomMessageCFindReq(Tags.ProcedureStepState).Values(0) = dicomFile.DataSet(Tags.ProcedureStepState).Values(0) Then
                     matchReqWithUPS = False
-                Else
-                    If Not dicomMessageCFindReq(Tags.ProcedureStepState).Values(0) = dicomFile.DataSet(Tags.ProcedureStepState).Values(0) Then
+                End If
+
+
+                If Not dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0) = "" And dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Length > 13 Then
+                    Dim UPSDateTime As New Date(Convert.ToInt32(Left(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0), 4)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(4, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(6, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(8, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(10, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(12, 2)))
+                    UPSDateTime = UPSDateTime.AddSeconds(1.0)
+
+                    If Not (UPSDateTime <= cFindReqEndDateTime And UPSDateTime >= cFindReqBeginDateTime) Then
                         matchReqWithUPS = False
+                        'responseMessage.Set(Tags.ScheduledProcedureStepStartDateandTime, DvtkData.Dimse.VR.DT, dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0))
                     End If
+
                 End If
 
-                If Not dicomFile.DataSet.Exists(Tags.ScheduledProcedureStepStartDateandTime) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the TMS with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.ScheduledProcedureStepStartDateandTime) + "' (" + Tags.ScheduledProcedureStepStartDateandTime + ") is a required attribute of the UPS")
-                    matchReqWithUPS = False
-                Else
-                    If Not dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0) = "" And dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Length > 13 Then
-                        Dim UPSDateTime As New Date(Convert.ToInt32(Left(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0), 4)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(4, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(6, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(8, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(10, 2)), Convert.ToInt32(dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0).Substring(12, 2)))
-                        UPSDateTime = UPSDateTime.AddSeconds(1.0)
-
-                        If Not (UPSDateTime <= cFindReqEndDateTime And UPSDateTime >= cFindReqBeginDateTime) Then
-                            matchReqWithUPS = False
-                            'responseMessage.Set(Tags.ScheduledProcedureStepStartDateandTime, DvtkData.Dimse.VR.DT, dicomFile.DataSet(Tags.ScheduledProcedureStepStartDateandTime).Values(0))
-                        End If
-
-                    End If
-                End If
 
                 If Not dicomMessageCFindReq(Tags.PatientName).Values(0) = "" Then
 
@@ -450,33 +443,31 @@ Class ReferenceDataSet
                             End If
                         End If
                     End If
-                End If
-
-                If Not dicomFile.DataSet.Exists(Tags.PatientID) Then
-                    Logger.GetInstance().LogErrorMessage("Invalid UPS created on the TMS with SOP Instance UID: " + dicomFile.DataSet(Tags.SOPInstanceUID).Values(0).ToString() + ", " + Tags.GetTagName(Tags.PatientID) + "' (" + Tags.PatientID + ") is a required attribute of the UPS")
-                    matchReqWithUPS = False
-                Else
+                    End If
+                    'If dicomMessageCFindReq(Tags.ScheduledStationCodeMeaning).Values(0) = "" Or dicomMessageCFindReq(Tags.ScheduledStationCodeMeaning).Values(0) = dicomFile.DataSet(Tags.ScheduledStationCodeMeaning).Values(0) Then
+                    'Else
+                    '    matchReqWithUPS = False
+                    'End If
                     If dicomMessageCFindReq(Tags.PatientID).Values(0) = "" Or dicomMessageCFindReq(Tags.PatientID).Values(0) = dicomFile.DataSet(Tags.PatientID).Values(0) Then
                     Else
                         matchReqWithUPS = False
                     End If
-                End If
 
-                If matchReqWithUPS Then
+                    If matchReqWithUPS Then
 
-                    ' Ups komt overeen met waardes uit request, maak respons bericht en voeg toe aan responsmessages
-                    Dim responseMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CFINDRSP)
+                        ' Ups komt overeen met waardes uit request, maak respons bericht en voeg toe aan responsmessages
+                        Dim responseMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(DvtkData.Dimse.DimseCommand.CFINDRSP)
 
-                    CFindRspCount = CFindRspCount + 1
+                        CFindRspCount = CFindRspCount + 1
 
-                    Logger.GetInstance().LogMessage("Make reference dataset file (C-Find-RSP) for each UPS that matches.")
+                        Logger.GetInstance().LogMessage("Make reference dataset file (C-Find-RSP) for each UPS that matches.")
 
-                    responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, &HFF00) ' Status.
+                        responseMessage.Set(Tags.StatusCommandElement, DvtkData.Dimse.VR.US, &HFF00) ' Status.
                     responseMessage.DataSet.Set(Tags.SOPClassUID, DvtkData.Dimse.VR.UI, SOPclass.UnifiedProcedureStepPullSOPClassUID)
                     responseMessage.DataSet.Set(Tags.SOPInstanceUID, DvtkData.Dimse.VR.UI, dicomFile.DataSet(Tags.SOPInstanceUID).Values(0))
 
-                    Dim i As Integer
-                    For i = 0 To dicomMessageCFindReq.DataSet.Count - 1
+                        Dim i As Integer
+                        For i = 0 To dicomMessageCFindReq.DataSet.Count - 1
 
                         If Not (dicomMessageCFindReq.DataSet.Item(i).TagSequenceString.EndsWith("0000")) Then
 
