@@ -8,7 +8,7 @@
 ' The MessageHandler1 handles C-STORE-RQ messages
 '====================
 Class ReceiverThread
-    Inherits DvtkHighLevelInterface.Dicom.Threads.MessageIterator
+    Inherits DvtkHighLevelInterface.Dicom.Threads.SCP
 
     '!!!!!!!!!!!!!!!!!
     Public m_inAssociation As Boolean = False

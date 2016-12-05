@@ -56,11 +56,11 @@ Class ConditionalRequiredValueRule
                     If dicomMessage.Exists(tagSequence) Then
                         If dicomMessage(tagSequence).Values.Item(0) = m_requiredTagValue Then
                             'Required value in attribute
-                            message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + m_requiredTagSequence + ")  for item: '" + m_requiredSequenceNr.ToString() + "' has value: " + dicomMessage(tagSequence).Values.Item(0)
+                            message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + tagSequence + ")  for item: '" + m_requiredSequenceNr.ToString() + "' has value: " + dicomMessage(tagSequence).Values.Item(0)
                             Me.SetValid(message)
                         Else
                             'Required value not in attribute
-                            message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + m_requiredTagSequence + ")  for item: '" + m_requiredSequenceNr.ToString() + "' has value: " + dicomMessage(tagSequence).Values.Item(0) + " instead of: " + m_requiredTagValue
+                            message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + tagSequence + ")  for item: '" + m_requiredSequenceNr.ToString() + "' has value: " + dicomMessage(tagSequence).Values.Item(0) + " instead of: " + m_requiredTagValue
                             Me.SetError(message)
                         End If
                     Else
