@@ -10,6 +10,7 @@ Public Class Tags
 
     'RT BEAMS MODULEF
     Public Shared ReadOnly BeamSequence As String = "0x300A00B0"
+    Public Shared ReadOnly IonBeamSequence As String = "0x300A03A2"
     Public Shared ReadOnly BeamNumber As String = String.Format("{0}[1]/{1}", BeamSequence, "0x300A00C0")
     Public Shared ReadOnly BeamNumber2 As String = "0x300A00C0"
     Public Shared ReadOnly BeamName As String = String.Format("{0}[1]/{1}", BeamSequence, "0x300A00C2")
@@ -356,6 +357,18 @@ Public Class Tags
     Public Shared ReadOnly ScheduledStationCodingSchemeDesignator As String = String.Format("{0}[1]/{1}", ScheduledStationNameCodeSequence, "0x00080102")
     Public Shared ReadOnly ScheduledStationCodeMeaning As String = String.Format("{0}[1]/{1}", ScheduledStationNameCodeSequence, "0x00080104")
 
+    'Scheduled Human Performers CODE SEQUENCE
+    Public Shared ReadOnly ScheduledHumanPerformersSequence As String = "0x00404034"
+    Public Shared ReadOnly ScheduledHumanPerformersSequenceHumanPerformerCodeSequence As String = String.Format("{0}[1]/{1}", ScheduledHumanPerformersSequence, "0x00404009")
+    Public Shared ReadOnly ScheduledHumanPerformersSequenceHumanPerformerCodeSequenceScheduledStationCodeValue As String = String.Format("{0}[1]/{1}", ScheduledHumanPerformersSequenceHumanPerformerCodeSequence, "0x00080100")
+    Public Shared ReadOnly ScheduledHumanPerformersSequenceHumanPerformerCodeSequenceScheduledStationCodingSchemeDesignator As String = String.Format("{0}[1]/{1}", ScheduledHumanPerformersSequenceHumanPerformerCodeSequence, "0x00080102")
+    Public Shared ReadOnly ScheduledHumanPerformersSequenceHumanPerformerCodeSequenceScheduledStationCodeMeaning As String = String.Format("{0}[1]/{1}", ScheduledHumanPerformersSequenceHumanPerformerCodeSequence, "0x00080104")
+
+    Public Shared ReadOnly HumanPerformerCodeSequence As String = "0x00404009"
+    Public Shared ReadOnly HumanPerformerCodeSequenceScheduledStationCodeValue As String = String.Format("{0}[1]/{1}", HumanPerformerCodeSequence, "0x00080100")
+    Public Shared ReadOnly HumanPerformerCodeSequenceScheduledStationCodingSchemeDesignator As String = String.Format("{0}[1]/{1}", HumanPerformerCodeSequence, "0x00080102")
+    Public Shared ReadOnly HumanPerformerCodeSequenceScheduledStationCodeMeaning As String = String.Format("{0}[1]/{1}", HumanPerformerCodeSequence, "0x00080104")
+
     'UNIFIED PROCEDURE STEP
     Public Shared ReadOnly ProcedureStepState As String = "0x00741000"
     Public Shared ReadOnly ProcedureStepLabel As String = "0x00741204"
@@ -548,8 +561,11 @@ Public Class Tags
     'added by RVDH for move request
 
     Public Shared ReadOnly ReferencedSeriesSequenceMOVE As String = "0x00081115"
-    Public Shared ReadOnly ReferencedSeriesSequence1RefInstanceSeq As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
-    Public Shared ReadOnly ReferencedSeriesSequence2RefInstanceSeq As String = String.Format("{0}[2]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
+    Public Shared ReadOnly ReferencedSeriesSequenceSerieInstanceUID As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceMOVE, "0x0020000E")
+    Public Shared ReadOnly ReferencedSeriesSequenceReferencedInstanceSequence As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
+    Public Shared ReadOnly ReferencedSeriesSequence2ReferencedInstanceSequence As String = String.Format("{0}[2]/{1}", ReferencedSeriesSequenceMOVE, "0x0008114A")
+    Public Shared ReadOnly RefSeriesSequenceRefInsSeqRefSOPClassUID As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceReferencedInstanceSequence, "0x00081150")
+    Public Shared ReadOnly RefSeriesSequenceRefInsSeqRefSOPInstanceUID As String = String.Format("{0}[1]/{1}", ReferencedSeriesSequenceReferencedInstanceSequence, "0x00081155")
 
     Public Shared ReadOnly retrieveAETitleMOVE As String = "0x00080054"
     Public Shared ReadOnly ReferencedSOPSequenceMOVE As String = "0x00081199"

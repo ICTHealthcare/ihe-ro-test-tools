@@ -25,6 +25,7 @@ Public Class DataSetHandler
     'Public Shared ReadOnly DatasetInfoRtPlanClassUid As String = "1.2.840.10008.5.1.4.1.1.481.5"
     Public Shared ReadOnly DatasetInfoRtPlanClassUid As String = SOPclass.RTPlanDosimetricSOPClassUID
     Public Shared ReadOnly DatasetInfoRtIonPlanClassUid As String = SOPclass.RTIonPlanSOPClassUID
+    Public Shared ReadOnly DatasetInfoRtIonBeamTreatmentRecordClassUid As String = SOPclass.RTIonBeamsTreatmentRecordSOPClassUID
     'Public Shared ReadOnly DatasetInfoRtBeamDelivClassUid As String = "1.2.840.10008.5.1.4.34.1"
     Public Shared ReadOnly DatasetInfoRtBeamDelivClassUid As String = SOPclass.RTBeamsDeliveryInstructionSOPClassUID
     Public Shared ReadOnly DatasetInfoRtTreatmentRecordClassUid As String = SOPclass.RTBeamsTreatmentRecordSTOREOPClassUID
@@ -443,7 +444,7 @@ Public Class DataSetHandler
                 End If
                 rtBeamDelivDataSetInfo = dataSetInfo
             End If
-            If dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtTreatmentRecordClassUid) Then
+            If (dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtTreatmentRecordClassUid) Or dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtIonBeamTreatmentRecordClassUid)) Then
                 rtTreatmentRecordCount = rtTreatmentRecordCount + 1
                 If rtTreatmentRecordCount > 1 Then
                     Dim message As String = String.Format("More than one RT Beams Treatment Record found!! Please use the testool configuration editor to add your dataset")
@@ -457,7 +458,7 @@ Public Class DataSetHandler
         interuptedTreatmentRecordInfoList = DataSetHandler.LoadUpsDataSetInfo(interuptedTreatmentRecordPath)
 
         For Each dataSetInfo In interuptedTreatmentRecordInfoList
-            If dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtTreatmentRecordClassUid) Then
+            If (dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtTreatmentRecordClassUid) Or dataSetInfo(DatasetInfoClassIdx).Equals(DatasetInfoRtIonBeamTreatmentRecordClassUid)) Then
                 rtTreatmentRecordInteruptedCount = rtTreatmentRecordInteruptedCount + 1
                 If rtTreatmentRecordInteruptedCount > 1 Then
                     Dim message As String = String.Format("More than one INTERUPTED RT Beams Treatment Records found!! Please use the testool configuration editor to add your dataset")

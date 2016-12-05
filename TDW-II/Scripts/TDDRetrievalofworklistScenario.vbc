@@ -4,10 +4,20 @@ Class TDDRetrievalofworklistScenario
     'Constructor
     Public Sub New()
         Dim treatmentForm As ChooseKindOfTreatmentDialog = New ChooseKindOfTreatmentDialog()
+        Dim choosePlan As DosimetricPlanOrIonPlanDialog = New DosimetricPlanOrIonPlanDialog()
         Dim treatmentType As String = String.Empty
         Dim errorDialog As ErrorDialog = New ErrorDialog()
 
         Try
+
+            choosePlan.ShowDialog()
+
+            If choosePlan.RTIonPlan Then
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataIonPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+            Else
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataDosimetricPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+            End If
+
             ' Check if dataset is present
             DataSetHandler.CheckUpsDataSets()
 
@@ -22,6 +32,8 @@ Class TDDRetrievalofworklistScenario
             Else
                 treatmentType = DataSetHandler.DicomTextValueTreatment
             End If
+
+
 
             Dim transaction As RO58Transaction = New RO58Transaction()
 

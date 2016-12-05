@@ -1,0 +1,101 @@
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class DosimetricPlanOrIonPlanDialog
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.radioIonPlan = New System.Windows.Forms.RadioButton()
+        Me.radioPlan = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Enabled = False
+        Me.OK_Button.Location = New System.Drawing.Point(121, 126)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(110, 23)
+        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.Text = "OK"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.radioIonPlan)
+        Me.GroupBox1.Controls.Add(Me.radioPlan)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(219, 48)
+        Me.GroupBox1.TabIndex = 1
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Choos kind of RT Plan"
+        '
+        'radioIonPlan
+        '
+        Me.radioIonPlan.AutoSize = True
+        Me.radioIonPlan.Location = New System.Drawing.Point(122, 19)
+        Me.radioIonPlan.Name = "radioIonPlan"
+        Me.radioIonPlan.Size = New System.Drawing.Size(82, 17)
+        Me.radioIonPlan.TabIndex = 1
+        Me.radioIonPlan.Text = "RT-Ion-Plan"
+        Me.radioIonPlan.UseVisualStyleBackColor = True
+        '
+        'radioPlan
+        '
+        Me.radioPlan.AutoSize = True
+        Me.radioPlan.Checked = True
+        Me.radioPlan.Location = New System.Drawing.Point(9, 19)
+        Me.radioPlan.Name = "radioPlan"
+        Me.radioPlan.Size = New System.Drawing.Size(64, 17)
+        Me.radioPlan.TabIndex = 0
+        Me.radioPlan.TabStop = True
+        Me.radioPlan.Text = "RT-Plan"
+        Me.radioPlan.UseVisualStyleBackColor = True
+        '
+        'DosimetricPlanOrIonPlanDialog
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(243, 191)
+        Me.ControlBox = False
+        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "DosimetricPlanOrIonPlanDialog"
+        Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Select reference data"
+        Me.TopMost = True
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents radioIonPlan As System.Windows.Forms.RadioButton
+    Friend WithEvents radioPlan As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+End Class

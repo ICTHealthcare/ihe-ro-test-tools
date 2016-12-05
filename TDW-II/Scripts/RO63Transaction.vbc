@@ -15,8 +15,9 @@ Class RO63Transaction
     End Sub
 
     'Constructor
-    Public Sub New(ByVal isCancelled As Boolean)
-        MyBase.New("RO-63", "Store Treatment Delivery Results", IODType.RTBeamsTreatmentRecordSTORE, True)
+    Public Sub New(ByVal isCancelled As Boolean, ByVal iodType As IODType)
+
+        MyBase.New("RO-63", "Store Treatment Delivery Results", iodType, True)
         m_isCancelled = isCancelled
     End Sub
 
@@ -27,9 +28,9 @@ Class RO63Transaction
         'Get the RT Beams Treatment Record  
         Dim dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage
         If m_isCancelled = True Then
-            dicomMessage = ReferenceDataSet.GetInstance().GetDCMObjectFromFileBySopClassUID("1.2.840.10008.5.1.4.1.1.481.4", DataDirSelector.RTTreatmentRecordDir)
+            dicomMessage = ReferenceDataSet.GetInstance().GetDCMObjectFromFileBySopClassUID(New List(Of String)(New String() {SOPclass.RTBeamsTreatmentRecordSTOREOPClassUID, SOPclass.RTIonBeamsTreatmentRecordSOPClassUID}), DataDirSelector.RTTreatmentRecordDir)
         Else
-            dicomMessage = ReferenceDataSet.GetInstance().GetDCMObjectFromFileBySopClassUID("1.2.840.10008.5.1.4.1.1.481.4", DataDirSelector.UPSDataDir)
+            dicomMessage = ReferenceDataSet.GetInstance().GetDCMObjectFromFileBySopClassUID(New List(Of String)(New String() {SOPclass.RTBeamsTreatmentRecordSTOREOPClassUID, SOPclass.RTIonBeamsTreatmentRecordSOPClassUID}), DataDirSelector.UPSDataDir)
         End If
 
         ' Set Affected Sop Instance UID to be equal to the the SOP Instance UID
@@ -48,8 +49,9 @@ Class RO63Transaction
 
         Dim rules As List(Of Rule) = New List(Of Rule)
 
-        rules.Add(New IODReceivedRule(IODType.RTBeamsTreatmentRecordSTORE, ErrorSeverity.RuleError))
-        rules.Add(New ValueRule(Tags.SOPClassUID, SOPclass.RTBeamsTreatmentRecordSTOREOPClassUID, IODType.NotSpecified, ErrorSeverity.RuleError))
+        Dim optionsColletcion As New List(Of IODType)(New IODType() {IODType.RTBeamsTreatmentRecordSTORE, IODType.RTIonBeamsTreatmentRecord})
+
+        rules.Add(New IODOneOfCollectionReceivedRule(optionsColletcion, ErrorSeverity.RuleError))
 
         Return rules
 

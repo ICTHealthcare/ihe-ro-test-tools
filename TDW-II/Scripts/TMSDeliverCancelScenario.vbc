@@ -8,8 +8,20 @@ Class TMSDeliverCancelScenario
         Dim ostActor As OSTActor = New OSTActor
         Dim errorDialog As ErrorDialog = New ErrorDialog()
         Dim radiationDialog As RadiationDeliveryDialog = New RadiationDeliveryDialog(True)
+        Dim choosePlan As DosimetricPlanOrIonPlanDialog = New DosimetricPlanOrIonPlanDialog()
+        Dim usedIODTypeForRO63 As IODType
 
         Try
+            choosePlan.ShowDialog()
+
+            If choosePlan.RTIonPlan Then
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataIonPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTIonBeamsTreatmentRecord
+            Else
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataDosimetricPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTBeamsTreatmentRecordSTORE
+            End If
+
             ' Check if dataset is present
             DataSetHandler.CheckUpsDataSets()
 
@@ -57,12 +69,12 @@ Class TMSDeliverCancelScenario
 
             If radiationDialog.Delivered Then
 
-                ro64transaction = New RO64Transaction(True, True)
+                ro64transaction = New RO64Transaction(True, True, SOPclass.GetSOPClassUID(usedIODTypeForRO63))
                 sendRO64.AddTransaction(ro64transaction)  ' RO-64: Treatment Delivery Final Update
 
                 Dim ro62transaction_0 As RO62Transaction = New RO62Transaction(0)    '(progress = 0%)
                 Dim ro62transaction_UserDefined As RO62Transaction = New RO62Transaction(radiationDialog.Percentage)
-                Dim ro63transaction As RO63Transaction = New RO63Transaction(True)
+                Dim ro63transaction As RO63Transaction = New RO63Transaction(True, usedIODTypeForRO63)
 
                 ' RO-62: Treatment Delivery Progress Update (progress = 0%)
                 Dim sendRO62_0 As SendScenarioStep = New SendScenarioStep(tddActor, tmsActor, True)
@@ -103,7 +115,7 @@ Class TMSDeliverCancelScenario
 
             Else
 
-                ro64transaction = New RO64Transaction(False, True)
+                ro64transaction = New RO64Transaction(False, True, SOPclass.GetSOPClassUID(usedIODTypeForRO63))
                 sendRO64.AddTransaction(ro64transaction)  ' RO-64: Treatment Delivery Final Update
 
                 'Add the send steps to the list

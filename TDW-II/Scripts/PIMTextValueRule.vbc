@@ -21,7 +21,7 @@ Class PIMTextValueRule
         Dim sourceValues(0) As String
         Dim datasetPath As String = DataSetHandler.GetDataPath(DataSetHandler.UPSDataXMLFileName)
 
-        Dim refMessage As DicomMessage = ReferenceDataSet.GetInstance.GetDCMObjectFromFileBySopClassUID(SOPclass.RTPlanDosimetricSOPClassUID, DataDirSelector.UPSDataDir)
+        Dim refMessage As DicomMessage = ReferenceDataSet.GetInstance.GetDCMObjectFromFileBySopClassUID(New List(Of String)(New String() {SOPclass.RTPlanDosimetricSOPClassUID, SOPclass.RTIonPlanSOPClassUID}), DataDirSelector.UPSDataDir)
 
 
         If iodType = IODTypeRule Then
@@ -32,12 +32,19 @@ Class PIMTextValueRule
 
             If refMessage.Exists(Tags.BeamSequence) Then
                 nrOfItems = refMessage.Item(Tags.BeamSequence).ItemCount
+            ElseIf refMessage.Exists(Tags.IonBeamSequence) Then
+                nrOfItems = refMessage.Item(Tags.IonBeamSequence).ItemCount
             End If
 
             If Not nrOfItems = 0 Then
 
                 For serieItem As Integer = 1 To nrOfItems
-                    Dim sqLisItem As Dicom.Other.SequenceItem = refMessage.Item(Tags.BeamSequence).GetItem(serieItem)
+                    Dim sqLisItem As Dicom.Other.SequenceItem
+                    If refMessage.Exists(Tags.BeamSequence) Then
+                        sqLisItem = refMessage.Item(Tags.BeamSequence).GetItem(serieItem)
+                    Else
+                        sqLisItem = refMessage.Item(Tags.IonBeamSequence).GetItem(serieItem)
+                    End If
 
                     If sqLisItem.Exists(Tags.BeamNumber2) Then
                         RefBeamNumber = sqLisItem.GetValues(Tags.BeamNumber2).Item(0)
@@ -52,7 +59,7 @@ Class PIMTextValueRule
                     End If
                 Next
             Else
-                message = "The attribute: '" + Tags.GetTagName(Tags.BeamSequence) + " is not present."
+                message = "The attribute: '" + Tags.GetTagName(Tags.BeamSequence) + "or " + Tags.GetTagName(Tags.IonBeamSequence) + " is not present."
                 Me.SetError(message)
                 errorEncountered = True
                 Me.Report()

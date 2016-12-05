@@ -272,7 +272,7 @@ Class ReferenceDataSet
     End Function
 
     ' Search first DICOM object on disk for a certain sop class uid
-    Public Function GetDCMObjectFromFileBySopClassUID(ByVal RequestedSopClassUID As String, ByVal dirSelector As DataDirSelector) As DicomMessage
+    Public Function GetDCMObjectFromFileBySopClassUID(ByVal RequestedSopClassUIDs As List(Of String), ByVal dirSelector As DataDirSelector) As DicomMessage
 
         Dim result As DicomMessageCollection = New DicomMessageCollection()
 
@@ -299,19 +299,19 @@ Class ReferenceDataSet
                 End Try
 
                 Try
-                    If message(Tags.SOPClassUID).Values(0).Equals(RequestedSopClassUID) Then
+                    If RequestedSopClassUIDs.Contains(message(Tags.SOPClassUID).Values(0).ToString()) Then
                         message.DataSet.Read(filePath)
-                        Logger.GetInstance().LogMessage(String.Format("Found object with SopClassUID: '{0}'", RequestedSopClassUID))
+                        Logger.GetInstance().LogMessage(String.Format("Found object with SopClassUID: '{0}'", message(Tags.SOPClassUID).Values(0).ToString()))
                         fileFound = True
                     End If
                 Catch
-                    Logger.GetInstance().LogMessage(String.Format("Error while checking SopClassUID: '{0}'", RequestedSopClassUID))
+                    Logger.GetInstance().LogMessage(String.Format("Error while checking SopClassUID: '{0}'", message(Tags.SOPClassUID).Values(0).ToString()))
                 End Try
             End If
         Next
 
         If fileFound = False Then
-            Throw New System.Exception(String.Format("No file found for SopClassUID : '{0}'", RequestedSopClassUID))
+            Throw New System.Exception(String.Format("No file found for SopClassUID : '{0}'", message(Tags.SOPClassUID).Values(0).ToString()))
         End If
 
         Return message

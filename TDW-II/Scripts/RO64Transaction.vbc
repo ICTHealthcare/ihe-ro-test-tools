@@ -9,15 +9,16 @@ Class RO64Transaction
     Private m_isRadiationDelivered As Boolean
     Private m_isCancelled As Boolean
     Private m_progress As Integer
-
+    Private m_RTRecordSopClassUID As String
     'Constructor
-    Public Sub New(ByVal isRadiationDelivered As Boolean, ByVal isCancelled As Boolean)
+    Public Sub New(ByVal isRadiationDelivered As Boolean, ByVal isCancelled As Boolean, ByVal RTRecordSopClassUID As String)
 
         MyBase.New("RO-64", "Treatment Delivery Final Update", IODType.UnifiedProcedureStepPush, True)
         ro64IODType = IODType.UnifiedProcedureStepPush
         m_isRadiationDelivered = isRadiationDelivered
         m_isCancelled = isCancelled
         m_progress = -1
+        m_RTRecordSopClassUID = RTRecordSopClassUID
     End Sub
 
 
@@ -175,7 +176,7 @@ Class RO64Transaction
             m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureOutputInformationSequenceStudyInstanceUID, ro64IODType, ErrorSeverity.RuleError))
             m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureOutputInformationSequenceSerieInstanceUID, ro64IODType, ErrorSeverity.RuleError))
             m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureOutputInformationSequenceReferencedSOPSequenceRefSOPClassUID, ro64IODType, ErrorSeverity.RuleError))
-            m_rules.Add(New ValueRule(Tags.UPSPerformedProcedureOutputInformationSequenceReferencedSOPSequenceRefSOPClassUID, SOPclass.RTBeamsTreatmentRecordSTOREOPClassUID, ro64IODType, ErrorSeverity.RuleError))
+            m_rules.Add(New ValueRule(Tags.UPSPerformedProcedureOutputInformationSequenceReferencedSOPSequenceRefSOPClassUID, m_RTRecordSopClassUID, ro64IODType, ErrorSeverity.RuleError))
             m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureOutputInformationSequenceReferencedSOPSequenceRefSOPInstanceUID, ro64IODType, ErrorSeverity.RuleError))
             m_rules.Add(New IsRequiredRule(Tags.UPSPerformedProcedureOutputInformationSequenceDICOMRetrievalSequenceAETitle, ro64IODType, ErrorSeverity.RuleError))
 

@@ -9,10 +9,23 @@ Class TDDDeliverCancelScenario
         Dim ostActor As OSTActor = New OSTActor()
         Dim errorDialog As ErrorDialog = New ErrorDialog()
         Dim radiationDialog As RadiationDeliveryDialog = New RadiationDeliveryDialog(True)
+        Dim choosePlan As DosimetricPlanOrIonPlanDialog = New DosimetricPlanOrIonPlanDialog()
+        Dim usedIODTypeForRO63 As IODType
 
         Try
-            ' Check if dataset is present
-            DataSetHandler.CheckUpsDataSets()
+
+            choosePlan.ShowDialog()
+
+            If choosePlan.RTIonPlan Then
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataIonPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTIonBeamsTreatmentRecord
+            Else
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataDosimetricPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTBeamsTreatmentRecordSTORE
+            End If
+
+            '' Check if dataset is present
+            'DataSetHandler.CheckUpsDataSets()
 
             'Check if RO-60 Response is present in the cache directory, if not then stop execution and inform the user (in the validation results)
             Try
@@ -39,14 +52,14 @@ Class TDDDeliverCancelScenario
             ' Progress higher then 0% will validate the progress differently from the first RO-62 with a progress of 0%
             ' a value between 0 and 100 will initiate the validation of the progress correctly
             Dim ro62transaction_50 As RO62Transaction = New RO62Transaction(1)
-            Dim ro63transaction As RO63Transaction = New RO63Transaction(True)
-            Dim ro64transaction As RO64Transaction = New RO64Transaction(False, True)
+            Dim ro63transaction As RO63Transaction = New RO63Transaction(True, usedIODTypeForRO63)
+            Dim ro64transaction As RO64Transaction = New RO64Transaction(False, True, SOPclass.GetSOPClassUID(usedIODTypeForRO63))
             Dim ro65transaction As RO65Transaction = New RO65Transaction(True)
 
 
             If radiationDialog.Delivered Then
 
-                ro64transaction = New RO64Transaction(True, True)
+                ro64transaction = New RO64Transaction(True, True, SOPclass.GetSOPClassUID(usedIODTypeForRO63))
 
                 'Add transactions to the receiver
                 receive.AddTransaction(ro62transaction)  ' RO-62: Treatment Delivery Progress Update

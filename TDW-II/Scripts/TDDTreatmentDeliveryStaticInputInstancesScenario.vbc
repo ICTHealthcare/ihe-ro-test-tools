@@ -11,8 +11,17 @@ Class TDDTreatmentDeliveryStaticInputInstancesScenario
         Dim errorDialog As ErrorDialog = New ErrorDialog()
         Dim isResumeTreatmentDialog As ResumeTreatmentDialog = New ResumeTreatmentDialog()
         Dim queryForm As EditQueryForm = New EditQueryForm()
+        Dim choosePlan As DosimetricPlanOrIonPlanDialog = New DosimetricPlanOrIonPlanDialog()
 
         Try
+            choosePlan.ShowDialog()
+
+            If choosePlan.RTIonPlan Then
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataIonPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+            Else
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataDosimetricPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+            End If
+
             ' Check if dataset is present
             DataSetHandler.CheckUpsDataSets()
 

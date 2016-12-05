@@ -8,10 +8,23 @@ Class TDDDeliverSuccessScenario
         Dim tddActor As TDDActor = New TDDActor()
         Dim ostActor As OSTActor = New OSTActor()
         Dim errorDialog As ErrorDialog = New ErrorDialog()
-
+        Dim usedIODTypeForRO63 As IODType
         Try
-            ' Check if dataset is present
-            DataSetHandler.CheckUpsDataSets()
+
+            Dim choosePlan As DosimetricPlanOrIonPlanDialog = New DosimetricPlanOrIonPlanDialog()
+
+            choosePlan.ShowDialog()
+
+            If choosePlan.RTIonPlan Then
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataIonPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTIonBeamsTreatmentRecord
+            Else
+                My.Computer.FileSystem.CopyFile(TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSDataDosimetricPlan.xml", TestToolConfiguration.GetInstance.SessionPath + "\Scripts\UPSData.xml", True)
+                usedIODTypeForRO63 = IODType.RTBeamsTreatmentRecordSTORE
+            End If
+
+            '' Check if dataset is present
+            'DataSetHandler.CheckUpsDataSets()
 
             'Check if RO-60 Request is present in the cache directory, if not then stop execution and inform the user (in the validation results)
             Try
@@ -28,8 +41,8 @@ Class TDDDeliverSuccessScenario
 
             Dim ro62transaction As RO62Transaction = New RO62Transaction()
             Dim ro62transaction_50 As RO62Transaction = New RO62Transaction(50) '(filling in any progress is fine
-            Dim ro63transaction As RO63Transaction = New RO63Transaction()
-            Dim ro64transaction As RO64Transaction = New RO64Transaction(True, False)
+            Dim ro63transaction As RO63Transaction = New RO63Transaction(False, usedIODTypeForRO63)
+            Dim ro64transaction As RO64Transaction = New RO64Transaction(True, False, SOPclass.GetSOPClassUID(usedIODTypeForRO63))
             Dim ro65transaction As RO65Transaction = New RO65Transaction(False)
 
             receive.AddTransaction(ro62transaction)  ' RO-62: Treatment Delivery Progress Update

@@ -124,5 +124,6 @@
 #include "IodTypeHelper.vbc"
 #include "RequestedCMoveSopClassUIDNotRTBDIRule.vbc"
 #include "IODOneOfCollectionReceivedRule.vbc"
-
+#include "DosimetricPlanOrIonPlanDialog.Designer.vbc"
+#include "DosimetricPlanOrIonPlanDialog.vbc"
 #End If

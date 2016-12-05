@@ -88,6 +88,9 @@ Class TestToolConfiguration
             Case iodType.RTBeamsTreatmentRecordSTORE
                 Return "RT Beams Treatment Record Storage.def"
 
+            Case iodType.RTIonBeamsTreatmentRecord
+                Return "RT Ion Beams Treatment Record Storage.def"
+
             Case iodType.UnifiedProcedureStepPull
                 Return "Unified Procedure Step - Pull.def"
 
@@ -368,6 +371,7 @@ Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTImage))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.StudyRootQueryRetrieveMOVE))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTBeamsTreatmentRecordSTORE))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTIonBeamsTreatmentRecord))
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTBeamsDeliveryInstruction))
 
         'config.GetMainThread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(config.GetDefinitionFileName(IODType.RTDose))

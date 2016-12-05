@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataSet>
+    <DataSetPath>\..\Datasets\TDW\UPSDataIonPlan</DataSetPath>
+    <DataSetPathCt>\..\Datasets\TDW\UPSDataIonPlan\CT</DataSetPathCt>
+    <DataSetPathTreatmentRecordInterupted>\..\Datasets\TDW\UPSDataIonPlan\Interupted</DataSetPathTreatmentRecordInterupted>
+</DataSet>
