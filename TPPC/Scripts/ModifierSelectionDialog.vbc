@@ -22,8 +22,15 @@ Public Class ModifierSelectionDialog
             Dim mods As List(Of Modifier) = New List(Of Modifier)
 
             Select Case scenario
-                Case ARTO_Scenario.BasicStaticBeam, ARTO_Scenario.MotorizedWedgeBeam, ARTO_Scenario.HardWedgeBeam, ARTO_Scenario.VirtualWedgeBeam
+                Case ARTO_Scenario.BasicStaticBeam, ARTO_Scenario.HardWedgeBeam
 
+                    mods.Add(Modifier.BolusBeamModifier)
+                    mods.Add(Modifier.BlockBeamModifier)
+                    mods.Add(Modifier.CompensatorBeamModifier)
+
+                Case ARTO_Scenario.MotorizedWedgeBeam, ARTO_Scenario.VirtualWedgeBeam
+
+                    mods.Add(Modifier.HardWedgeBeamModifier)
                     mods.Add(Modifier.BolusBeamModifier)
                     mods.Add(Modifier.BlockBeamModifier)
                     mods.Add(Modifier.CompensatorBeamModifier)

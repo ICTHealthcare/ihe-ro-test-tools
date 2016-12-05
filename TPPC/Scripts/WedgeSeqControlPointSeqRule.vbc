@@ -1,0 +1,92 @@
+Class WedgeSeqControlPointSeqRule
+    Inherits AttributeRule
+    ''' <summary>
+    ''' This rule compares an incoming dicommessage with a dicommessage in the reference dataset
+    ''' </summary>
+    ''' <param name="iodType"></param>
+    ''' <param name="severity"></param>
+    ''' <remarks></remarks>
+    Public Sub New(ByVal scenario As ARTO_Scenario, ByVal iodType As IODType, ByVal severity As ErrorSeverity)
+
+        MyBase.New("WedgeSeq ControlPointSeq Rule", "", iodType, severity)
+        m_scenario = scenario
+    End Sub
+
+    Private m_scenario As ARTO_Scenario
+
+    'This method applies the rule to a dataset and reports whether it is correct or not
+    Public Overrides Sub ApplyRule(ByRef dicomMessage As DvtkHighLevelInterface.Dicom.Messages.DicomMessage, ByVal iodType As IODType)
+
+        'check if message iodType corresponds to the iodtype of this rule
+        If iodType = IODTypeRule Then
+
+            Dim message As String = ""
+            Dim numberOfBeams As Integer = dicomMessage.DataSet.GetitemCount(Tags.BeamSequence)
+            Dim beams, wedges, controlPoints, wedgePositions As Integer
+            Dim foundSpecialWedge As Integer = 0
+            For beams = 1 To numberOfBeams
+                Dim WedgeSequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute = dicomMessage.DataSet(Tags.GetTagNameWithCounter(Tags.WedgeSequence, beams))
+                Dim numberOfwedges As Integer = WedgeSequenceAttribute.ItemCount()
+                For wedges = 1 To numberOfwedges
+                    If (m_scenario = ARTO_Scenario.MotorizedWedgeBeam) Then
+                        If (WedgeSequenceAttribute.GetItem(wedges)(Tags.WedgeTypeOnly).Values(0).ToString().ToUpper() = "MOTORIZED") Then
+                            foundSpecialWedge = WedgeSequenceAttribute.GetItem(wedges)(Tags.WedgeNumberOnly).Values(0)
+                        End If
+                    ElseIf (m_scenario = ARTO_Scenario.VirtualWedgeBeam) Then
+                        If (WedgeSequenceAttribute.GetItem(wedges)(Tags.WedgeTypeOnly).Values(0).ToString().ToUpper() = "DYNAMIC") Then
+                            foundSpecialWedge = WedgeSequenceAttribute.GetItem(wedges)(Tags.WedgeNumberOnly).Values(0)
+                        End If
+                    End If
+                Next
+                If (foundSpecialWedge = 0) Then
+                    If (m_scenario = ARTO_Scenario.MotorizedWedgeBeam) Then
+                        Me.SetError("MOTORIZED wedge not found for beam item " + beams.ToString() + ", should be in this RT-Plan")
+                    ElseIf (m_scenario = ARTO_Scenario.VirtualWedgeBeam) Then
+                        Me.SetError("DYNAMIC wedge not found for beam item " + beams.ToString() + ", should be in this RT-Plan")
+                    End If
+                    Report()
+                End If
+            Next beams
+
+            If Not (foundSpecialWedge = 0) Then
+                For beams = 1 To numberOfBeams
+                    Dim ControlPointSequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute = dicomMessage.DataSet(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, beams))
+                    For controlPoints = 1 To dicomMessage.DataSet.GetitemCount(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, beams))
+                        Dim WedgePositionSequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute = ControlPointSequenceAttribute.GetItem(controlPoints)(Tags.OnlyWedgePositionSequence)
+                        For wedgePositions = 1 To WedgePositionSequenceAttribute.ItemCount()
+                            If (WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.ReferencedWedgeNumberOnly).Values(0) = foundSpecialWedge) Then
+                                If (m_scenario = ARTO_Scenario.MotorizedWedgeBeam) Then
+                                    If (controlPoints = 1 Or controlPoints = 2) Then
+                                        If Not (WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString() = "IN") Then
+                                            message = "For a MOTORIZED Wedge RT-Plan wedge position " + controlPoints.ToString() + " should have the value IN and not " + WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString()
+                                        End If
+                                    ElseIf (controlPoints = 3 Or controlPoints = 4) Then
+                                        If Not (WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString() = "OUT") Then
+                                            message = "For a MOTORIZED Wedge RT-Plan wedge position " + controlPoints.ToString() + " should have the value OUT and not " + WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString()
+                                        End If
+                                    End If
+                                ElseIf (m_scenario = ARTO_Scenario.VirtualWedgeBeam) Then
+                                    If Not (WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString() = "IN") Then
+                                        message = "For a VIRTUAL Wedge RT-Plan wedge position " + controlPoints.ToString() + " should have the value IN and not " + WedgePositionSequenceAttribute.GetItem(wedgePositions)(Tags.WedgePositionOnly).Values(0).ToString()
+                                    End If
+                                End If
+                            End If
+                        Next
+
+                    Next controlPoints
+                Next beams
+            End If
+
+            'Reporter, write to results, if there is anything to report
+
+            If (message = "") Then
+                Me.SetValid("RT-Plan has correct wedge sequence and correct control point sequence with correct wedge positions")
+            Else
+                Me.SetError(message)
+            End If
+
+            Report()
+        End If
+    End Sub
+
+End Class

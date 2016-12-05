@@ -6,7 +6,7 @@ Public Class SendOptionalDataDialog
         MyBase.New("Send Optional Data", _
             "The Test Tool can send the optional Structure Set and CT Set data alongside the RT Plan. " & _
             "Please select whether the Test Tool should send these optional data.", _
-            "Click 'Yes' to also send the Structure Set and CT Set with the RT Plan, or 'No' to send the RT Plan only.", _
+            "Click 'Yes' to also send the Structure Set and CT Set with the RT Plan, or 'No' to only receive the RT Plan.", _
             "Sending.bmp")
 
     End Sub

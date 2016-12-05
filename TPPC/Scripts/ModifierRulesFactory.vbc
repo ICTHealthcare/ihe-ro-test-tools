@@ -19,13 +19,21 @@ Class ModifierRulesFactory
         beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New IsRequiredRule(Tags.WedgeAngle, IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
         beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New IsRequiredRule(Tags.WedgeOrientation, IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
 
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New RequiredConditionalRule(Tags.SourceToWedgeTrayDistance, Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "DYNAMIC", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgePositionSequence, 1, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgePositionSequence, 2, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.WedgePositionSequence, 3, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
-        beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.WedgePositionSequence, 4, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New RequiredConditionalRule(Tags.SourceToWedgeTrayDistance, Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "DYNAMIC", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgePositionSequence, 1, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgePositionSequence, 2, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.WedgePositionSequence, 3, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+        'beam_rules.Add(New SequenceLoopRule(Tags.WedgeSequence, New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.WedgePositionSequence, 4, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError)))
+
+        beam_rules.Add(New RequiredConditionalRule(Tags.SourceToWedgeTrayDistance, Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "STANDARD", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.WedgeType, "DYNAMIC", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.ControlPointSequence, 1, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "IN", Tags.ControlPointSequence, 2, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.ControlPointSequence, 3, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
+        beam_rules.Add(New ConditionalRequiredValueRule(Tags.WedgePosition, "OUT", Tags.ControlPointSequence, 4, Tags.WedgeType, "MOTORIZED", IODType.RTPlanDosimetric, ErrorSeverity.RuleError))
         Return beam_rules
 
     End Function

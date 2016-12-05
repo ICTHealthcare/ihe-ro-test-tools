@@ -1,4 +1,4 @@
-Class ScenarioRunner
+Public Class ScenarioRunner
 
     'has a Reporter
     Protected m_reporter As Reporter = Reporter.GetInstance()

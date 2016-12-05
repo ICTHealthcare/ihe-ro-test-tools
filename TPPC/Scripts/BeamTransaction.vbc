@@ -51,18 +51,39 @@ Class BeamTransaction
         'if variables are true, the corresponding modifier has to be removed from the dicommessage
         If m_NoHardWedgeModifier Then
 
-            Dim item As Integer = 0
-            'this function loops through the control point sequence to delete the wedge position sequence and its items in there
-            For index = 1 To numberOfBeams
-                dicomMessage.DataSet.Set(Tags.GetTagNameWithCounter(Tags.NumberOfWedges, index), [IS], 0)
-                dicomMessage.DataSet.Delete(Tags.GetTagNameWithCounter(Tags.WedgeSequence, index))
+            If (m_Scenario = ARTO_Scenario.MotorizedWedgeBeam Or m_Scenario = ARTO_Scenario.VirtualWedgeBeam) Then
 
-                For item = 1 To dicomMessage.DataSet.GetitemCount(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index))
-                    If dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Exists(Tags.OnlyWedgePositionSequence) Then
-                        dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Item(Tags.OnlyWedgePositionSequence).Delete()
-                    End If
-                Next
-            Next index
+                Dim item As Integer = 0
+                'this function loops through the control point sequence to delete the wedge position sequence and its items in there
+                For index = 1 To numberOfBeams
+                    dicomMessage.DataSet.Set(Tags.GetTagNameWithCounter(Tags.NumberOfWedges, index), [IS], 1)
+                    Dim WedgeSequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute = dicomMessage.DataSet(Tags.GetTagNameWithCounter(Tags.WedgeSequence, index))
+                    WedgeSequenceAttribute.RemoveItemAt(WedgeSequenceAttribute.ItemCount())
+
+                    For item = 1 To dicomMessage.DataSet.GetitemCount(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index))
+                        If dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Exists(Tags.OnlyWedgePositionSequence) Then
+                            Dim WedgePositionSequenceAttribute As DvtkHighLevelInterface.Dicom.Other.Attribute = dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Item(Tags.OnlyWedgePositionSequence)
+                            WedgePositionSequenceAttribute.RemoveItemAt(WedgePositionSequenceAttribute.ItemCount())
+                        End If
+                    Next
+                Next index
+
+            Else
+
+                Dim item As Integer = 0
+                'this function loops through the control point sequence to delete the wedge position sequence and its items in there
+                For index = 1 To numberOfBeams
+                    dicomMessage.DataSet.Set(Tags.GetTagNameWithCounter(Tags.NumberOfWedges, index), [IS], 0)
+                    dicomMessage.DataSet.Delete(Tags.GetTagNameWithCounter(Tags.WedgeSequence, index))
+
+                    For item = 1 To dicomMessage.DataSet.GetitemCount(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index))
+                        If dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Exists(Tags.OnlyWedgePositionSequence) Then
+                            dicomMessage.DataSet.Getitem(Tags.GetTagNameWithCounter(Tags.ControlPointSequence, index), item).Item(Tags.OnlyWedgePositionSequence).Delete()
+                        End If
+                    Next
+                Next index
+
+            End If
         Else
             SopInstanceIdentifier = SopInstanceIdentifier + 16
         End If

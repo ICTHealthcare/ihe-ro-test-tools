@@ -28,11 +28,11 @@ Public Class IodTypeHelper
 
         Dim iod As IODType
 
-        If dicomMessage.CommandSet.DimseCommand = NACTIONRQ Then
-            iod = IODType.NAction
-            Return iod
+        'If dicomMessage.CommandSet.DimseCommand = NACTIONRQ Then
+        '    iod = IODType.NAction
+        '    Return iod
 
-        End If
+        'End If
 
         If Not (SOPclass.TryGetIODType(dicomMessage.CommandSet.GetSopClassUid(), iod)) Then
             Dim logger As Logger = logger.GetInstance()

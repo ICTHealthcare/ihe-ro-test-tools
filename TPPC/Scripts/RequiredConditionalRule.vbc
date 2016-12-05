@@ -36,10 +36,14 @@ Class RequiredConditionalRule
                 If dicomMessage(m_conditionTagSequence).Values.Item(0) = m_conditionTagValue Then
                     'Tag does exists in dataset, and has the value 
                     'Tag exists in dataset and has the right value, condition is true
-                    If Not dicomMessage(m_requiredTagSequence).Values.Item(0) = Nothing Then
-                        'Required tag is pressent in dataset
-                        message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + m_requiredTagSequence + ") is pressent."
-                        Me.SetValid(message)
+                    If (dicomMessage.Exists(m_requiredTagSequence)) Then
+
+                        If Not dicomMessage(m_requiredTagSequence).Values.Item(0) = Nothing Then
+                            'Required tag is pressent in dataset
+                            message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " and '" + Tags.GetTagName(m_requiredTagSequence) + "' (" + m_requiredTagSequence + ") is pressent."
+                            Me.SetValid(message)
+                        End If
+
                     Else
                         'Required tag is missing in dataset
                         message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " but " + m_requiredTagSequence + " is missing."
@@ -49,10 +53,10 @@ Class RequiredConditionalRule
                     message = "'" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") contains the value: " + dicomMessage(m_conditionTagSequence).Values.Item(0).ToString() + " therefor '" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") is not required."
                     Me.SetValid(message)
                 End If
-            Else
-                message = "The conditional tag '" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") is not present in the dataset."
-                Me.SetValid(message)
-            End If
+                Else
+                    message = "The conditional tag '" + Tags.GetTagName(m_conditionTagSequence) + "' (" + m_conditionTagSequence + ") is not present in the dataset."
+                    Me.SetValid(message)
+                End If
 
             Me.Report()
         End If

@@ -76,6 +76,7 @@ Class Validator
         'perform definition file rules on the receivedMessage
         If Not receivedMessage.CommandSet.DimseCommand = CFINDRSP Then
             'when a PUSH is received, the defintion file of PULL should be used for the validation
+
             Dim affectedSOPClassUIdChanged As Boolean = convertSOPClassUIDforUPS(Tags.AffectedSOPClassUID, receivedMessage)
             Dim requestedSOPClassUIdChanged As Boolean = convertSOPClassUIDforUPS(Tags.RequestedSOPClassUID, receivedMessage)
 
@@ -83,6 +84,7 @@ Class Validator
 
             'change back the sop class UID to received sop class UID
             convertBackSOPClassUIDforUPS(receivedMessage, requestedSOPClassUIdChanged, affectedSOPClassUIdChanged)
+
             'STATUS "0" means succeeded, no extra definition file validation
         ElseIf Not receivedMessage(Tags.StatusCommandElement).Values(0) = "0" Then
 
