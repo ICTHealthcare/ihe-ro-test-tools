@@ -36,7 +36,10 @@ Public Enum IODType
     RTIonBeamsTreatmentRecord
     RTBrachyTreatmentRecord
     RTTreatmentSummaryRecord
-
+    ModalityWorklistInformationModelFIND
+    ModalityPerformedProcedureStep
+    SecondaryCaptureImageStorage
+    ContentAssessmentResults
     ' Unknown  ' can be used when the SOP Class UID of a received message can not be identified
 
     NotSpecified  ' used for validating messages where the SOP Class is not known yet, or can be a list of several
