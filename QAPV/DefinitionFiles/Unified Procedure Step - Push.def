@@ -113,7 +113,7 @@ MODULE "Unified Procedure Step Relationship Module" U
    >(0x00400033,1,CS,1) "Universal Entity ID Type"
    >(0x00400031,1,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,LO,1) "Requested Procedure ID"
+ >(0x00401001,2,SH,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -254,15 +254,30 @@ MODULE "Unified Procedure Step Scheduled Procedure Information Module" U
    >(0x00880140,1,UI,1) "Storage Media File-Set UID"
   ) "Media Retrieval Sequence"
  >(0x0040E023,1,SQ,1,
-   >(0x0040E011,1,UI,1) "Retrieve Location UID"
    >(0x0040E010,1,UT,1) "Retrieve URI"
   ) "WADO Retrieval Sequence"
  >(0x0040E024,1,SQ,1,
    >(0x0040E030,1,UI,1) "Repository Unique ID"
    >(0x0040E031,2,UI,1) "Home Community ID"
-  ) "XDS Retrieval Sequence"  
+  ) "XDS Retrieval Sequence"
+	>(0x0040E025,1,SQ,1,
+     >(0x00081190,1,UT,1) "Retrieve URL" 
+	) "WADO-RS Retrieval Sequence"  
 ) "Input Information Sequence" 
 (0x0020000D,2,UI,1) "Study Instance UID" 
+(0x00404070,3,SQ,1,
+ >(0x00081150,1C,UI,1) "Referenced SOP Class UID"
+ >(0x00404071,1C,SQ,1,
+   >(0x21000140,1,AE,1) "Destination AE"
+  ) "DICOM Storage Sequence"
+  >(0x00404072,1C,SQ,1,
+   >(0x00404073,1,UT,1) "Storage URL"
+  ) "STOW-RS Storage Sequence"
+  >(0x00404074,1C,SQ,1,
+   >(0x0040E030,1,UI,1) "Repository Unique ID"
+   >(0x0040E031,3,UI,1) "Home Community ID"
+  ) "XDS Storage Sequence"
+) "Output Destination Sequence"
 
 MODULE "Unified Procedure Step Performed Procedure Information Module" U
 (0x00741216,2,SQ,1,
@@ -606,7 +621,7 @@ MODULE "Unified Procedure Step Relationship Module" U
    >(0x00400033,1C,CS,1) "Universal Entity ID Type"
    >(0x00400031,1C,UT,1) "Local Namespace Entity ID"
   ) "Order Filler Identifier Sequence"
- >(0x00401001,2,LO,1) "Requested Procedure ID"
+ >(0x00401001,2,SH,1) "Requested Procedure ID"
  >(0x00321060,2,LO,1) "Requested Procedure Description"
  >(0x00321064,2,SQ,1,
    >(0x00080100,1,SH,1) "Code Value" 
@@ -747,15 +762,30 @@ MODULE "Unified Procedure Step Scheduled Procedure Information Module" U
    >(0x00880140,1,UI,1) "Storage Media File-Set UID"
   ) "Media Retrieval Sequence"
  >(0x0040E023,1C,SQ,1,
-   >(0x0040E011,1,UI,1) "Retrieve Location UID"
    >(0x0040E010,1,UT,1) "Retrieve URI"
   ) "WADO Retrieval Sequence"
  >(0x0040E024,1C,SQ,1,
    >(0x0040E030,1,UI,1) "Repository Unique ID"
    >(0x0040E031,3,UI,1) "Home Community ID"
-  ) "XDS Retrieval Sequence"  
+  ) "XDS Retrieval Sequence"
+  >(0x0040E025,1C,SQ,1,
+     >(0x00081190,1,UT,1) "Retrieve URL" 
+   ) "WADO-RS Retrieval Sequence"  
 ) "Input Information Sequence" 
 (0x0020000D,3,UI,1) "Study Instance UID" 
+(0x00404070,3,SQ,1,
+ >(0x00081150,1C,UI,1) "Referenced SOP Class UID"
+ >(0x00404071,1C,SQ,1,
+   >(0x21000140,1,AE,1) "Destination AE"
+  ) "DICOM Storage Sequence"
+  >(0x00404072,1C,SQ,1,
+   >(0x00404073,1,UT,1) "Storage URL"
+  ) "STOW-RS Storage Sequence"
+  >(0x00404074,1C,SQ,1,
+   >(0x0040E030,1,UI,1) "Repository Unique ID"
+   >(0x0040E031,3,UI,1) "Home Community ID"
+  ) "XDS Storage Sequence"
+) "Output Destination Sequence"
 
 MODULE "Unified Procedure Step Performed Procedure Information Module" U
 (0x00741216,2,SQ,1,
@@ -1014,6 +1044,22 @@ MODULE "" M
 
 ENDDEFINE
 
+DEFINE N-GET-RQ "Unified Procedure Step - Push SOP Class"
+
+SOPCLASS "1.2.840.10008.5.1.4.34.6.1" "Unified Procedure Step - Push SOP Class"
+
+MODULE "" U
+
+ENDDEFINE
+
+DEFINE N-GET-RSP "Unified Procedure Step - Push SOP Class"
+
+SOPCLASS "1.2.840.10008.5.1.4.34.6.1" "Unified Procedure Step - Push SOP Class"
+
+MODULE "" U
+
+ENDDEFINE
+
 DEFINE N-EVENT-REPORT-RSP "Unified Procedure Step - Push SOP Class"
 
 SOPCLASS "1.2.840.10008.5.1.4.34.6.1" "Unified Procedure Step - Push SOP Class"
@@ -1201,10 +1247,10 @@ MODULE "Unified Procedure Step Performed Procedure Information Module" U
   ) "Performed Processing Parameters Sequence" 
  >(0x00404051,3,DT,1) "Performed Procedure Step End DateTime" 
  >(0x00404033,2,SQ,1,
-   >(0x0040E020,1C,CS,1) "Type of Instances" 
+   >(0x0040E020,1,CS,1) "Type of Instances" 
    >(0x0020000D,1C,UI,1) "Study Instance UID" 
    >(0x0020000E,1C,UI,1) "Series Instance UID" 
-   >(0x00081199,1C,SQ,1,
+   >(0x00081199,1,SQ,1,
      >(0x00081150,1,UI,1) "Referenced SOP Class UID" 
      >(0x00081155,1,UI,1) "Referenced SOP Instance UID" 
      >(0x0040E001,1C,ST,1) "HL7 Instance Identifier" 
@@ -1216,16 +1262,18 @@ MODULE "Unified Procedure Step Performed Procedure Information Module" U
 	) "DICOM Retrieval Sequence" 
    >(0x0040E022,1C,SQ,1,
      >(0x00880130,2,SH,1) "Storage Media File-Set ID" 
-     >(0x00880140,2,UI,1) "Storage Media File-Set UID"
+     >(0x00880140,1,UI,1) "Storage Media File-Set UID"
 	) "Media Retrieval Sequence" 
    >(0x0040E023,1C,SQ,1,
-     >(0x0040E011,1,UI,1) "Retrieve Location UID" 
      >(0x0040E010,1,UT,1) "Retrieve URI"
 	) "WADO Retrieval Sequence" 
    >(0x0040E023,1C,SQ,1,
      >(0x0040E030,1,UI,1) "Repository Unique ID" 
      >(0x0040E031,3,UI,1) "Home Community ID"
 	) "XDS Retrieval Sequence" 
+	>(0x0040E025,1C,SQ,1,
+     >(0x00081190,1,UT,1) "Retrieve URL" 
+	) "WADO-RS Retrieval Sequence" 
  ) "Output Information Sequence"
 ) "Unified Procedure Step Performed Procedure Sequence" 
 
@@ -1444,15 +1492,30 @@ MODULE "Unified Procedure Step Scheduled Procedure Information Module" U
    >(0x00880140,1,UI,1) "Storage Media File-Set UID"
   ) "Media Retrieval Sequence"
  >(0x0040E023,1C,SQ,1,
-   >(0x0040E011,1,UI,1) "Retrieve Location UID"
    >(0x0040E010,1,UT,1) "Retrieve URI"
   ) "WADO Retrieval Sequence"
  >(0x0040E024,1C,SQ,1,
    >(0x0040E030,1,UI,1) "Repository Unique ID"
    >(0x0040E031,3,UI,1) "Home Community ID"
-  ) "XDS Retrieval Sequence"  
+  ) "XDS Retrieval Sequence" 
+  >(0x0040E025,1C,SQ,1,
+     >(0x00081190,1,UT,1) "Retrieve URL" 
+   ) "WADO-RS Retrieval Sequence"  
 ) "Input Information Sequence" 
 (0x0020000D,3,UI,1) "Study Instance UID" 
+(0x00404070,3,SQ,1,
+ >(0x00081150,1C,UI,1) "Referenced SOP Class UID"
+ >(0x00404071,1C,SQ,1,
+   >(0x21000140,1,AE,1) "Destination AE"
+  ) "DICOM Storage Sequence"
+  >(0x00404072,1C,SQ,1,
+   >(0x00404073,1,UT,1) "Storage URL"
+  ) "STOW-RS Storage Sequence"
+  >(0x00404074,1C,SQ,1,
+   >(0x0040E030,1,UI,1) "Repository Unique ID"
+   >(0x0040E031,3,UI,1) "Home Community ID"
+  ) "XDS Storage Sequence"
+) "Output Destination Sequence"
 
 MODULE "Patient Medical Module" U
 (0x00102000,3,LO,1:n) "Medical Alerts" 
@@ -1751,6 +1814,26 @@ DEFINE N-EVENT-REPORT-RSP
 (0x00000120,1,US,1)                                 "Message ID Being Responded To"
 (0x00000800,1,US,1)                                 "Data Set Type"
 (0x00000900,1,US,1)                                 "Status"
+ENDDEFINE 
+
+DEFINE N-GET-RQ
+(0x00000000,1,UL,1)                                 "Group 0000 Length"
+(0x00000003,1,UI,1)                                 "Requested SOP Class UID"
+(0x00000100,1,US,1,E,0x0110)                        "Command Field"
+(0x00000110,1,US,1)                                 "Message ID"
+(0x00000800,1,US,1,E,0x0101)                        "Data Set Type"
+(0x00001001,1,UI,1)                                 "Requested SOP Instance UID"
+(0x00001005,1C,AT,1:n)                               "Attribute Identifier List"
+ENDDEFINE   
+
+DEFINE N-GET-RSP
+(0x00000000,1,UL,1)                                 "Group 0000 Length"
+(0x00000002,1,UI,1)                                 "Affected SOP Class UID"
+(0x00000100,1,US,1,E,0x8110)                        "Command Field"
+(0x00000120,1,US,1)                                 "Message ID Being Responded To"
+(0x00000800,1,US,1)                                 "Data Set Type"
+(0x00000900,1,US,1)                                 "Status"
+(0x00001000,1,UI,1)                                 "Affected SOP Instance UID"
 ENDDEFINE 
 
 DEFINE N-SET-RQ

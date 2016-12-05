@@ -31,8 +31,7 @@ Class ROQ2Transaction
         message.Set(Tags.RequestedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
 
         ' Set the Requested SOP Instance UID
-        message.Set(Tags.RequestedSOPInstanceUID, UI, DataSetHandler.GetAttributeValueFromDataSet(DataSetHandler.UPSCacheXMLFileName, "N-CREATE-REQ", Tags.SOPInstanceUID))
-
+        message.Set(Tags.RequestedSOPInstanceUID, UI, ReferenceDataSet.GetInstance.UPSSOPInstanceUID)
         'Set the Action type ID
         message.Set(Tags.ActionTypeID, US, "3")
 

@@ -105,6 +105,8 @@ Class TestToolConfiguration
                 Return "Basic Text SR.def"
             Case iodType.EnhancedSR
                 Return "Enhanced SR.def"
+            Case iodType.ContentAssessmentResults
+                Return "Content Assessment Results Storage.def"
 
         End Select
 
@@ -375,6 +377,7 @@ Class TestToolConfiguration
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.BasicTextSR))
 
         thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.EnhancedSR))
+        thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.ContentAssessmentResults))
 
         'thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTBeamsTreatmentRecordSTORE))
         'thread.Options.DvtkScriptSession.DefinitionManagement.LoadDefinitionFile(GetDefinitionFileName(IODType.RTBeamsDeliveryInstruction))

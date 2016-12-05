@@ -8,7 +8,7 @@ Class ReferenceDataSet
     'the actual instance of the ReferenceDataSet class
     Private Shared m_instance As ReferenceDataSet = Nothing
     Private m_datasetPath As String
-
+    Private m_UPSSOPInstanceUID As String
     ' If no RO-62 requests are received with progress then the progress is assumed to be 0.
     Private m_receivedProgress As Integer = 0
 
@@ -35,6 +35,15 @@ Class ReferenceDataSet
         End Get
         Set(ByVal value As Integer)
             m_receivedProgress = value
+        End Set
+    End Property
+
+    Public Property UPSSOPInstanceUID() As String
+        Get
+            Return m_UPSSOPInstanceUID
+        End Get
+        Set(value As String)
+            m_UPSSOPInstanceUID = value
         End Set
     End Property
 
@@ -173,7 +182,9 @@ Class ReferenceDataSet
 
         Dim UnifiedProcedureStepPush_NCREATE_REQ As DvtkHighLevelInterface.Dicom.Messages.DicomMessage = New DvtkHighLevelInterface.Dicom.Messages.DicomMessage(NCREATERQ)
         UnifiedProcedureStepPush_NCREATE_REQ.CommandSet.Set(Tags.AffectedSOPClassUID, UI, SOPclass.UnifiedProcedureStepPushSOPClassUID)
-        UnifiedProcedureStepPush_NCREATE_REQ.CommandSet.Set(Tags.AffectedSOPInstanceUID, UI, DvtkHighLevelInterface.Dicom.Other.UID.Create())
+
+        m_UPSSOPInstanceUID = DvtkHighLevelInterface.Dicom.Other.UID.Create()
+        UnifiedProcedureStepPush_NCREATE_REQ.CommandSet.Set(Tags.AffectedSOPInstanceUID, UI, m_UPSSOPInstanceUID)
 
         Try
             'Read the Request

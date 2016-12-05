@@ -1,0 +1,76 @@
+Class QAPV_ContentAssessmentDifference_Rules
+
+Public Sub New()
+End Sub
+
+
+    Public Shared Function CreateRules() As ArrayList
+
+        Dim iodType As IODType = iodType.ContentAssessmentResults
+
+        ' Create empty list of rules.
+        Dim rules As ArrayList = New ArrayList
+
+        ' "Content Assessment" module (DICOM usage: M, IHE-RO usage: M)
+        rules.AddRange(CreateIheContentAssessmentModuleRules(iodType))
+
+        Return rules
+
+    End Function
+
+
+    ' Create rules for the Content Assessment Module.
+    Private Shared Function CreateIheContentAssessmentModuleRules(ByVal iodType As IODType) As ArrayList
+
+        ' Create empty list of rules.
+        Dim m_rules As ArrayList = New ArrayList
+
+        ' Rule for attribute "Assessment Summary".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00820001", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Assessment Type Code Sequence".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00820021", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Code Value".
+        m_rules.Add(New AttributeValueRule("0x00820021/0x00080100", "XYZ002", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Coding Scheme Designator".
+        m_rules.Add(New AttributeValueRule("0x00820021/0x00080102", "DCM", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Code Meaning".
+        m_rules.Add(New AttributeValueRule("0x00820021/0x00080104", "RT Pre-Treatment Consistency Check", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Assessment Requester Sequence ".
+        m_rules.Add(New AttributeNumberOfSequenceItemsRule("0x00820017", 1, iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Assessed SOP Instance Sequence".
+        m_rules.Add(New AttributeNumberOfSequenceItemsRule("0x00820004", 1, iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Referenced SOP Class UID".
+        m_rules.Add(New AttributeValueRule("0x00820004/0x00081150", "1.2.840.10008.5.1.4.1.1.481.5", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Referenced Comparison SOP Instance Sequence".
+        m_rules.Add(New AttributeNumberOfSequenceItemsRule("0x00820004/0x00820005", 1, iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">>Referenced SOP Class UID".
+        m_rules.Add(New AttributeValueRule("0x00820004/0x00820005/0x00081150", "1.2.840.10008.5.1.4.1.1.481.5", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Number of Assessment Observations".
+        m_rules.Add(New AttributeIsRequiredHasValueRule("0x00820006", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Assessment Observations Sequence".
+        m_rules.Add(New AttributeConditionalNotValuelsRequiredRule("0x00820007", "0x00820006", "1", "0" , iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute "Assessment Observations Sequence".
+        m_rules.Add(New AttributeNumberOfSequenceItemsRule("0x00820007", "0x00820006", iodType, ErrorSeverity.RuleError))
+
+        ' Rule for attribute ">Observation Significance".
+
+        ' Rule for attribute ">Observation Description".
+
+        Return m_rules
+
+    End Function
+
+
+End Class

@@ -1,4 +1,4 @@
-MustInherit Class ScenarioStep
+Public MustInherit Class ScenarioStep
 
     Public MustOverride Sub Execute()
 
